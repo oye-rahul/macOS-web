@@ -1,0 +1,948 @@
+@font-face {
+  font-family: 'SF Pro Display Medium';
+  src: url('SFPRODISPLAYMEDIUM.OTF') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'SF Pro Display Medium', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-image: url('wp2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+/* top menu */
+.top-menu {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  padding: 3px 14px;
+}
+
+.top-menu .left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.top-menu .right img {
+  height: 20px;
+}
+
+.top-menu .right {
+  cursor: pointer;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  gap: 15px;
+}
+
+.top-menu .right .contol-penal {
+  display: grid;
+  grid-template-row: 1fr 1fr;
+  margin-top: 2px;
+  gap: 0.5px;
+}
+
+.top-menu .right .contol-penal img {
+  height: 18px;
+}
+
+.top-menu .right .Battery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* 2 equal columns */
+  gap: 5px;
+}
+
+.status-icon {
+  margin-top: -4px;
+  height: 30px;
+}
+
+.Settings-main {
+  width: min(890px, 92vw);
+  height: min(80vh);
+  inset: 0;
+  z-index: 6000;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  background: #ffffff;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 30%, rgb(247, 253, 255) 100%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.97);
+  text-align: center;
+  line-height: 100px;
+  border: 1px solid #f0f0f067;
+  border-radius: 30px;
+}
+
+.Settings-main.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.window-controls {
+  display: none;
+  display: flex;
+  align-items: start;
+}
+
+.Settings-main .left-menu {
+  width: 300px;
+  height: 97%;
+  background: linear-gradient(120deg, rgb(240, 252, 255) 0%, rgba(255, 255, 255, 1) 80%, rgb(254, 245, 255) 100%);
+  padding: 12px;
+  margin: 10px;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  border: 1px solid #f8f8f83f;
+  line-height: normal;
+  text-align: left;
+  box-shadow: 1px 2px 10px 2px #00000010;
+}
+
+.window-controls .close,
+.window-controls .minimize,
+.window-controls .maximize {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  border: none;
+  margin: 0px 3px;
+}
+
+.window-controls .close {
+  border: 1px solid #ff4339;
+  background: #FE656A;
+}
+
+.window-controls .minimize {
+  border: 1px solid #ffb700;
+  background: #F7CB01;
+}
+
+.window-controls .maximize {
+  border: 1px solid #00A700;
+  background: #28C76F;
+}
+
+.left-menu .Search {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.left-menu .Search input {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(172, 172, 172, 0.39);
+}
+
+.left-menu .profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 80px;
+  width: 100%;
+}
+
+.left-menu .profile .pp img {
+  height: 50px;
+  width: 50px;
+  background: #bbf4ff;
+  border-radius: 50%;
+  border: 1px solid #bcd4ff29;
+  display: block;
+}
+
+.left-menu .profile .p-name {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+
+.left-menu .profile .p-name p:first-child {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0;
+}
+
+.left-menu .profile .p-name p:last-child {
+  font-size: 12px;
+  color: #86868b;
+  margin: 2px 0 0 0;
+}
+
+.Settings-main .left-menu .main-menu {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.Settings-main .left-menu .main-menu .app-setting {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  margin-top: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.Settings-main .left-menu .main-menu .app-setting:active,
+.Settings-main .left-menu .main-menu .app-setting.active-tab {
+  background: #1f6dff;
+  color: white;
+}
+
+.Settings-main .left-menu .main-menu .app-setting:hover:not(.active-tab) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.Settings-main .left-menu .main-menu .black img {
+  background: #2a2a2a;
+    border: 1px solid #000;
+}
+.Settings-main .left-menu .main-menu .gray img {
+  background: #a0a0a0;
+  border: 1px solid #6d6d6d93;
+}
+.Settings-main .left-menu .main-menu img {
+  background: transparent;
+  height: 28px;
+  width: 28px;
+  border-radius: 7px;
+  padding: 2px;
+  background: #2096FF;
+  border: 1px solid #74beffb2;
+}
+
+.Settings-main .left-menu .main-menu p {
+  font-size: 18px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.Settings-main .left-menu .main-menu .app-setting.active-tab p {
+  color: #ffffff;
+}
+
+/* right-menu he ye ----------------------- */
+
+.right-menu {
+  width: 80%;
+  height: 100%;
+  padding: 0px 0px 20px 20px;
+  /* removed right/top padding so scrollbar is at the far right edge */
+  position: relative;
+  /* provide positioning context for the top bar */
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  padding-left: 20px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.6);
+  z-index: 10;
+  border-top-right-radius: 25px;
+  /* match container border radius */
+}
+
+.top-icon {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 1px 2px 10px 4px #00000010;
+}
+
+.top-icon img {
+  height: 20px;
+  width: 20px;
+}
+
+.top-bar p {
+  font-size: 22px;
+  font-weight: 500;
+  color: #404040;
+  margin-left: 10px;
+}
+
+
+#General-right-meun {
+  opacity: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  height: 95%;
+  padding-top: 60px;
+  /* space for the top bar */
+  padding-right: 20px;
+  /* padding restored here inside the scroll area */
+  display: block;
+  margin-top: 30px;
+}
+
+.laptop-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.laptop-section img {
+  height: 150px;
+  margin-top: 50px;
+}
+
+.laptop-section h4 {
+  margin-top: -30px;
+  font-size: 40px;
+  height: 40px;
+  font-weight: 600;
+  color: #404040;
+}
+
+.laptop-section p {
+  font-size: 14px;
+  color: #86868b;
+}
+
+.specification {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: -20px 0 0 0px;
+  background: #fcfcfc;
+  border-radius: 20px;
+  border: 1px solid rgb(234, 234, 234);
+  padding: 5px 15px;
+  box-shadow: 1px 2px 10px 1px #0000000d;
+}
+
+.specification div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+}
+
+.specification div p:first-child {
+  font-size: 16px;
+  font-weight: 500;
+  color: #404040;
+}
+
+.specification div p:last-child {
+  font-size: 16px;
+  color: #86868b;
+}
+
+.specification .line {
+  height: 0.5px;
+  background: rgb(234, 234, 234);
+  width: 100%;
+}
+
+.specification .show-detail-btn {
+  background: #dbdbdb;
+  color: #5c5c5c;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.os-info {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-left: 35px;
+  margin-bottom: 40px;
+}
+
+.os-info .tital {
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.os-info .about-os {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 106%;
+  height: 70px;
+  margin: -30px 0 0 -35px;
+  background: #fcfcfc;
+  border-radius: 20px;
+  border: 1px solid rgb(234, 234, 234);
+  padding: 5px 15px;
+  box-shadow: 1px 2px 10px 1px #0000000d;
+}
+
+.os-info .about-os .l img {
+  height: 40px;
+  border-radius: 50%;
+}
+
+.os-info .about-os .l {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.os-info .about-os .r {
+  color: #86868b;
+}
+
+
+.os-info .tc {
+  font-size: 16px;
+  color: #727274;
+  margin-top: 15px;
+  margin-left: -35px;
+  text-align: start;
+  width: 106%;
+  line-height: 1.5;
+}
+
+.os-info .tc a {
+  text-decoration: none;
+  color: #0066cc;
+}
+
+/* dock */
+
+
+.dock-shell {
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  z-index: 8000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  border-radius: calc(var(--dock-size, 50px) * 0.3);
+  margin-bottom: 0;
+  padding: calc(var(--dock-size, 50px) * 0.15) calc(var(--dock-size, 50px) * 0.15);
+  height: auto;
+  /* backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px); */
+  background: transparent;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s, opacity 0.3s !important;
+  will-change: transform;
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important; */
+  --dock-gap: 0px;
+
+}
+
+.dock-shell,
+.dock-shell>div {
+  border-radius: calc(var(--dock-size, 50px) * 0.4);
+}
+
+.dock-track {
+  margin: 0 -4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dock-gap);
+  padding: 0;
+}
+
+.dock-dynamic-shortcuts {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--dock-gap);
+}
+
+.dock-dynamic-shortcuts a {
+  display: flex;
+  align-items: flex-end;
+  text-decoration: none;
+}
+
+
+
+.dock-separator {
+  width: 1px;
+  height: calc(var(--dock-size, 50px) * 0.8);
+  background-color: rgba(239, 239, 239, 0.803);
+  /* Thin dark line as in image */
+  margin: 0 4px;
+  margin-bottom: 0px;
+  align-self: flex-end;
+}
+
+.dock-icon {
+  width: 50px;
+  height: 50px;
+  display: block;
+  object-fit: contain;
+  transition: none !important;
+  will-change: width, height, transform;
+  user-select: none;
+  -webkit-user-drag: none;
+  border-radius: 27% !important;
+  padding: 0px;
+}
+
+.dock-icon2 {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 24% !important;
+  will-change: transform;
+}
+
+.dock-shell::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  bottom: 0;
+  left: -20px;
+  right: -20px;
+  background: transparent;
+  pointer-events: auto;
+  z-index: -1;
+}
+
+.dock-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 50px;
+  height: 50px;
+  margin: 0 5px;
+  /* Tighter spacing for more premium feel */
+  transition: none !important;
+}
+
+.dock-dot {
+  position: absolute;
+  bottom: -8px;
+  /* Move slightly lower to prevent overlapping icon */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: block;
+  opacity: 0;
+  /* Hidden by default */
+  transition: opacity 0.25s ease, background-color 0.25s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  /* Subtle premium shadow */
+}
+
+body.theme-light .dock-dot {
+  background-color: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
+}
+
+.dock-item.is-running .dock-dot,
+.dock-item.is-active .dock-dot {
+  opacity: 1;
+  /* Show when running or hovered */
+}
+
+.dock-label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 15px);
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.167);
+  background: rgba(20, 20, 20, 0.95);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.1px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(202, 202, 202, 0.324);
+  transition: opacity 140ms ease;
+}
+
+.dock-label::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  border-radius: 3px 0;
+  top: auto;
+  transform: translateX(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: rgba(20, 20, 20, 0.95);
+  border-right: 1px solid rgba(255, 255, 255, 0.167);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.167);
+  z-index: -1;
+}
+
+.main-dock {
+  opacity: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  height: 95%;
+  padding-top: 10px;
+  /* space for the top bar */
+  /* padding-right: 20px; */
+  /* padding restored here inside the scroll area */
+  display: block;
+  margin-top: 30px;
+}
+
+.main-dock .name {
+  display: flex;
+  align-items: start;
+  font-size: 30px;
+  margin-left: 1px;
+  font-weight: 600;
+}
+
+.top-dock {
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background: #f3f3f3;
+  padding: 15px;
+  width: 95%;
+  border-radius: 20px;
+  border: 1px solid #e2e2e2;
+  margin-top: -20px;
+}
+
+.dock-size,
+.dock-hover {
+  height: 60px;
+  /* background: #f3f3f3; */
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+
+.small-large {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 90%;
+  justify-content: space-between;
+  margin:0 16px;
+}
+
+.top-dock p {
+  margin: 0;
+  padding: 16px 0;
+  user-select: none;
+  line-height: 1;
+}
+
+.small-large p {
+  color: #777;
+  font-size: 14px;
+}
+
+/* wallpaper */
+.wallpaper {
+  opacity: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  height: 95%;
+  padding-top: 10px;
+  display: block;
+  margin-top: 30px;
+}
+
+.wallpaper .name {
+  display: flex;
+  align-items: start;
+  font-size: 30px;
+  margin-left: 1px;
+  font-weight: 600;
+}
+
+.wallpaper .w-1 {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+.wallpaper .w-1 > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(50% - 10px);
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 4px;
+  box-shadow: 1px 2px 10px 1px #0000000d;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.wallpaper .w-1 > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 1px 4px 15px 1px rgba(0, 0, 0, 0.1);
+}
+
+.wallpaper .w-1 img {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  aspect-ratio: 16/9;
+  background-color: #ddd;
+}
+
+.wallpaper .w-1 h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1;  
+  margin: 0;
+  padding: 6px 0 4px 0;
+  width: 100%;
+  text-align: center;
+}
+
+.wallpaper hr {
+  height: 2px;                  /* thoda bold line */
+  width: 97%;                   /* thoda chhota for balance */
+  margin: 20px 0px 20px 0;            /* center align with spacing */
+  border: none;                 /* default border remove */
+  background: #bdbdbd;                   /* gradient effect */
+  border-radius: 50px;          /* smooth rounded edges */
+}
+
+/* Custom Wallpaper Section Styles */
+.custome-wallpaper {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.custom-upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 120px;
+  background: #f8f9fa;
+  border: 2px dashed #cccccc;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 15px;
+}
+
+.custom-upload-area:hover {
+  background: #f0f4ff;
+  border-color: #1f6dff;
+}
+
+.custom-upload-area img {
+  width: 35px;
+  height: 35px;
+  margin-bottom: 10px;
+  opacity: 0.7;
+}
+
+.custom-upload-area span {
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* dock-lider-lider */
+
+input {
+  border: initial;
+  outline: none;
+}
+
+button {
+  border: initial;
+  background: initial;
+  cursor: pointer;
+}
+
+.slider-container {
+  position: relative;
+  width: 220px;
+  height: 7px;
+  margin: 0 20px;
+  background: #D6D6DA;
+  border-radius: 999px;
+}
+
+.slider-progress {
+  position: absolute;
+  height: 100%;
+  background: linear-gradient(117deg, #49a3fc 0%, #3681ee 100%);
+  border-radius: 999px;
+  width: 0%;
+  z-index: 1;
+}
+
+.slider-thumb-glass {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 25px;
+  border-radius: 999px;
+  cursor: pointer;
+  z-index: 2;
+  background-color: #fff;
+  box-shadow: 0 1px 8px 0 rgba(0, 30, 63, 0.1), 0 0 2px 0 rgba(0, 9, 20, 0.1);
+  overflow: hidden;
+  transition: transform 0.15s ease, height 0.15s ease;
+}
+
+.slider-thumb-glass-filter {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  backdrop-filter: blur(0.6px);
+  -webkit-backdrop-filter: blur(0.6px);
+  filter: url(#mini-liquid-lens);
+}
+
+.slider-thumb-glass-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.slider-thumb-glass-specular {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow:
+    inset 1px 1px 0 rgba(69, 168, 243, 0.2),
+    inset 1px 3px 0 rgba(28, 63, 90, 0.05),
+    inset 0 0 22px rgb(255 255 255 / 60%),
+    inset -1px -1px 0 rgba(69, 168, 243, 0.12);
+}
+
+.slider-thumb-glass-filter,
+.slider-thumb-glass-overlay,
+.slider-thumb-glass-specular {
+  opacity: 0;
+}
+
+.slider-thumb-glass.active {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.slider-thumb-glass.active .slider-thumb-glass-filter,
+.slider-thumb-glass.active .slider-thumb-glass-overlay,
+.slider-thumb-glass.active .slider-thumb-glass-specular {
+  opacity: 1;
+}
+
+.slider-thumb-glass:active {
+  transform: translate(-50%, -50%) scaleY(0.98) scaleX(1.1);
+}
+
+.liquidGlass-wrapper {
+  isolation: isolate;
+}
+
+.liquidGlass-effect {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.57);
+  box-shadow: inset 0 0 10px -2px #ffffff;
+  background-color: rgba(255, 255, 255, 0);
+  pointer-events: none;
+}
+
+.liquidGlass-tint {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  filter: url(#glass-distortion);
+  -webkit-filter: url(#glass-distortion);
+  pointer-events: none;
+}

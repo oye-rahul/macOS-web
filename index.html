@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>New Tab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="https://img.icons8.com/?size=100&id=hvUQ7Jjww4GO&format=png&color=000000"
+    type="image/x-icon">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <section class="top-menu">
+    <div class="left">
+      <img src="https://img.icons8.com/?size=100&id=30840&format=png&color=ffffff" alt="Apple-logo"
+        style=" height: 20px;">
+      <p>System</p>
+      <p>File</p>
+      <p>View</p>
+      <p>Go</p>
+      <p>Window</p>
+      <p>Help</p>
+    </div>
+    <div class="right ">
+      <img src="https://img.icons8.com/?size=100&id=pHwiRkhrbSbG&format=png&color=ffffff" alt="">
+      <img src="https://img.icons8.com/?size=100&id=641&format=png&color=ffffff" alt=""
+        style="height: 18px; margin-top: 2px;">
+      <img src="https://img.icons8.com/?size=100&id=iT91feJQD6OK&format=png&color=ffffff" alt="">
+      <img src="https://img.icons8.com/?size=100&id=gFWfeexeOapT&format=png&color=ffffff" alt="">
+      <img src="https://img.icons8.com/?size=100&id=rgf2JV5jJg3Q&format=png&color=ffffff" alt="">
+      <img src="https://img.icons8.com/?size=100&id=dhI67wV4riOr&format=png&color=ffffff" alt="">
+      <img src="https://img.icons8.com/?size=100&id=Y6y7hDGsd6Ku&format=png&color=ffffff" alt="">
+      <span class="Battery">
+        <span id="battery-level" style="font-size: 14px; margin-top: 2px; color: white;">100%</span>
+        <svg class="status-icon battery-icon" title="Battery" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+
+          <!-- Battery outline -->
+          <rect x="2" y="7" width="18" height="9" rx="2" ry="2"></rect>
+          <line x1="22" y1="10" x2="22" y2="13"></line>
+
+          <!-- Battery fill -->
+          <rect id="battery-fill" x="3" y="8" width="16" height="7" rx="1" ry="1" fill="currentColor" stroke="none">
+          </rect>
+          <path id="top-thunder" d="M12 7 L8 12 H11 L9 18 L14 11 H11 L13 6 Z" fill="#ffffff" stroke="#ffffff"
+            stroke-width="0.5" style="display: none;" />
+        </svg>
+
+      </span>
+      <div class="contol-penal">
+        <img src="https://img.icons8.com/?size=100&id=IXQbWhsDPcLw&format=png&color=ffffff" alt=""
+          style="margin: -5px;">
+        <img src="https://img.icons8.com/?size=100&id=4aB5jRaKDQJN&format=png&color=ffffff" alt=""
+          style="margin: -5px;">
+      </div>
+
+      <span class="top-menu-time" id="top-menu-time" title="Date & Time" style="color: white;">Tue <span></span> Apr 1
+        9:41AM</span>
+    </div>
+  </section>
+  <section>
+    <div class="Settings-main">
+      <div class="left-menu">
+
+        <!-- contole -->
+        <div class="window-controls">
+          <button class="control-dot close" id="close-settings-dot" aria-label="Close"></button>
+          <button class="control-dot minimize" aria-label="Minimize"></button>
+          <button class="control-dot maximize" aria-label="Maximize"></button>
+        </div>
+        <!-- input -->
+        <div class="Search">
+          <!-- <img src="https://img.icons8.com/?size=100&id=TQPOC8XaUqZ0&format=png&color=000000" alt="" style=""> -->
+          <input type="text" placeholder="Search">
+        </div>
+        <!-- profile -->
+        <div class="profile">
+          <div class="pp"> <img src="https://www.imejis.io/images/tools/memoji-builder/male/mattew/light/kiss.png"
+              alt=""></div>
+          <div class="p-name">
+            <p>Rahul Malvi</p>
+            <p>Apple Account</p>
+          </div>
+        </div>
+        <!-- main menu to do -->
+        <div class="main-menu">
+          <button class="app-setting active-tab gray" id="settingsBtn">
+            <img src="https://img.icons8.com/?size=100&id=xyFoc6U1Hu3c&format=png&color=000000" alt="Settings">
+            <p>General</p>
+          </button>
+          <button class="app-setting black">
+            <img src="https://img.icons8.com/?size=100&id=b6eLSBnQN1Xl&format=png&color=000000" alt="Settings">
+            <p>Appearance</p>
+          </button>
+          <button class="app-setting" id="desktopDockBtn">
+            <img src="https://img.icons8.com/?size=100&id=cI4E4WYnhBN6&format=png&color=000000" alt="Settings">
+            <p>desktop & Dock</p>
+          </button>
+          <button class="app-setting">
+            <img src="https://img.icons8.com/?size=100&id=flK6uLX9AUlc&format=png&color=000000" alt="Settings">
+            <p>shortcut</p>
+          </button>
+          <button class="app-setting" id="wallpaperBtn">
+            <img src="https://img.icons8.com/?size=100&id=Ki9c1nedn2pV&format=png&color=000000" alt="Settings">
+            <p>Wallpaper</p>
+          </button>
+        </div>
+      </div>
+      <div class="right-menu">
+        <!-- top-RL-icon -->
+        <div class="top-bar">
+          <div class="top-icon">
+            <img src="https://img.icons8.com/?size=100&id=Ekcv7HUsxLz9&format=png&color=000000">
+            <img src="https://img.icons8.com/?size=100&id=118834&format=png&color=000000" style="opacity: 0.3;">
+            <img src="https://img.icons8.com/?size=100&id=QwbBXCKvQ43j&format=png&color=000000">
+          </div>
+          <p>About</p>
+        </div>
+
+        <div id="General-right-meun" style="display: block;">
+          <div class="laptop-section">
+            <img src="assets/ChatGPT Image Jun 28, 2026, 04_46_55 PM.png" alt="">
+            <h4>MacBook Pro</h4>
+            <p>15.6-inch, Oct 2026</p>
+          </div>
+          <div class="specification">
+            <div>
+              <p>Name</p>
+              <p>Macbook Pro</p>
+            </div>
+            <div class="line"></div>
+            <div>
+              <p>Chip</p>
+              <p>Apple M5 Max</p>
+            </div>
+            <div class="line"></div>
+            <div>
+              <p>Memory</p>
+              <p>128 GB</p>
+            </div>
+            <div class="line"></div>
+            <div>
+              <p>Storage</p>
+              <p>5 TB</p>
+            </div>
+            <div class="line"></div>
+            <div>
+              <p>Serial number</p>
+              <p>SN-5462252163</p>
+            </div>
+            <div class="line"></div>
+            <div>
+              <p>Specification Change</p>
+              <p><button class="show-detail-btn">Edit</button></p>
+            </div>
+          </div>
+          <div class="os-info">
+            <div class="tital">
+              <h4>macOS</h4>
+            </div>
+            <div class="about-os">
+              <div class="l">
+                <img src="assets/image.png" alt="">
+                <p>macOS Tahoe</p>
+              </div>
+              <div class="r">
+                <p>Version 27.0 Beta (27A6018g)</p>
+              </div>
+            </div>
+            <div class="tc">
+              <p>Use of this software is subject to the original licence agreement that accompanied
+                the software being updated. <a href=""><span>Learn more ...</span></a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop & Dock Menu -->
+        <div class="main-dock" style="display: none;">
+          <div class="name">
+            <h4>Dock</h4>
+          </div>
+          <div class="top-dock">
+            <div class="dock-size">
+              <div>
+                <p style="font-size: 20px;">Size</p>
+              </div>
+              <div class="dock">
+                <div class="slider-container" id="size-slider">
+                  <div class="slider-progress" id="size-progress"></div>
+                  <div class="slider-thumb-glass" id="size-thumb">
+                    <div class="slider-thumb-glass-filter"></div>
+                    <div class="slider-thumb-glass-overlay"></div>
+                    <div class="slider-thumb-glass-specular"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="small-large">
+                <p>Small</p>
+                <p>Large</p>
+              </div>
+            </div>
+            <div class="dock-hover">
+              <div>
+                <p style="font-size: 20px;">Hover</p>
+              </div>
+              <div class="dock">
+                <div class="slider-container" id="hover-slider">
+                  <div class="slider-progress" id="hover-progress"></div>
+                  <div class="slider-thumb-glass" id="hover-thumb">
+                    <div class="slider-thumb-glass-filter"></div>
+                    <div class="slider-thumb-glass-overlay"></div>
+                    <div class="slider-thumb-glass-specular"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="small-large">
+                <p>High</p>
+                <p>Low</p>
+              </div>
+            </div>
+          </div>
+          <!-- other dock setting -->
+          <div>
+
+          </div>
+        </div>
+
+        <!-- wallpaper -->
+        <div class="wallpaper" style="display: none;">
+          <div class="name">
+            <h4>Wallpaper</h4>
+          </div>
+          <div class="w-1">
+            <h4 style="font-size: 20px;">Golden Gate</h4>
+            <div>
+              <img src="assets/wp1.png" alt="">
+              <h4>Dark</h4>
+            </div>
+            <div>
+              <img src="assets/wp2.png" alt="">
+              <h4>Light</h4>
+            </div>
+          </div>
+          <hr>
+          <div class="w-1">
+            <h4 style="font-size: 20px;">Tahoe</h4>
+            <div>
+              <img src="assets/macos-tahoe-26-5120x2880-22674 (1).jpg" alt="">
+              <h4>Dark</h4>
+            </div>
+            <div>
+              <img src="assets/macos-tahoe-26-5120x2880-22675.jpg" alt="">
+              <h4>Light</h4>
+            </div>
+          </div>
+          <hr>
+          <div class="w-1">
+            <h4 style="font-size: 20px;">Sequoia</h4>
+            <div>
+              <img src="assets/macos-sequoia-6400x3552-17668.jpg" alt="">
+              <h4>Dark</h4>
+            </div>
+            <div>
+              <img src="assets/macos-sequoia-6400x3552-17676.jpg" alt="">
+              <h4>Light</h4>
+            </div>
+          </div>
+          <hr>
+          <div class="w-1">
+            <h4 style="font-size: 20px;">Blue, Stock [Need To Download]</h4>
+            <div>
+              <img src="https://4kwallpapers.com/images/walls/thumbs_2t/6759.jpg" alt="">
+              <h4>Dark</h4>
+            </div>
+            <div>
+              <img src="https://4kwallpapers.com/images/walls/thumbs_2t/6757.jpg" alt="">
+              <h4>Light</h4>
+            </div>
+          </div>
+          <hr>
+          <div class="w-1">
+            <h4 style="font-size: 20px;">Catalina, Aesthetic, Mountains [Need To Download]</h4>
+            <div>
+              <img src="https://4kwallpapers.com/images/walls/thumbs_2t/4009.jpg" alt="">
+              <h4>Dark</h4>
+            </div>
+            <div>
+              <img src="https://4kwallpapers.com/images/walls/thumbs_2t/4013.jpg" alt="">
+              <h4>Light</h4>
+            </div>
+          </div>
+          <hr>
+          <div class="w-1">
+            <h4 style="font-size: 20px;">Monterey [Need To Download]</h4>
+            <div>
+              <img src="https://4kwallpapers.com/images/walls/thumbs_2t/5585.jpg" alt="">
+              <h4>Dark</h4>
+            </div>
+            <div>
+              <img src="https://4kwallpapers.com/images/walls/thumbs_2t/5584.jpg" alt="">
+              <h4>Light</h4>
+            </div>
+          </div>
+          <hr>
+          <div class="custome-wallpaper">
+            <h4 style="font-size: 20px;line-height: 2;">Custome-Wallpaper</h4>
+            <div class="w-1" style="justify-content: center; align-items: center; margin-bottom:5px ;">
+              <div class="custom-upload-card">
+                <img src="https://img.icons8.com/?size=100&id=ikNb2D4g8HJW&format=png&color=ffffff" alt="Upload" style="object-fit: none; background-color: #000;">
+                <h4>Upload Image</h4>
+                <input type="file" id="custom-wall-upload" accept="image/*" style="display: none;">
+              </div>
+            </div>
+          </div>
+          
+            
+
+        </div>
+
+        <!-- Short-cut -->
+        <div>
+          
+
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+
+
+  <div class="liquidGlass-wrapper dock-shell">
+    <div class="liquidGlass-effect"></div>
+    <div class="liquidGlass-tint"></div>
+    <div class="liquidGlass-shine"></div>
+    <div class="liquidGlass-text">
+      <div class="dock-track">
+
+        <div id="custom-shortcuts-container" class="dock-dynamic-shortcuts">
+
+        </div>
+        <div class="dock-separator"></div>
+        <div class="dock-item" id="open-launchpad" style="cursor: pointer;">
+          <span class="dock-label">Apps</span>
+          <img src="assets/f17b45c2-41d3-4f9a-979f-a798f6a2de23.png" alt="Apps" class="dock-icon2" />
+          <div class="dock-dot"></div>
+        </div>
+        <div class="dock-item" id="open-settings" style="cursor: pointer;">
+          <span class="dock-label">Settings</span>
+          <img src="assets/37eeba2a-d08e-495d-8e5d-43949176f34c.png" alt="Settings" class="dock-icon2" />
+          <div class="dock-dot"></div>
+        </div>
+        <div class="dock-item" id="open-ai-tools" style="cursor: pointer;">
+          <span class="dock-label">Ai Tools</span>
+          <img
+            src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/44/29/70/44297055-94d8-b0cf-01ee-36e02a65effe/Placeholder.mill/96x96bb-75.webp"
+            alt="Ai Tools" class="dock-icon2" />
+          <div class="dock-dot"></div>
+        </div>
+        <div class="dock-item" id="open-passwords" style="cursor: pointer;">
+          <span class="dock-label">Passwords</span>
+          <img
+            src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/fb/71/6e/fb716e24-0842-0d75-cc3f-05c36c4f0dae/Placeholder.mill/96x96bb-75.webp"
+            alt="Passwords" class="dock-icon2" />
+          <div class="dock-dot"></div>
+        </div>
+        <div class="dock-separator" id="siri-separator"></div>
+        <div class="dock-item" id="siri-trigger" style="cursor: pointer;">
+          <span class="dock-label">Tiri</span>
+          <img src="assets/37eeba2a-d08e-495d-8e5d-43949176f34c.png" alt="Siri" class="dock-icon2" />
+          <div class="dock-dot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.001 0.001" numOctaves="2" seed="92" result="noise" />
+        <feGaussianBlur in="noise" stdDeviation="2" result="blurred" />
+        <feDisplacementMap in="SourceGraphic" in2="blurred" scale="0" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+
+
+
+
+
+
+
+  <script>
+    const settingsBtn = document.getElementById("settingsBtn");
+    const desktopDockBtn = document.getElementById("desktopDockBtn");
+    const wallpaperBtn = document.getElementById("wallpaperBtn");
+
+    const generalMenu = document.querySelector("#General-right-meun");
+    const mainDockMenu = document.querySelector(".main-dock");
+    const wallpaperMenu = document.querySelector(".wallpaper");
+
+    function switchTab(activeBtn, activeMenu) {
+      generalMenu.style.display = "none";
+      if (mainDockMenu) mainDockMenu.style.display = "none";
+      if (wallpaperMenu) wallpaperMenu.style.display = "none";
+
+      settingsBtn.classList.remove("active-tab");
+      desktopDockBtn.classList.remove("active-tab");
+      if (wallpaperBtn) wallpaperBtn.classList.remove("active-tab");
+
+      activeMenu.style.display = "block";
+      activeBtn.classList.add("active-tab");
+    }
+
+    settingsBtn.addEventListener("click", () => switchTab(settingsBtn, generalMenu));
+    desktopDockBtn.addEventListener("click", () => switchTab(desktopDockBtn, mainDockMenu));
+    if (wallpaperBtn && wallpaperMenu) {
+      wallpaperBtn.addEventListener("click", () => switchTab(wallpaperBtn, wallpaperMenu));
+    }
+  </script>
+
+  <script src="script.js"></script>
+  <!-- <script src="my.js"></script> -->
+
+</body>
+
+</html>

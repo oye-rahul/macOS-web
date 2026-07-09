@@ -14,11 +14,14 @@
 
 body {
   font-family: 'SF Pro Display Medium', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-image: url('wp2.png');
+  background-image: url('assets/wp2.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 /* top menu */
@@ -229,12 +232,14 @@ body {
 
 .Settings-main .left-menu .main-menu .black img {
   background: #2a2a2a;
-    border: 1px solid #000;
+  border: 1px solid #000;
 }
+
 .Settings-main .left-menu .main-menu .gray img {
   background: #a0a0a0;
   border: 1px solid #6d6d6d93;
 }
+
 .Settings-main .left-menu .main-menu img {
   background: transparent;
   height: 28px;
@@ -679,7 +684,7 @@ body.theme-light .dock-dot {
   align-items: center;
   width: 90%;
   justify-content: space-between;
-  margin:0 16px;
+  margin: 0 16px;
 }
 
 .top-dock p {
@@ -720,7 +725,7 @@ body.theme-light .dock-dot {
   margin-top: 5px;
 }
 
-.wallpaper .w-1 > div {
+.wallpaper .w-1>div {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -733,7 +738,7 @@ body.theme-light .dock-dot {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.wallpaper .w-1 > div:hover {
+.wallpaper .w-1>div:hover {
   transform: translateY(-2px);
   box-shadow: 1px 4px 15px 1px rgba(0, 0, 0, 0.1);
 }
@@ -750,21 +755,14 @@ body.theme-light .dock-dot {
   font-size: 14px;
   font-weight: 600;
   color: #333;
-  line-height: 1;  
+  line-height: 1;
   margin: 0;
   padding: 6px 0 4px 0;
   width: 100%;
   text-align: center;
 }
 
-.wallpaper hr {
-  height: 2px;                  /* thoda bold line */
-  width: 97%;                   /* thoda chhota for balance */
-  margin: 20px 0px 20px 0;            /* center align with spacing */
-  border: none;                 /* default border remove */
-  background: #bdbdbd;                   /* gradient effect */
-  border-radius: 50px;          /* smooth rounded edges */
-}
+
 
 /* Custom Wallpaper Section Styles */
 .custome-wallpaper {
@@ -945,4 +943,173 @@ button {
   filter: url(#glass-distortion);
   -webkit-filter: url(#glass-distortion);
   pointer-events: none;
+}
+
+/* Shortcut Menu Styles */
+.shortcut-menu {
+  width: 97%;
+  overflow-y: auto;
+  height: 100%;
+}
+.shortcut-menu::-webkit-scrollbar {
+  opacity: 0;
+}
+
+.shortcut-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.shortcut-menu::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.shortcut-menu .name {
+  margin-top: 90px;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+
+.add-shortcut-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  line-height: normal;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.add-shortcut-card h4 {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.add-shortcut-labels {
+  display: flex;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #888;
+  padding-left: 5px;
+}
+.add-shortcut-labels-2 {
+  display: flex;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #888;
+  padding-left: 5px;
+  flex-direction: row;
+  align-items: start;
+  justify-content: space-between;
+  border: 1px solid rgb(227, 227, 227);
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+
+}
+
+.form-row input,
+.form-row select {
+  padding: 8px 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 13px;
+  outline: none;
+  background: #fff;
+  width: 50%;
+}
+
+#sc-name, #sc-url,#sc-location,#sc-icon {
+  flex: 1;
+}
+
+#sc-add-btn {
+  padding: 6px 16px;
+  background: #f4f5f7;
+  color: #0066cc;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.shortcuts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  line-height: normal;
+}
+
+.shortcut-item {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.shortcut-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: start;
+}
+
+.shortcut-item-info h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+}
+
+.shortcut-item-info p {
+  font-size: 12px;
+  color: #888;
+}
+
+.shortcut-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.sc-loc-dropdown {
+  padding: 7.5px 12px;
+  background: #e6f0fa;
+  color: #0066cc;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+}
+
+.sc-delete-btn {
+  background: #ffe6e6;
+  color: #ff4d4d;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  padding-top: 3px;
 }

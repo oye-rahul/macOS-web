@@ -1,6 +1,9 @@
 const dockShell = document.querySelector(".dock-shell");
 let dockItems = [];
-let BASE_WIDTH = 50;
+
+let storedSize = parseFloat(localStorage.getItem('tahoe-dock-size'));
+let BASE_WIDTH = !isNaN(storedSize) ? storedSize : 50;
+
 const itemStates = new Map();
 const DISTANCE_LIMIT = BASE_WIDTH * 6;
 const DISTANCE_INPUT = [
@@ -8,6 +11,13 @@ const DISTANCE_INPUT = [
     DISTANCE_LIMIT / 2, DISTANCE_LIMIT / 1.25, DISTANCE_LIMIT
 ];
 let SCALE_OUTPUT = [1, 1.1, 1.414, 2, 1.414, 1.1, 1];
+let savedHoverInit = localStorage.getItem('tahoe-dock-hover');
+if (savedHoverInit && !isNaN(parseFloat(savedHoverInit))) {
+    let scale = parseFloat(savedHoverInit);
+    const p1 = 1 + (scale - 1) * 0.1;
+    const p2 = 1 + (scale - 1) * 0.414;
+    SCALE_OUTPUT = [1, p1, p2, scale, p2, p1, 1];
+}
 
 function interpolate(x, input, output) {
     if (x <= input[0]) return output[0];
@@ -123,7 +133,7 @@ if (dockShell) {
 }
 
 const SHORTCUTS_KEY = "tahoe-shortcuts";
-const DEFAULT_SHORTCUTS = [
+const ORIGINAL_DEFAULT_SHORTCUTS = [
     { name: "YouTube", url: "https://www.youtube.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/46/67/98/4667988f-73ca-0c8d-e0ef-f405629bf27b/Placeholder.mill/400x400bb-75.webp" },
     { name: "Gmail", url: "https://mail.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/a5/f4/92/a5f492ef-0a00-36ae-9f64-b7ea39edaf4b/Placeholder.mill/400x400bb-75.webp" },
     { name: "WhatsApp", url: "https://web.whatsapp.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/76/79/be/7679bedc-15f9-666b-2e46-7e13c492ff58/Placeholder.mill/400x400bb-75.webp" },
@@ -139,23 +149,141 @@ const DEFAULT_SHORTCUTS = [
     { name: "GitHub", url: "https://github.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a4/c2/c2/a4c2c270-71fa-e985-d3ad-18bd675d2b58/Placeholder.mill/400x400bb-75.webp" }
 ];
 
-function loadShortcuts() {
-    const container = document.getElementById("custom-shortcuts-container");
-    if (!container) return;
-    container.innerHTML = "";
-    DEFAULT_SHORTCUTS.forEach(s => {
-        const a = document.createElement("a");
-        a.href = s.url;
-        a.target = "_self";
-        a.className = "dock-item";
-        a.innerHTML = `<span class="dock-label">${s.name}</span><img src="${s.icon}" alt="${s.name}" class="dock-icon2" /><div class="dock-dot"></div>`;
-        container.appendChild(a);
-    });
-    refreshDockItems();
-    resetDock();
+let DEFAULT_SHORTCUTS;
+try {
+    const stored = localStorage.getItem(SHORTCUTS_KEY);
+    DEFAULT_SHORTCUTS = stored ? JSON.parse(stored) : null;
+    if (!Array.isArray(DEFAULT_SHORTCUTS)) throw new Error("Not array");
+} catch (e) {
+    DEFAULT_SHORTCUTS = JSON.parse(JSON.stringify(ORIGINAL_DEFAULT_SHORTCUTS));
 }
 
-loadShortcuts();
+function saveShortcuts() {
+    localStorage.setItem(SHORTCUTS_KEY, JSON.stringify(DEFAULT_SHORTCUTS));
+}
+
+// --- SHORTCUT MANAGEMENT LOGIC ---
+const scNameInput = document.getElementById('sc-name');
+const scUrlInput = document.getElementById('sc-url');
+const scLocationSelect = document.getElementById('sc-location');
+const scIconInput = document.getElementById('sc-icon');
+const scAddBtn = document.getElementById('sc-add-btn');
+const shortcutsList = document.getElementById('shortcuts-list');
+const customShortcutsContainer = document.getElementById('custom-shortcuts-container');
+
+// Give IDs and Default Location to DEFAULT_SHORTCUTS if they don't have them
+DEFAULT_SHORTCUTS.forEach((sc, i) => {
+    if (!sc.id) sc.id = Date.now() + i;
+    if (!sc.location) sc.location = "Dock";
+});
+
+function loadShortcuts() {
+    if (customShortcutsContainer) customShortcutsContainer.innerHTML = '';
+    if (shortcutsList) shortcutsList.innerHTML = '';
+
+    DEFAULT_SHORTCUTS.forEach(sc => {
+        // Add to Dock
+        if (customShortcutsContainer && (sc.location === 'Dock' || sc.location === 'Both')) {
+            const a = document.createElement("a");
+            a.href = sc.url;
+            a.target = "_self";
+            a.className = "dock-item";
+            a.innerHTML = `<span class="dock-label">${sc.name}</span><img src="${sc.icon}" alt="${sc.name}" class="dock-icon2" /><div class="dock-dot"></div>`;
+            customShortcutsContainer.appendChild(a);
+        }
+
+        // Add to UI List
+        if (shortcutsList) {
+            const listItem = document.createElement('div');
+            listItem.className = 'shortcut-item';
+            listItem.innerHTML = `
+                <div class="shortcut-item-info">
+                    <h4>${sc.name}</h4>
+                    <p>${sc.url}</p>
+                </div>
+                <div class="shortcut-item-actions">
+                    <select class="sc-loc-dropdown" onchange="updateShortcutLoc(${sc.id}, this.value)">
+                        <option value="Dock" ${sc.location === 'Dock' ? 'selected' : ''}>LOCATION: Dock</option>
+                        <option value="Apps" ${sc.location === 'Apps' ? 'selected' : ''}>LOCATION: Apps</option>
+                        <option value="Both" ${sc.location === 'Both' ? 'selected' : ''}>LOCATION: Both</option>
+                    </select>
+                    <button class="sc-delete-btn" onclick="deleteShortcut(${sc.id})">
+                        <img src="https://img.icons8.com/?size=100&id=ccbXpS1mBiXf&format=png&color=000000" style="width: 20px; height: 20px;" alt="Delete">
+                    </button>
+                </div>
+            `;
+            shortcutsList.appendChild(listItem);
+        }
+    });
+
+    if (typeof refreshDockItems === 'function') refreshDockItems();
+    if (typeof resetDock === 'function') resetDock();
+}
+
+window.updateShortcutLoc = function (id, newLoc) {
+    const sc = DEFAULT_SHORTCUTS.find(s => s.id === id);
+    if (sc) {
+        sc.location = newLoc;
+        saveShortcuts();
+        loadShortcuts();
+    }
+};
+
+window.deleteShortcut = function (id) {
+    const idx = DEFAULT_SHORTCUTS.findIndex(s => s.id === id);
+    if (idx !== -1) {
+        DEFAULT_SHORTCUTS.splice(idx, 1);
+        saveShortcuts();
+        loadShortcuts();
+    }
+};
+
+if (scAddBtn) {
+    scAddBtn.addEventListener('click', () => {
+        const name = scNameInput.value.trim();
+        const url = scUrlInput.value.trim();
+        let locationVal = scLocationSelect.value;
+        if (locationVal.includes("Dock")) locationVal = "Dock";
+        let icon = scIconInput.value.trim();
+
+        if (!name || !url) return alert("Name and URL are required.");
+
+        if (!icon) {
+            try {
+                const urlObj = new URL(url.startsWith('http') ? url : 'https://' + url);
+                icon = `https://www.google.com/s2/favicons?sz=128&domain_url=${urlObj.hostname}`;
+            } catch (e) {
+                icon = `https://www.google.com/s2/favicons?sz=128&domain_url=${url}`;
+            }
+        }
+
+        const newUrl = url.startsWith('http') ? url : 'https://' + url;
+
+        DEFAULT_SHORTCUTS.push({
+            id: Date.now(),
+            name,
+            url: newUrl,
+            location: locationVal,
+            icon
+        });
+        saveShortcuts();
+
+        scNameInput.value = '';
+        scUrlInput.value = '';
+        scIconInput.value = '';
+
+        loadShortcuts();
+    });
+}
+
+// Initial render
+document.addEventListener('DOMContentLoaded', () => {
+    loadShortcuts();
+});
+// in case DOM is already loaded
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    loadShortcuts();
+}
 
 // --- Settings Menu Toggle Logic ---
 const openSettingsIcon = document.getElementById("open-settings");
@@ -178,7 +306,7 @@ if (openSettingsIcon && settingsMain) {
             if (gMenu) gMenu.style.display = "block";
             if (dMenu) dMenu.style.display = "none";
             if (wMenu) wMenu.style.display = "none";
-            
+
             if (gBtn) gBtn.classList.add("active-tab");
             if (dBtn) dBtn.classList.remove("active-tab");
             if (wBtn) wBtn.classList.remove("active-tab");
@@ -277,31 +405,50 @@ function setupCustomSlider(sliderId, progressId, thumbId, initialPercent, onChan
 }
 
 // 1. Size Slider (Map 0-100% to 30px-80px)
+let savedSize = localStorage.getItem('tahoe-dock-size');
+if (savedSize && !isNaN(parseFloat(savedSize))) {
+    BASE_WIDTH = parseFloat(savedSize);
+}
 const initialSizePercent = Math.max(0, Math.min(100, ((BASE_WIDTH - 30) / (80 - 30)) * 100));
 setupCustomSlider('size-slider', 'size-progress', 'size-thumb', initialSizePercent, (percent) => {
     BASE_WIDTH = 30 + (percent / 100) * 50;
+    localStorage.setItem('tahoe-dock-size', BASE_WIDTH);
     resetDock();
 });
 
 // 2. Hover Slider (Map 0-100% to max scale 1.2 to 3.0)
 let currentMaxScale = 2.0;
+let savedHover = localStorage.getItem('tahoe-dock-hover');
+if (savedHover && !isNaN(parseFloat(savedHover))) {
+    currentMaxScale = parseFloat(savedHover);
+    const p1 = 1 + (currentMaxScale - 1) * 0.1;
+    const p2 = 1 + (currentMaxScale - 1) * 0.414;
+    SCALE_OUTPUT = [1, p1, p2, currentMaxScale, p2, p1, 1];
+}
 const initialHoverPercent = Math.max(0, Math.min(100, ((currentMaxScale - 1.2) / (3.0 - 1.2)) * 100));
 setupCustomSlider('hover-slider', 'hover-progress', 'hover-thumb', initialHoverPercent, (percent) => {
     currentMaxScale = 1.2 + (percent / 100) * 1.8;
     const p1 = 1 + (currentMaxScale - 1) * 0.1;
     const p2 = 1 + (currentMaxScale - 1) * 0.414;
     SCALE_OUTPUT = [1, p1, p2, currentMaxScale, p2, p1, 1];
+    localStorage.setItem('tahoe-dock-hover', currentMaxScale);
 });
 
 /* developed © Maxuiux */
 
 // --- WALLPAPER SELECTION LOGIC ---
+const savedWallpaper = localStorage.getItem('tahoe-wallpaper');
+if (savedWallpaper) {
+    document.body.style.backgroundImage = `url('${savedWallpaper}')`;
+}
+
 document.querySelectorAll('.wallpaper .w-1 > div:not(.custom-upload-card)').forEach(item => {
     item.addEventListener('click', () => {
         const img = item.querySelector('img');
         if (img) {
             const imgSrc = img.getAttribute('src');
             document.body.style.backgroundImage = `url('${imgSrc}')`;
+            localStorage.setItem('tahoe-wallpaper', imgSrc);
         }
     });
 });
@@ -317,19 +464,31 @@ if (customWallpaperInput) {
             const reader = new FileReader();
             reader.onload = (event) => {
                 document.body.style.backgroundImage = `url('${event.target.result}')`;
+                localStorage.setItem('tahoe-wallpaper', event.target.result);
             };
             reader.readAsDataURL(file);
         }
     });
-    
+
     if (customWallpaperDiv) {
         customWallpaperDiv.addEventListener('click', () => {
             customWallpaperInput.click();
         });
     }
-    
+
     customWallpaperInput.addEventListener('click', (e) => {
         e.stopPropagation(); // prevent triggering the general w-1 div click
     });
 }
 
+// --- RESET SETTINGS LOGIC ---
+const resetAllBtn = document.getElementById('resetAllBtn');
+if (resetAllBtn) {
+    resetAllBtn.addEventListener('click', () => {
+        localStorage.removeItem('tahoe-shortcuts');
+        localStorage.removeItem('tahoe-dock-size');
+        localStorage.removeItem('tahoe-dock-hover');
+        localStorage.removeItem('tahoe-wallpaper');
+        location.reload();
+    });
+}

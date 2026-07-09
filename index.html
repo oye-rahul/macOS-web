@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="https://img.icons8.com/?size=100&id=hvUQ7Jjww4GO&format=png&color=000000"
     type="image/x-icon">
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=2" />
 </head>
 
 <body>
@@ -93,13 +93,13 @@
           </button>
           <button class="app-setting black">
             <img src="https://img.icons8.com/?size=100&id=b6eLSBnQN1Xl&format=png&color=000000" alt="Settings">
-            <p>Appearance</p>
+            <p>Widgets</p>
           </button>
           <button class="app-setting" id="desktopDockBtn">
             <img src="https://img.icons8.com/?size=100&id=cI4E4WYnhBN6&format=png&color=000000" alt="Settings">
             <p>desktop & Dock</p>
           </button>
-          <button class="app-setting">
+          <button class="app-setting" id="shortcutBtn">
             <img src="https://img.icons8.com/?size=100&id=flK6uLX9AUlc&format=png&color=000000" alt="Settings">
             <p>shortcut</p>
           </button>
@@ -118,6 +118,45 @@
             <img src="https://img.icons8.com/?size=100&id=QwbBXCKvQ43j&format=png&color=000000">
           </div>
           <p>About</p>
+        </div>
+
+        <!-- Short-cut -->
+        <div class="shortcut-menu" style="display: none;">
+          <div class="name">
+            <h2>Manage Shortcuts</h2>
+            <p>Curate the links shown in your dock and app launcher.</p>
+          </div>
+
+          <div class="add-shortcut-card">
+            <h4>Add shortcut</h4>
+            <div class="add-shortcut-labels">
+              <span>Name + URL (auto-fetched icon)</span>
+            </div>
+            <div class="form-row">
+              <input type="text" id="sc-name" placeholder="Name">
+              <input type="text" id="sc-url" placeholder="https://example.com">
+              <select id="sc-location">
+                <option value="Dock">Dock only</option>
+                <option value="Apps">Apps</option>
+                <option value="Both">Both</option>
+              </select>
+              <input type="text" id="sc-icon" placeholder="Icon URL (optional)">
+            </div>
+            <div class="add-shortcut-labels-2">
+              <span>Ex.Icon <a href="https://apps.apple.com/in/iphone/apps">IND Icon's ❤️</a></span>
+              <span>Ex.Icon <a href="https://apps.apple.com/us/iphone/apps">US Icon's 👍</a></span>
+              <span>Ex.Icon <a href="https://macosicons.com/">ALL Icon's 🔥</a></span>
+              <span>Ex.Emoji <a href="https://emojigraph.org/apple/">Emoji's</a></span>
+            </div>
+            <div class="add-shortcut-labels">
+              <span>Copy the image link</span>
+            </div>
+            <button id="sc-add-btn">Add</button>
+          </div>
+
+          <div class="shortcuts-list" id="shortcuts-list">
+            <!-- Shortcut items will be injected here -->
+          </div>
         </div>
 
         <div id="General-right-meun" style="display: block;">
@@ -155,6 +194,12 @@
             <div>
               <p>Specification Change</p>
               <p><button class="show-detail-btn">Edit</button></p>
+            </div>
+            <div class="line"></div>
+            <div>
+              <p>Reset Settings</p>
+              <p><button class="show-detail-btn" id="resetAllBtn"
+                  style="background: #ff4c4c; color: white; cursor: pointer;">Reset</button></p>
             </div>
           </div>
           <div class="os-info">
@@ -309,21 +354,49 @@
             <h4 style="font-size: 20px;line-height: 2;">Custome-Wallpaper</h4>
             <div class="w-1" style="justify-content: center; align-items: center; margin-bottom:5px ;">
               <div class="custom-upload-card">
-                <img src="https://img.icons8.com/?size=100&id=ikNb2D4g8HJW&format=png&color=ffffff" alt="Upload" style="object-fit: none; background-color: #000;">
+                <img src="https://img.icons8.com/?size=100&id=ikNb2D4g8HJW&format=png&color=ffffff" alt="Upload"
+                  style="object-fit: none; background-color: #000;">
                 <h4>Upload Image</h4>
                 <input type="file" id="custom-wall-upload" accept="image/*" style="display: none;">
               </div>
             </div>
           </div>
-          
-            
+
+
 
         </div>
 
         <!-- Short-cut -->
-        <div>
-          
+        <div class="shortcut-menu" style="display: none;">
+          <div class="name">
+            <h4>Control Center</h4>
+          </div>
+          <div class="shortcut-header">
+            <h2>Manage Shortcuts</h2>
+            <p>Curate the links shown in your dock and app launcher.</p>
+          </div>
 
+          <div class="add-shortcut-card">
+            <h4>Add shortcut</h4>
+            <div class="add-shortcut-labels">
+              <span>Name + URL (auto-fetched icon)</span>
+            </div>
+            <div class="form-row">
+              <input type="text" id="sc-name" placeholder="Name">
+              <input type="text" id="sc-url" placeholder="https://example.com">
+              <select id="sc-location">
+                <option value="Dock">Dock only</option>
+                <option value="Apps">Apps</option>
+                <option value="Both">Both</option>
+              </select>
+              <input type="text" id="sc-icon" placeholder="Icon URL (optional)">
+            </div>
+            <button id="sc-add-btn">Add</button>
+          </div>
+
+          <div class="shortcuts-list" id="shortcuts-list">
+            <!-- Shortcut items will be injected here -->
+          </div>
         </div>
       </div>
     </div>
@@ -398,19 +471,23 @@
     const settingsBtn = document.getElementById("settingsBtn");
     const desktopDockBtn = document.getElementById("desktopDockBtn");
     const wallpaperBtn = document.getElementById("wallpaperBtn");
+    const shortcutBtn = document.getElementById("shortcutBtn");
 
     const generalMenu = document.querySelector("#General-right-meun");
     const mainDockMenu = document.querySelector(".main-dock");
     const wallpaperMenu = document.querySelector(".wallpaper");
+    const shortcutMenu = document.querySelector(".shortcut-menu");
 
     function switchTab(activeBtn, activeMenu) {
       generalMenu.style.display = "none";
       if (mainDockMenu) mainDockMenu.style.display = "none";
       if (wallpaperMenu) wallpaperMenu.style.display = "none";
+      if (shortcutMenu) shortcutMenu.style.display = "none";
 
       settingsBtn.classList.remove("active-tab");
       desktopDockBtn.classList.remove("active-tab");
       if (wallpaperBtn) wallpaperBtn.classList.remove("active-tab");
+      if (shortcutBtn) shortcutBtn.classList.remove("active-tab");
 
       activeMenu.style.display = "block";
       activeBtn.classList.add("active-tab");
@@ -420,6 +497,9 @@
     desktopDockBtn.addEventListener("click", () => switchTab(desktopDockBtn, mainDockMenu));
     if (wallpaperBtn && wallpaperMenu) {
       wallpaperBtn.addEventListener("click", () => switchTab(wallpaperBtn, wallpaperMenu));
+    }
+    if (shortcutBtn && shortcutMenu) {
+      shortcutBtn.addEventListener("click", () => switchTab(shortcutBtn, shortcutMenu));
     }
   </script>
 

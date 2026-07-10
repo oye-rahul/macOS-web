@@ -45,7 +45,7 @@
           <!-- Battery fill -->
           <rect id="battery-fill" x="3" y="8" width="16" height="7" rx="1" ry="1" fill="currentColor" stroke="none">
           </rect>
-          <path id="top-thunder" d="M12 7 L8 12 H11 L9 18 L14 11 H11 L13 6 Z" fill="#ffffff" stroke="#ffffff"
+          <path id="top-thunder" d="M12 7 L8 12 H11 L9 18 L14 11 H11 L13 6 Z" fill="#00CB00" stroke="#00CB00"
             stroke-width="0.5" style="display: none;" />
         </svg>
 
@@ -78,10 +78,12 @@
         </div>
         <!-- profile -->
         <div class="profile">
-          <div class="pp"> <img src="https://www.imejis.io/images/tools/memoji-builder/male/mattew/light/kiss.png"
-              alt=""></div>
+          <div class="pp" style="cursor: pointer;" title="Change Image" onclick="document.getElementById('profile-upload').click()"> 
+            <img src="https://www.imejis.io/images/tools/memoji-builder/male/mattew/light/kiss.png" alt="" id="profile-img">
+            <input type="file" id="profile-upload" accept="image/*" style="display: none;" onclick="event.stopPropagation()" onchange="if(this.files[0]){const r=new FileReader();r.onload=e=>{document.getElementById('profile-img').src=e.target.result;localStorage.setItem('tahoe-profile-img',e.target.result)};r.readAsDataURL(this.files[0])}">
+          </div>
           <div class="p-name">
-            <p>Rahul Malvi</p>
+            <p id="prof-name" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">Rahul Malvi</p>
             <p>Apple Account</p>
           </div>
         </div>
@@ -117,7 +119,7 @@
             <img src="https://img.icons8.com/?size=100&id=118834&format=png&color=000000" style="opacity: 0.3;">
             <img src="https://img.icons8.com/?size=100&id=QwbBXCKvQ43j&format=png&color=000000">
           </div>
-          <p>About</p>
+          <p id="top-bar-title">About</p>
         </div>
 
         <!-- Short-cut -->
@@ -137,8 +139,10 @@
               <input type="text" id="sc-url" placeholder="https://example.com">
               <select id="sc-location">
                 <option value="Dock">Dock only</option>
-                <option value="Apps">Apps</option>
-                <option value="Both">Both</option>
+                <option value="Apps">App's</option>
+                <option value="Both">Dock + App</option>
+                <option value="AI tool">AI tool</option>
+                <option value="Dock + AI tool">Dock + Ai tool</option>
               </select>
               <input type="text" id="sc-icon" placeholder="Icon URL (optional)">
             </div>
@@ -162,38 +166,38 @@
         <div id="General-right-meun" style="display: block;">
           <div class="laptop-section">
             <img src="assets/ChatGPT Image Jun 28, 2026, 04_46_55 PM.png" alt="">
-            <h4>MacBook Pro</h4>
-            <p>15.6-inch, Oct 2026</p>
+            <h4 id="spec-title" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">MacBook Pro</h4>
+            <p id="spec-subtitle" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">15.6-inch, Oct 2026</p>
           </div>
           <div class="specification">
             <div>
               <p>Name</p>
-              <p>Macbook Pro</p>
+              <p id="spec-name" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">Macbook Pro</p>
             </div>
             <div class="line"></div>
             <div>
               <p>Chip</p>
-              <p>Apple M5 Max</p>
+              <p id="spec-chip" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">Apple M5 Max</p>
             </div>
             <div class="line"></div>
             <div>
               <p>Memory</p>
-              <p>128 GB</p>
+              <p id="spec-memory" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">128 GB</p>
             </div>
             <div class="line"></div>
             <div>
               <p>Storage</p>
-              <p>5 TB</p>
+              <p id="spec-storage" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">5 TB</p>
             </div>
             <div class="line"></div>
             <div>
               <p>Serial number</p>
-              <p>SN-5462252163</p>
+              <p id="spec-serial" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">SN-5462252163</p>
             </div>
             <div class="line"></div>
             <div>
               <p>Specification Change</p>
-              <p><button class="show-detail-btn">Edit</button></p>
+              <p><button class="show-detail-btn" onclick="alert('Just click on any text above to edit it directly!')">Editable(clickOnText)</button></p>
             </div>
             <div class="line"></div>
             <div>
@@ -289,7 +293,6 @@
               <h4>Light</h4>
             </div>
           </div>
-          <hr>
           <div class="w-1">
             <h4 style="font-size: 20px;">Tahoe</h4>
             <div>
@@ -301,19 +304,7 @@
               <h4>Light</h4>
             </div>
           </div>
-          <hr>
-          <div class="w-1">
-            <h4 style="font-size: 20px;">Sequoia</h4>
-            <div>
-              <img src="assets/macos-sequoia-6400x3552-17668.jpg" alt="">
-              <h4>Dark</h4>
-            </div>
-            <div>
-              <img src="assets/macos-sequoia-6400x3552-17676.jpg" alt="">
-              <h4>Light</h4>
-            </div>
-          </div>
-          <hr>
+
           <div class="w-1">
             <h4 style="font-size: 20px;">Blue, Stock [Need To Download]</h4>
             <div>
@@ -325,7 +316,6 @@
               <h4>Light</h4>
             </div>
           </div>
-          <hr>
           <div class="w-1">
             <h4 style="font-size: 20px;">Catalina, Aesthetic, Mountains [Need To Download]</h4>
             <div>
@@ -337,7 +327,6 @@
               <h4>Light</h4>
             </div>
           </div>
-          <hr>
           <div class="w-1">
             <h4 style="font-size: 20px;">Monterey [Need To Download]</h4>
             <div>
@@ -386,8 +375,10 @@
               <input type="text" id="sc-url" placeholder="https://example.com">
               <select id="sc-location">
                 <option value="Dock">Dock only</option>
-                <option value="Apps">Apps</option>
-                <option value="Both">Both</option>
+                <option value="Apps">App's</option>
+                <option value="Both">Dock + App</option>
+                <option value="AI tool">AI tool</option>
+                <option value="Dock + AI tool">Dock + Ai tool</option>
               </select>
               <input type="text" id="sc-icon" placeholder="Icon URL (optional)">
             </div>
@@ -403,7 +394,34 @@
     </div>
   </section>
 
+  <!-- Launchpad Overlay -->
+  <div class="launchpad-overlay" id="launchpad-overlay">
+    <div class="launchpad-container">
+      <div class="launchpad-search">
+        <img src="https://img.icons8.com/?size=100&id=CEvqb78E0xP5&format=png&color=000000" alt="Search">
+        <input type="text" id="launchpad-search-input" placeholder="Applications...">
+      </div>
+      <hr>
+      <div class="launchpad-grid" id="launchpad-grid">
+        <!-- App items injected here by script.js -->
+      </div>
+    </div>
+  </div>
 
+  <!-- AI Launchpad Overlay -->
+  <div class="launchpad-overlay" id="ai-launchpad-overlay">
+    <div class="launchpad-container">
+      <div class="launchpad-search">
+        <img src="https://img.icons8.com/?size=100&id=xuX5W455hoov&format=png&color=000000" alt="Search"
+          class="ai-search-icon">
+        <input type="text" id="ai-launchpad-search-input" placeholder="AI Tools...">
+      </div>
+      <hr>
+      <div class="launchpad-grid" id="ai-launchpad-grid">
+        <!-- AI items injected here by script.js -->
+      </div>
+    </div>
+  </div>
 
   <div class="liquidGlass-wrapper dock-shell">
     <div class="liquidGlass-effect"></div>
@@ -433,17 +451,22 @@
             alt="Ai Tools" class="dock-icon2" />
           <div class="dock-dot"></div>
         </div>
-        <div class="dock-item" id="open-passwords" style="cursor: pointer;">
+        <!-- <div class="dock-item" id="open-passwords" style="cursor: pointer;">
           <span class="dock-label">Passwords</span>
           <img
             src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/fb/71/6e/fb716e24-0842-0d75-cc3f-05c36c4f0dae/Placeholder.mill/96x96bb-75.webp"
             alt="Passwords" class="dock-icon2" />
           <div class="dock-dot"></div>
-        </div>
+        </div> -->
         <div class="dock-separator" id="siri-separator"></div>
-        <div class="dock-item" id="siri-trigger" style="cursor: pointer;">
-          <span class="dock-label">Tiri</span>
-          <img src="assets/37eeba2a-d08e-495d-8e5d-43949176f34c.png" alt="Siri" class="dock-icon2" />
+        <div class="dock-item" id="open-folder" style="cursor: pointer;">
+          <span class="dock-label dock-lable2">Folder</span>
+          <img src="assets/folder.png" alt="folder" class="dock-icon3 dock-icon2" />
+          <div class="dock-dot"></div>
+        </div>
+        <div class="dock-item" id="open-bin" style="cursor: pointer;">
+          <span class="dock-label">Bin(upcomming)</span>
+          <img src="assets/bin2.png" alt="folder" class="dock-icon2" />
           <div class="dock-dot"></div>
         </div>
       </div>
@@ -460,12 +483,20 @@
     </defs>
   </svg>
 
-
-
-
-
-
-
+  <!-- Notepad Window -->
+  <div class="notepad-window" id="notepad-window">
+    <div class="notepad-header">
+      <div class="window-controls" style="display: flex;">
+        <button class="control-dot close" id="close-notepad" aria-label="Close"></button>
+        <button class="control-dot minimize" id="minimize-notepad" aria-label="Minimize"></button>
+        <button class="control-dot maximize" id="maximize-notepad" aria-label="Maximize"></button>
+      </div>
+      <div class="notepad-title">Notepad</div>
+    </div>
+    <div class="notepad-body">
+      <textarea placeholder="Type your notes here..." spellcheck="false"></textarea>
+    </div>
+  </div>
 
   <script>
     const settingsBtn = document.getElementById("settingsBtn");
@@ -477,6 +508,7 @@
     const mainDockMenu = document.querySelector(".main-dock");
     const wallpaperMenu = document.querySelector(".wallpaper");
     const shortcutMenu = document.querySelector(".shortcut-menu");
+    const topBarTitle = document.getElementById("top-bar-title");
 
     function switchTab(activeBtn, activeMenu) {
       generalMenu.style.display = "none";
@@ -491,6 +523,11 @@
 
       activeMenu.style.display = "block";
       activeBtn.classList.add("active-tab");
+
+      if (topBarTitle) {
+        const titleText = activeBtn.querySelector('p');
+        if (titleText) topBarTitle.textContent = titleText.textContent;
+      }
     }
 
     settingsBtn.addEventListener("click", () => switchTab(settingsBtn, generalMenu));

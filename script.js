@@ -146,7 +146,19 @@ const ORIGINAL_DEFAULT_SHORTCUTS = [
     { name: "Linkdin", url: "https://www.linkedin.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/68/e2/70/68e2701d-036e-3bea-dcc7-deb82129b8c0/Placeholder.mill/128x128bb-75.webp" },
     { name: "Figma", url: "https://www.figma.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/ae/30/64/ae306406-a733-b2f1-31e6-149920e56518/Placeholder.mill/400x400bb-75.webp" },
     { name: "TradingView", url: "https://www.tradingview.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/c5/02/28/c50228b8-d344-54a8-ce2d-e1850dab9647/Placeholder.mill/400x400bb-75.webp" },
-    { name: "GitHub", url: "https://github.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a4/c2/c2/a4c2c270-71fa-e985-d3ad-18bd675d2b58/Placeholder.mill/400x400bb-75.webp" }
+    { name: "GitHub", url: "https://github.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a4/c2/c2/a4c2c270-71fa-e985-d3ad-18bd675d2b58/Placeholder.mill/400x400bb-75.webp" },
+    { name: "ChatGPT", url: "https://chatgpt.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/d7/11/5d/d7115dd0-e180-5f2c-fedd-bdd3a38f822b/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
+    { name: "Gemini", url: "https://gemini.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/95/32/19/9532191c-ff01-f0d6-290a-14947dd08717/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
+    { name: "Grok AI", url: "https://grok.x.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/f5/17/fd/f517fdd9-c125-6f02-a6fd-4916790199c7/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
+    { name: "DeepSeek", url: "https://chat.deepseek.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/26/52/cd/2652cd94-f211-c8d5-3156-f9948fdee4bf/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
+    { name: "Claude", url: "https://claude.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/55/89/d0/5589d067-07aa-bcdb-0d38-51f71e9a4ce6/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
+    { name: "Perplexity", url: "https://perplexity.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/ce/bf/1e/cebf1e82-b109-235b-5a30-31fb48cdaddd/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
+    { name: "Copilot", url: "https://copilot.microsoft.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/f0/55/0e/f0550e41-aa1c-9ee7-dba3-c3c8fbaabe3d/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Meta AI", url: "https://meta.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/4b/91/22/4b91227f-ce78-b42f-33d3-deb56894aabd/Placeholder.mill/200x200bb-75.webp", location: "AI tool" },
+    { name: "Replit", url: "https://replit.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/c8/8d/0d/c88d0d3e-d181-e038-c505-358f76b7f364/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
+    { name: "Lovable", url: "https://lovable.dev/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/29/07/7d/29077ded-76b9-27f9-f5d0-bbd62f9a1356/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
+    { name: "Grammarly ", url: "https://www.grammarly.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/ef/c8/7f/efc87ffd-fe72-1661-816f-e1c086dcf5d8/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
+    { name: "Notion", url: "https://www.notion.so/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/2d/86/9d/2d869d74-f4ae-62c5-39d3-bfa4bf6bc904/Placeholder.mill/400x400bb-75.webp", location: "AI tool" }
 ];
 
 let DEFAULT_SHORTCUTS;
@@ -154,6 +166,13 @@ try {
     const stored = localStorage.getItem(SHORTCUTS_KEY);
     DEFAULT_SHORTCUTS = stored ? JSON.parse(stored) : null;
     if (!Array.isArray(DEFAULT_SHORTCUTS)) throw new Error("Not array");
+
+    // Auto-add AI tools if they were missing (migration for existing users)
+    ORIGINAL_DEFAULT_SHORTCUTS.filter(s => s.location === 'AI tool').forEach(aiTool => {
+        if (!DEFAULT_SHORTCUTS.find(s => s.name === aiTool.name)) {
+            DEFAULT_SHORTCUTS.push(aiTool);
+        }
+    });
 } catch (e) {
     DEFAULT_SHORTCUTS = JSON.parse(JSON.stringify(ORIGINAL_DEFAULT_SHORTCUTS));
 }
@@ -170,6 +189,8 @@ const scIconInput = document.getElementById('sc-icon');
 const scAddBtn = document.getElementById('sc-add-btn');
 const shortcutsList = document.getElementById('shortcuts-list');
 const customShortcutsContainer = document.getElementById('custom-shortcuts-container');
+const launchpadGrid = document.getElementById('launchpad-grid');
+const aiLaunchpadGrid = document.getElementById('ai-launchpad-grid');
 
 // Give IDs and Default Location to DEFAULT_SHORTCUTS if they don't have them
 DEFAULT_SHORTCUTS.forEach((sc, i) => {
@@ -180,16 +201,40 @@ DEFAULT_SHORTCUTS.forEach((sc, i) => {
 function loadShortcuts() {
     if (customShortcutsContainer) customShortcutsContainer.innerHTML = '';
     if (shortcutsList) shortcutsList.innerHTML = '';
+    if (launchpadGrid) launchpadGrid.innerHTML = '';
+    if (aiLaunchpadGrid) aiLaunchpadGrid.innerHTML = '';
 
     DEFAULT_SHORTCUTS.forEach(sc => {
         // Add to Dock
-        if (customShortcutsContainer && (sc.location === 'Dock' || sc.location === 'Both')) {
+        if (customShortcutsContainer && (sc.location === 'Dock' || sc.location === 'Both' || sc.location === 'Dock + AI tool')) {
             const a = document.createElement("a");
             a.href = sc.url;
             a.target = "_self";
             a.className = "dock-item";
             a.innerHTML = `<span class="dock-label">${sc.name}</span><img src="${sc.icon}" alt="${sc.name}" class="dock-icon2" /><div class="dock-dot"></div>`;
             customShortcutsContainer.appendChild(a);
+        }
+
+        // Add to Launchpad (Apps)
+        if (launchpadGrid && (sc.location === 'Apps' || sc.location === 'Both')) {
+            const a = document.createElement("a");
+            a.href = sc.url;
+            a.target = "_self";
+            a.className = "launchpad-app";
+            a.dataset.name = sc.name.toLowerCase();
+            a.innerHTML = `<img src="${sc.icon}" alt="${sc.name}" /><span>${sc.name}</span>`;
+            launchpadGrid.appendChild(a);
+        }
+
+        // Add to AI Launchpad (AI Tools)
+        if (aiLaunchpadGrid && (sc.location === 'AI tool' || sc.location === 'Dock + AI tool')) {
+            const a = document.createElement("a");
+            a.href = sc.url;
+            a.target = "_self";
+            a.className = "launchpad-app";
+            a.dataset.name = sc.name.toLowerCase();
+            a.innerHTML = `<img src="${sc.icon}" alt="${sc.name}" /><span>${sc.name}</span>`;
+            aiLaunchpadGrid.appendChild(a);
         }
 
         // Add to UI List
@@ -203,9 +248,11 @@ function loadShortcuts() {
                 </div>
                 <div class="shortcut-item-actions">
                     <select class="sc-loc-dropdown" onchange="updateShortcutLoc(${sc.id}, this.value)">
-                        <option value="Dock" ${sc.location === 'Dock' ? 'selected' : ''}>LOCATION: Dock</option>
-                        <option value="Apps" ${sc.location === 'Apps' ? 'selected' : ''}>LOCATION: Apps</option>
-                        <option value="Both" ${sc.location === 'Both' ? 'selected' : ''}>LOCATION: Both</option>
+                        <option value="Dock" ${sc.location === 'Dock' ? 'selected' : ''}>LOCATION: Dock only</option>
+                        <option value="Apps" ${sc.location === 'Apps' ? 'selected' : ''}>LOCATION: App's</option>
+                        <option value="Both" ${sc.location === 'Both' ? 'selected' : ''}>LOCATION: Dock + App</option>
+                        <option value="AI tool" ${sc.location === 'AI tool' ? 'selected' : ''}>LOCATION: AI tool</option>
+                        <option value="Dock + AI tool" ${sc.location === 'Dock + AI tool' ? 'selected' : ''}>LOCATION: Dock + Ai tool</option>
                     </select>
                     <button class="sc-delete-btn" onclick="deleteShortcut(${sc.id})">
                         <img src="https://img.icons8.com/?size=100&id=ccbXpS1mBiXf&format=png&color=000000" style="width: 20px; height: 20px;" alt="Delete">
@@ -243,7 +290,6 @@ if (scAddBtn) {
         const name = scNameInput.value.trim();
         const url = scUrlInput.value.trim();
         let locationVal = scLocationSelect.value;
-        if (locationVal.includes("Dock")) locationVal = "Dock";
         let icon = scIconInput.value.trim();
 
         if (!name || !url) return alert("Name and URL are required.");
@@ -285,9 +331,81 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
     loadShortcuts();
 }
 
+// --- LAUNCHPAD LOGIC ---
+const openLaunchpadBtn = document.getElementById('open-launchpad');
+const launchpadOverlay = document.getElementById('launchpad-overlay');
+const launchpadSearchInput = document.getElementById('launchpad-search-input');
+
+if (openLaunchpadBtn && launchpadOverlay) {
+    openLaunchpadBtn.addEventListener('click', () => {
+        launchpadOverlay.classList.toggle('active');
+        if (launchpadOverlay.classList.contains('active') && launchpadSearchInput) {
+            launchpadSearchInput.focus();
+        }
+    });
+
+    launchpadOverlay.addEventListener('click', (e) => {
+        if (e.target === launchpadOverlay) {
+            launchpadOverlay.classList.remove('active');
+        }
+    });
+}
+
+if (launchpadSearchInput && launchpadGrid) {
+    launchpadSearchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const apps = launchpadGrid.querySelectorAll('.launchpad-app');
+        apps.forEach(app => {
+            const name = app.dataset.name || '';
+            if (name.includes(query)) {
+                app.style.display = 'flex';
+            } else {
+                app.style.display = 'none';
+            }
+        });
+    });
+}
+
+// --- AI LAUNCHPAD LOGIC ---
+const openAiToolsBtn = document.getElementById('open-ai-tools');
+const aiLaunchpadOverlay = document.getElementById('ai-launchpad-overlay');
+const aiLaunchpadSearchInput = document.getElementById('ai-launchpad-search-input');
+
+if (openAiToolsBtn && aiLaunchpadOverlay) {
+    openAiToolsBtn.addEventListener('click', () => {
+        aiLaunchpadOverlay.classList.toggle('active');
+        if (aiLaunchpadOverlay.classList.contains('active') && aiLaunchpadSearchInput) {
+            aiLaunchpadSearchInput.focus();
+        }
+    });
+
+    aiLaunchpadOverlay.addEventListener('click', (e) => {
+        if (e.target === aiLaunchpadOverlay) {
+            aiLaunchpadOverlay.classList.remove('active');
+        }
+    });
+}
+
+if (aiLaunchpadSearchInput && aiLaunchpadGrid) {
+    aiLaunchpadSearchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const apps = aiLaunchpadGrid.querySelectorAll('.launchpad-app');
+        apps.forEach(app => {
+            const name = app.dataset.name || '';
+            if (name.includes(query)) {
+                app.style.display = 'flex';
+            } else {
+                app.style.display = 'none';
+            }
+        });
+    });
+}
+
 // --- Settings Menu Toggle Logic ---
 const openSettingsIcon = document.getElementById("open-settings");
 const closeSettingsDot = document.getElementById("close-settings-dot");
+const maximizeSettingsDot = document.querySelector(".control-dot.maximize");
+const minimizeSettingsDot = document.querySelector(".control-dot.minimize");
 const settingsMain = document.querySelector(".Settings-main");
 
 if (openSettingsIcon && settingsMain) {
@@ -317,6 +435,19 @@ if (openSettingsIcon && settingsMain) {
 if (closeSettingsDot && settingsMain) {
     closeSettingsDot.addEventListener("click", () => {
         settingsMain.classList.remove("active");
+        settingsMain.classList.remove("maximized");
+    });
+}
+
+if (maximizeSettingsDot && settingsMain) {
+    maximizeSettingsDot.addEventListener("click", () => {
+        settingsMain.classList.add("maximized");
+    });
+}
+
+if (minimizeSettingsDot && settingsMain) {
+    minimizeSettingsDot.addEventListener("click", () => {
+        settingsMain.classList.remove("maximized");
     });
 }
 
@@ -492,3 +623,112 @@ if (resetAllBtn) {
         location.reload();
     });
 }
+
+// --- TOP BAR CLOCK AND BATTERY LOGIC ---
+function updateClock() {
+    const now = new Date();
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    const dayName = days[now.getDay()];
+    const monthName = months[now.getMonth()];
+    const date = now.getDate();
+
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+
+    const timeString = `${dayName} ${monthName} ${date} ${hours}:${minutes} ${ampm}`;
+
+    const timeEl = document.getElementById('top-menu-time');
+    if (timeEl) {
+        timeEl.textContent = timeString;
+    }
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+function updateBatteryUI(battery) {
+    const levelEl = document.getElementById('battery-level');
+    const fillEl = document.getElementById('battery-fill');
+    const thunderEl = document.getElementById('top-thunder');
+
+    if (levelEl) levelEl.textContent = Math.round(battery.level * 100) + '%';
+    if (fillEl) fillEl.setAttribute('width', Math.round(battery.level * 16));
+
+    if (thunderEl) {
+        thunderEl.style.display = battery.charging ? 'block' : 'none';
+    }
+}
+
+if ('getBattery' in navigator) {
+    navigator.getBattery().then(function (battery) {
+        updateBatteryUI(battery);
+        battery.addEventListener('levelchange', () => updateBatteryUI(battery));
+        battery.addEventListener('chargingchange', () => updateBatteryUI(battery));
+    });
+}
+
+// --- NOTEPAD LOGIC ---
+const openFolderBtn = document.getElementById('open-folder');
+const notepadWindow = document.getElementById('notepad-window');
+const closeNotepadBtn = document.getElementById('close-notepad');
+const minimizeNotepadBtn = document.getElementById('minimize-notepad');
+const maximizeNotepadBtn = document.getElementById('maximize-notepad');
+
+if (openFolderBtn && notepadWindow) {
+    openFolderBtn.addEventListener('click', () => {
+        notepadWindow.classList.toggle('active');
+    });
+}
+
+if (closeNotepadBtn && notepadWindow) {
+    closeNotepadBtn.addEventListener('click', () => {
+        notepadWindow.classList.remove('active');
+        notepadWindow.classList.remove('maximized');
+    });
+}
+
+if (minimizeNotepadBtn && notepadWindow) {
+    minimizeNotepadBtn.addEventListener('click', () => {
+        notepadWindow.classList.remove('maximized');
+    });
+}
+
+if (maximizeNotepadBtn && notepadWindow) {
+    maximizeNotepadBtn.addEventListener('click', () => {
+        notepadWindow.classList.toggle('maximized');
+    });
+}
+
+// --- PROFILE & SPECS SAVING LOGIC ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Load profile image
+    const savedProfileImg = localStorage.getItem('tahoe-profile-img');
+    const profileImgEl = document.getElementById('profile-img');
+    if (savedProfileImg && profileImgEl) {
+        profileImgEl.src = savedProfileImg;
+    }
+
+    // Load and save text fields
+    const saveTexts = document.querySelectorAll('.save-text');
+    saveTexts.forEach(el => {
+        const id = el.id;
+        if (!id) return;
+
+        // Load saved text
+        const savedText = localStorage.getItem('tahoe-text-' + id);
+        if (savedText) {
+            el.textContent = savedText;
+        }
+
+        // Save text on input
+        el.addEventListener('input', () => {
+            localStorage.setItem('tahoe-text-' + id, el.textContent);
+        });
+    });
+});
+

@@ -2,6 +2,8 @@
 
 <img width="1536" height="863" alt="Screenshot 2026-07-10 182114" src="https://github.com/user-attachments/assets/88de3bd4-8c68-4c9f-9fb6-7f7997bba501" />
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg?style=for-the-badge)](https://macos-web-ext.vercel.app/)
+
 Transform your browser's default new tab into a stunning, fully functional macOS-inspired desktop environment! 
 
 ## 🌟 About the Extension
@@ -52,5 +54,4 @@ The extension prides itself on a **flexible and attractive UI** that mirrors the
 5. Open a new tab and enjoy your new macOS desktop!
 
 ---
-* "Made with ❤️ for people who want to experience creativity and web design enthusiasts."<img width="1536" height="863" alt="Screenshot 2026-07-10 182114" src="https://github.com/user-attachments/assets/bae82237-7000-4ca7-a3d8-8c5ea066b420" />
- *
+* "Made with ❤️ for people who want to experience creativity and web design enthusiasts." *

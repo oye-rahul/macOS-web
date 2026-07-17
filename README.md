@@ -1,6 +1,6 @@
 # 🍎 macOS Web - New Tab Experience
 
-<img width="1536" height="863" alt="Screenshot 2026-07-10 182114" src="https://github.com/user-attachments/assets/88de3bd4-8c68-4c9f-9fb6-7f7997bba501" />
+<img width="1536" height="863" alt="Screenshot 2026-07-17 230824" src="https://github.com/user-attachments/assets/2ca6ff47-316f-494b-b488-2f68861d2c40" />
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg?style=for-the-badge)](https://macos-web-ext.vercel.app/)
 
@@ -45,7 +45,7 @@ Whether you want quick access to your favorite apps, a centralized hub for AI to
 
 Designed to be ultra-efficient for daily use:
 * **Extension Size**: **~440 KB** on disk (including code and the custom `SF Pro Display` font file).
-* **Memory (RAM) Footprint**: **~20MB to 40MB** (compared to 150MB+ for typical web portals).
+* **Memory (RAM) Footprint**: **~10MB to 30MB** (compared to 150MB+ for typical web portals).
 * **CPU Usage**: **0% at idle** (clock interval runs only once per second with zero rendering overhead).
 * **Zero Framework Overhead**: Written entirely in **vanilla HTML5, CSS3, and modern JavaScript (ES6+)** with no heavy React/Vue/Tailwind packages.
 

@@ -632,8 +632,8 @@ if (savedWallpaperType && savedWallpaperType !== 'stock') {
 }
 
 function loadStockWallpaper() {
-    const saved = localStorage.getItem('tahoe-wallpaper');
-    if (saved) setWallpaper(saved, 'image');
+    const saved = localStorage.getItem('tahoe-wallpaper') || 'assets/wp1.png';
+    setWallpaper(saved, 'image');
 }
 
 // Stock wallpaper selection click handler

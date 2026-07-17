@@ -567,64 +567,117 @@ setupCustomSlider('hover-slider', 'hover-progress', 'hover-thumb', initialHoverP
 
 /* developed © Maxuiux */
 
-// --- WALLPAPER SELECTION LOGIC ---
-const savedWallpaper = localStorage.getItem('tahoe-wallpaper');
-if (savedWallpaper) {
-    document.body.style.backgroundImage = `url('${savedWallpaper}')`;
+// --- DYNAMIC WALLPAPER STORAGE & LOGIC (IndexedDB & LocalStorage) ---
+const DB_NAME = 'TahoeWallpaperDB', STORE_NAME = 'wallpapers', KEY = 'active-wallpaper';
+let dbInstance = null;
+const requestDB = (mode, callback) => {
+    if (dbInstance) return callback(dbInstance.transaction([STORE_NAME], mode).objectStore(STORE_NAME));
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = (e) => e.target.result.createObjectStore(STORE_NAME);
+    req.onsuccess = (e) => callback((dbInstance = e.target.result).transaction([STORE_NAME], mode).objectStore(STORE_NAME));
+};
+
+const videoBg = document.getElementById('video-bg');
+let activeObjectURL = null;
+
+function setWallpaper(src, type = 'image', saveToDB = false, file = null) {
+    if (activeObjectURL && activeObjectURL !== src) {
+        URL.revokeObjectURL(activeObjectURL);
+        activeObjectURL = null;
+    }
+    if (src && src.startsWith('blob:')) {
+        activeObjectURL = src;
+    }
+
+    const isVideo = type === 'video';
+    if (videoBg) {
+        videoBg.style.display = isVideo ? 'block' : 'none';
+        if (isVideo) {
+            if (src && videoBg.src !== src) videoBg.src = src;
+            videoBg.play().catch(() => { });
+        } else {
+            videoBg.pause();
+            videoBg.src = '';
+        }
+    }
+    document.body.style.backgroundImage = isVideo ? 'none' : `url('${src}')`;
+
+    if (saveToDB) {
+        if (file) {
+            requestDB('readwrite', store => store.put({ blob: file, type: type }, KEY));
+            localStorage.setItem('tahoe-wallpaper-type', type);
+        } else {
+            localStorage.setItem('tahoe-wallpaper', src);
+            localStorage.setItem('tahoe-wallpaper-type', 'stock');
+            requestDB('readwrite', store => store.delete(KEY));
+        }
+    }
 }
 
-document.querySelectorAll('.wallpaper .w-1 > div:not(.custom-upload-card)').forEach(item => {
+// Load saved wallpaper on start
+const savedWallpaperType = localStorage.getItem('tahoe-wallpaper-type');
+if (savedWallpaperType && savedWallpaperType !== 'stock') {
+    requestDB('readonly', store => {
+        store.get(KEY).onsuccess = (e) => {
+            const data = e.target.result;
+            if (data && data.blob) {
+                setWallpaper(URL.createObjectURL(data.blob), data.type);
+            } else {
+                loadStockWallpaper();
+            }
+        };
+    });
+} else {
+    loadStockWallpaper();
+}
+
+function loadStockWallpaper() {
+    const saved = localStorage.getItem('tahoe-wallpaper');
+    if (saved) setWallpaper(saved, 'image');
+}
+
+// Stock wallpaper selection click handler
+document.querySelectorAll('.wallpaper .w-1 > div:not(.custom-upload-card):not(#custom-video-upload-card)').forEach(item => {
     item.addEventListener('click', () => {
         const img = item.querySelector('img');
-        if (img) {
-            const imgSrc = img.getAttribute('src');
-            document.body.style.backgroundImage = `url('${imgSrc}')`;
-            localStorage.setItem('tahoe-wallpaper', imgSrc);
-        }
+        if (img) setWallpaper(img.getAttribute('src'), 'image', true);
     });
 });
 
-// --- CUSTOM WALLPAPER UPLOAD LOGIC ---
-const customWallpaperInput = document.getElementById('custom-wall-upload');
-const customWallpaperDiv = document.querySelector('.custom-upload-card');
-
-if (customWallpaperInput) {
-    customWallpaperInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                document.body.style.backgroundImage = `url('${event.target.result}')`;
-                localStorage.setItem('tahoe-wallpaper', event.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
-    if (customWallpaperDiv) {
-        customWallpaperDiv.addEventListener('click', () => {
-            customWallpaperInput.click();
+// --- CUSTOM IMAGE & VIDEO WALLPAPER UPLOAD LOGIC ---
+function setupUpload(inputId, divId, type) {
+    const input = document.getElementById(inputId);
+    const div = document.getElementById(divId) || document.querySelector('.' + divId);
+    if (input) {
+        input.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) setWallpaper(URL.createObjectURL(file), type, true, file);
         });
+        if (div) div.addEventListener('click', () => input.click());
+        input.addEventListener('click', (e) => e.stopPropagation());
     }
-
-    customWallpaperInput.addEventListener('click', (e) => {
-        e.stopPropagation(); // prevent triggering the general w-1 div click
-    });
 }
+setupUpload('custom-wall-upload', 'custom-upload-card', 'image');
+setupUpload('custom-video-upload', 'custom-video-upload-card', 'video');
 
 // --- RESET SETTINGS LOGIC ---
 const resetAllBtn = document.getElementById('resetAllBtn');
 if (resetAllBtn) {
     resetAllBtn.addEventListener('click', () => {
-        localStorage.removeItem('tahoe-shortcuts');
-        localStorage.removeItem('tahoe-dock-size');
-        localStorage.removeItem('tahoe-dock-hover');
-        localStorage.removeItem('tahoe-wallpaper');
-        location.reload();
+        ['tahoe-shortcuts', 'tahoe-dock-size', 'tahoe-dock-hover', 'tahoe-wallpaper', 'tahoe-wallpaper-type', 'tahoe-search-visible', 'tahoe-topbar-font-size'].forEach(k => localStorage.removeItem(k));
+        try {
+            requestDB('readwrite', store => {
+                store.delete(KEY).onsuccess = () => location.reload();
+            });
+            setTimeout(() => location.reload(), 300);
+        } catch (e) {
+            location.reload();
+        }
     });
 }
 
 // --- TOP BAR CLOCK AND BATTERY LOGIC ---
+let isComingSoonActive = false;
 function updateClock() {
     const now = new Date();
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -646,6 +699,16 @@ function updateClock() {
     const timeEl = document.getElementById('top-menu-time');
     if (timeEl) {
         timeEl.textContent = timeString;
+    }
+
+    // Update the large lockscreen-style glass clock
+    const glassClockDateEl = document.getElementById('glassClockDate');
+    const glassClockTimeEl = document.getElementById('glassClockTime');
+    if (glassClockDateEl && !isComingSoonActive) {
+        glassClockDateEl.textContent = `${dayName} ${monthName} ${date}`;
+    }
+    if (glassClockTimeEl) {
+        glassClockTimeEl.innerHTML = `${hours}<span class="colon">:</span>${minutes}`;
     }
 }
 setInterval(updateClock, 1000);
@@ -730,5 +793,391 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('tahoe-text-' + id, el.textContent);
         });
     });
+
+    // Load and save notepad text
+    const notepadTextarea = document.getElementById('notepad-textarea');
+    if (notepadTextarea) {
+        const savedNotepadText = localStorage.getItem('tahoe-notepad-text');
+        if (savedNotepadText) {
+            notepadTextarea.value = savedNotepadText;
+        }
+        notepadTextarea.addEventListener('input', () => {
+            localStorage.setItem('tahoe-notepad-text', notepadTextarea.value);
+        });
+    }
+
+    // --- DESKTOP SEARCH & SUGGESTIONS LOGIC ---
+    const mainSearch = document.getElementById('mainSearch');
+    const searchSuggestions = document.getElementById('searchSuggestions');
+    const micBtn = document.getElementById('micBtn');
+
+    if (mainSearch && searchSuggestions) {
+        let currentSuggestions = [];
+        let selectedIndex = -1;
+        let originalQuery = '';
+        let debounceTimer;
+
+        const HIDE_ANIM_MS = 200;
+
+        const hideSuggestions = () => {
+            searchSuggestions.classList.remove('open');
+            // Clear after transition so the hide animation stays smooth
+            window.setTimeout(() => {
+                if (!searchSuggestions.classList.contains('open')) {
+                    searchSuggestions.innerHTML = '';
+                    currentSuggestions = [];
+                    selectedIndex = -1;
+                }
+            }, HIDE_ANIM_MS);
+        };
+
+        const executeSearch = (query) => {
+            if (query && query.trim()) {
+                window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query.trim())}`;
+            }
+        };
+
+        const updateSelection = () => {
+            const items = searchSuggestions.querySelectorAll('.suggestion-item');
+            items.forEach((item, idx) => {
+                if (idx === selectedIndex) {
+                    item.classList.add('selected');
+                    item.scrollIntoView({ block: 'nearest' });
+                    mainSearch.value = currentSuggestions[idx];
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        };
+
+        const showSuggestions = (suggestions) => {
+            currentSuggestions = suggestions;
+            selectedIndex = -1;
+
+            if (suggestions.length === 0) {
+                hideSuggestions();
+                return;
+            }
+
+            searchSuggestions.innerHTML = suggestions.map((sug, idx) => `
+                <div class="suggestion-item" data-index="${idx}">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span class="suggestion-text">${sug}</span>
+                </div>
+            `).join('');
+
+            // Show suggestions smoothly (no display toggling)
+            searchSuggestions.classList.add('open');
+
+            // Click listener for suggestion items
+            const items = searchSuggestions.querySelectorAll('.suggestion-item');
+            items.forEach(item => {
+                item.addEventListener('click', () => {
+                    const idx = parseInt(item.dataset.index);
+                    executeSearch(currentSuggestions[idx]);
+                });
+            });
+        };
+
+        const fetchSuggestions = async (query) => {
+            if (!query.trim()) {
+                hideSuggestions();
+                return;
+            }
+            try {
+                const res = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    const suggestions = data[1] || [];
+                    showSuggestions(suggestions);
+                } else {
+                    throw new Error("Google suggest API returned non-OK status");
+                }
+            } catch (err) {
+                // Fallback to Wikipedia suggest API which supports CORS on all origins
+                try {
+                    const res = await fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&format=json&origin=*&search=${encodeURIComponent(query)}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        const suggestions = data[1] || [];
+                        showSuggestions(suggestions);
+                    }
+                } catch (fallbackErr) {
+                    console.error("Suggestions fallback failed:", fallbackErr);
+                }
+            }
+        };
+
+        // Inputs & Event Listeners
+        mainSearch.addEventListener('input', (e) => {
+            const query = e.target.value;
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                fetchSuggestions(query);
+            }, 150);
+        });
+
+        mainSearch.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const query = mainSearch.value;
+                executeSearch(query);
+            } else if (e.key === 'Escape') {
+                hideSuggestions();
+                mainSearch.blur();
+            } else if (e.key === 'ArrowDown') {
+                if (currentSuggestions.length > 0) {
+                    e.preventDefault();
+                    if (selectedIndex === -1) {
+                        originalQuery = mainSearch.value;
+                    }
+                    selectedIndex = (selectedIndex + 1) % currentSuggestions.length;
+                    updateSelection();
+                }
+            } else if (e.key === 'ArrowUp') {
+                if (currentSuggestions.length > 0) {
+                    e.preventDefault();
+                    if (selectedIndex === -1) {
+                        originalQuery = mainSearch.value;
+                    }
+                    selectedIndex = selectedIndex - 1;
+                    if (selectedIndex < -1) {
+                        selectedIndex = currentSuggestions.length - 1;
+                    }
+                    if (selectedIndex === -1) {
+                        mainSearch.value = originalQuery;
+                        const items = searchSuggestions.querySelectorAll('.suggestion-item');
+                        items.forEach(item => item.classList.remove('selected'));
+                    } else {
+                        updateSelection();
+                    }
+                }
+            }
+        });
+
+        // Close suggestions when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mainSearch.contains(e.target) && !searchSuggestions.contains(e.target)) {
+                hideSuggestions();
+            }
+        });
+
+        // Re-open suggestions on focus
+        mainSearch.addEventListener('focus', () => {
+            if (mainSearch.value.trim()) {
+                fetchSuggestions(mainSearch.value);
+            }
+        });
+    }
+
+    // --- DESKTOP SETTINGS LOGIC ---
+    const searchBarToggle = document.getElementById('search-bar-toggle');
+    const topBarFontSelect = document.getElementById('topbar-font-select');
+    const searchWrapper = document.querySelector('.search-wrapper');
+    const topMenu = document.querySelector('.top-menu');
+
+    // 1. Search Bar visibility
+    const isSearchVisible = localStorage.getItem('tahoe-search-visible') !== 'false';
+    if (searchBarToggle) {
+        searchBarToggle.checked = isSearchVisible;
+        searchBarToggle.addEventListener('change', (e) => {
+            const visible = e.target.checked;
+            localStorage.setItem('tahoe-search-visible', visible);
+            if (searchWrapper) {
+                if (visible) {
+                    searchWrapper.classList.remove('hidden');
+                } else {
+                    searchWrapper.classList.add('hidden');
+                }
+            }
+        });
+    }
+    if (searchWrapper && !isSearchVisible) {
+        searchWrapper.classList.add('hidden');
+    }
+
+    // 1.5. Clock visibility
+    const clockToggle = document.getElementById('clock-toggle'), glassClock = document.getElementById('glassClock');
+    const setClockVisible = (visible) => {
+        glassClock?.classList.toggle('hidden', !visible);
+        if (clockToggle) clockToggle.checked = visible;
+        localStorage.setItem('tahoe-clock-visible', visible);
+    };
+    setClockVisible(localStorage.getItem('tahoe-clock-visible') !== 'false');
+    clockToggle?.addEventListener('change', (e) => setClockVisible(e.target.checked));
+
+    // Show "Coming Soon" when clock widget is clicked
+    if (glassClock) {
+        glassClock.addEventListener('click', () => {
+            const dateEl = document.getElementById('glassClockDate');
+            if (dateEl && !isComingSoonActive) {
+                isComingSoonActive = true;
+                dateEl.textContent = 'Coming Soon';
+                setTimeout(() => {
+                    isComingSoonActive = false;
+                    updateClock();
+                }, 1500);
+            }
+        });
+    }
+
+
+    // 2. Top bar font size
+    const savedFontSize = localStorage.getItem('tahoe-topbar-font-size') || 'medium';
+    const applyTopBarFontSize = (size) => {
+        let sizePx = '16px';
+        if (size === 'small') sizePx = '12px';
+        if (size === 'large') sizePx = '20px';
+        if (topMenu) {
+            topMenu.style.setProperty('--topbar-font-size', sizePx);
+        }
+    };
+    if (topBarFontSelect) {
+        topBarFontSelect.value = savedFontSize;
+        topBarFontSelect.addEventListener('change', (e) => {
+            const size = e.target.value;
+            localStorage.setItem('tahoe-topbar-font-size', size);
+            applyTopBarFontSize(size);
+        });
+    }
+    applyTopBarFontSize(savedFontSize);
+
+    // Voice dictation using Web Speech API
+    if (micBtn && mainSearch) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            let isListening = false;
+
+            micBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (isListening) {
+                    recognition.stop();
+                } else {
+                    recognition.start();
+                }
+            });
+
+            recognition.onstart = () => {
+                isListening = true;
+                micBtn.style.animation = 'pulse 1.2s infinite';
+                mainSearch.placeholder = 'Listening...';
+            };
+
+            recognition.onend = () => {
+                isListening = false;
+                micBtn.style.animation = 'none';
+                mainSearch.placeholder = 'Search or Ask';
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error:", event.error);
+                isListening = false;
+                micBtn.style.animation = 'none';
+                mainSearch.placeholder = 'Search or Ask';
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                mainSearch.value = transcript;
+                if (mainSearch.dispatchEvent) {
+                    mainSearch.dispatchEvent(new Event('input'));
+                }
+                mainSearch.focus();
+            };
+        } else {
+            micBtn.style.display = 'none';
+        }
+    }
+
+    // --- SETTINGS TAB SWITCHING LOGIC ---
+    const settingsBtn = document.getElementById("settingsBtn");
+    const desktopDockBtn = document.getElementById("desktopDockBtn");
+    const wallpaperBtn = document.getElementById("wallpaperBtn");
+    const shortcutBtn = document.getElementById("shortcutBtn");
+
+    const generalMenu = document.querySelector("#General-right-meun");
+    const mainDockMenu = document.querySelector(".main-dock");
+    const wallpaperMenu = document.querySelector(".wallpaper");
+    const shortcutMenu = document.querySelector(".shortcut-menu");
+    const topBarTitle = document.getElementById("top-bar-title");
+
+    function switchTab(activeBtn, activeMenu) {
+        if (generalMenu) generalMenu.style.display = "none";
+        if (mainDockMenu) mainDockMenu.style.display = "none";
+        if (wallpaperMenu) wallpaperMenu.style.display = "none";
+        if (shortcutMenu) shortcutMenu.style.display = "none";
+
+        if (settingsBtn) settingsBtn.classList.remove("active-tab");
+        if (desktopDockBtn) desktopDockBtn.classList.remove("active-tab");
+        if (wallpaperBtn) wallpaperBtn.classList.remove("active-tab");
+        if (shortcutBtn) shortcutBtn.classList.remove("active-tab");
+
+        if (activeMenu) activeMenu.style.display = "block";
+        if (activeBtn) activeBtn.classList.add("active-tab");
+
+        if (topBarTitle && activeBtn) {
+            const titleText = activeBtn.querySelector('p');
+            if (titleText) topBarTitle.textContent = titleText.textContent;
+        }
+    }
+
+    if (settingsBtn && generalMenu) {
+        settingsBtn.addEventListener("click", () => switchTab(settingsBtn, generalMenu));
+    }
+    if (desktopDockBtn && mainDockMenu) {
+        desktopDockBtn.addEventListener("click", () => switchTab(desktopDockBtn, mainDockMenu));
+    }
+    if (wallpaperBtn && wallpaperMenu) {
+        wallpaperBtn.addEventListener("click", () => switchTab(wallpaperBtn, wallpaperMenu));
+    }
+    if (shortcutBtn && shortcutMenu) {
+        shortcutBtn.addEventListener("click", () => switchTab(shortcutBtn, shortcutMenu));
+    }
+    const widgetsBtn = document.getElementById("widgetsBtn");
+    if (widgetsBtn) {
+        widgetsBtn.addEventListener("click", () => alert("Coming Soon"));
+    }
+
+    // --- PROFILE IMAGE & EVENT HANDLERS ---
+    const profilePicContainer = document.querySelector('.profile .pp');
+    const profileUploadInput = document.getElementById('profile-upload');
+    const targetProfileImg = document.getElementById('profile-img');
+    if (profilePicContainer && profileUploadInput) {
+        profilePicContainer.addEventListener('click', () => {
+            profileUploadInput.click();
+        });
+        profileUploadInput.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        profileUploadInput.addEventListener('change', () => {
+            if (profileUploadInput.files[0]) {
+                const r = new FileReader();
+                r.onload = (e) => {
+                    if (targetProfileImg) {
+                        targetProfileImg.src = e.target.result;
+                    }
+                    localStorage.setItem('tahoe-profile-img', e.target.result);
+                };
+                r.readAsDataURL(profileUploadInput.files[0]);
+            }
+        });
+    }
+
+    // --- SPECIFICATION CHANGE TIPS ---
+    const specsEditableTipBtn = document.getElementById('specsEditableTipBtn');
+    if (specsEditableTipBtn) {
+        specsEditableTipBtn.addEventListener('click', () => {
+            alert('Just click on any text above to edit it directly!');
+        });
+    }
 });
 

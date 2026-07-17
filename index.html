@@ -7,16 +7,19 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>New Tab</title>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap" rel="stylesheet">
-  <link rel="shortcut icon" href="https://img.icons8.com/?size=100&id=hvUQ7Jjww4GO&format=png&color=000000"
+  <link rel="shortcut icon" href="https://img.icons8.com/?size=100&id=8xhovyHdOQzF&format=png&color=000000"
     type="image/x-icon">
   <link rel="stylesheet" href="style.css?v=2" />
 </head>
 
 <body>
+  <script src="init-wallpaper.js"></script>
+  <!-- Dynamic Video Background -->
+  <video id="video-bg" autoplay loop muted playsinline style="display: none;"></video>
+
   <section class="top-menu">
     <div class="left">
-      <img src="https://img.icons8.com/?size=100&id=30840&format=png&color=ffffff" alt="Apple-logo"
-        style=" height: 20px;">
+      <img src="https://img.icons8.com/?size=100&id=30840&format=png&color=ffffff" alt="Apple-logo" class="apple-logo">
       <p>System</p>
       <p>File</p>
       <p>View</p>
@@ -26,15 +29,14 @@
     </div>
     <div class="right ">
       <img src="https://img.icons8.com/?size=100&id=pHwiRkhrbSbG&format=png&color=ffffff" alt="">
-      <img src="https://img.icons8.com/?size=100&id=641&format=png&color=ffffff" alt=""
-        style="height: 18px; margin-top: 2px;">
+      <img src="https://img.icons8.com/?size=100&id=641&format=png&color=ffffff" alt="" class="sound-icon">
       <img src="https://img.icons8.com/?size=100&id=iT91feJQD6OK&format=png&color=ffffff" alt="">
       <img src="https://img.icons8.com/?size=100&id=gFWfeexeOapT&format=png&color=ffffff" alt="">
       <img src="https://img.icons8.com/?size=100&id=rgf2JV5jJg3Q&format=png&color=ffffff" alt="">
       <img src="https://img.icons8.com/?size=100&id=dhI67wV4riOr&format=png&color=ffffff" alt="">
       <img src="https://img.icons8.com/?size=100&id=Y6y7hDGsd6Ku&format=png&color=ffffff" alt="">
       <span class="Battery">
-        <span id="battery-level" style="font-size: 14px; margin-top: 2px; color: white;">100%</span>
+        <span id="battery-level">100%</span>
         <svg class="status-icon battery-icon" title="Battery" viewBox="0 0 24 24" fill="none" stroke="currentColor"
           stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
 
@@ -51,10 +53,8 @@
 
       </span>
       <div class="contol-penal">
-        <img src="https://img.icons8.com/?size=100&id=IXQbWhsDPcLw&format=png&color=ffffff" alt=""
-          style="margin: -5px;">
-        <img src="https://img.icons8.com/?size=100&id=4aB5jRaKDQJN&format=png&color=ffffff" alt=""
-          style="margin: -5px;">
+        <img src="https://img.icons8.com/?size=100&id=IXQbWhsDPcLw&format=png&color=ffffff" alt="">
+        <img src="https://img.icons8.com/?size=100&id=4aB5jRaKDQJN&format=png&color=ffffff" alt="">
       </div>
 
       <span class="top-menu-time" id="top-menu-time" title="Date & Time" style="color: white;">Tue <span></span> Apr 1
@@ -78,12 +78,14 @@
         </div>
         <!-- profile -->
         <div class="profile">
-          <div class="pp" style="cursor: pointer;" title="Change Image" onclick="document.getElementById('profile-upload').click()"> 
-            <img src="https://www.imejis.io/images/tools/memoji-builder/male/mattew/light/kiss.png" alt="" id="profile-img">
-            <input type="file" id="profile-upload" accept="image/*" style="display: none;" onclick="event.stopPropagation()" onchange="if(this.files[0]){const r=new FileReader();r.onload=e=>{document.getElementById('profile-img').src=e.target.result;localStorage.setItem('tahoe-profile-img',e.target.result)};r.readAsDataURL(this.files[0])}">
+          <div class="pp" style="cursor: pointer;" title="Change Image">
+            <img src="https://www.imejis.io/images/tools/memoji-builder/male/mattew/light/kiss.png" alt=""
+              id="profile-img">
+            <input type="file" id="profile-upload" accept="image/*" style="display: none;">
           </div>
           <div class="p-name">
-            <p id="prof-name" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">Rahul Malvi</p>
+            <p id="prof-name" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">Rahul
+              Malvi</p>
             <p>Apple Account</p>
           </div>
         </div>
@@ -93,7 +95,7 @@
             <img src="https://img.icons8.com/?size=100&id=xyFoc6U1Hu3c&format=png&color=000000" alt="Settings">
             <p>General</p>
           </button>
-          <button class="app-setting black">
+          <button class="app-setting black" id="widgetsBtn">
             <img src="https://img.icons8.com/?size=100&id=b6eLSBnQN1Xl&format=png&color=000000" alt="Settings">
             <p>Widgets</p>
           </button>
@@ -166,38 +168,45 @@
         <div id="General-right-meun" style="display: block;">
           <div class="laptop-section">
             <img src="assets/ChatGPT Image Jun 28, 2026, 04_46_55 PM.png" alt="">
-            <h4 id="spec-title" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">MacBook Pro</h4>
-            <p id="spec-subtitle" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">15.6-inch, Oct 2026</p>
+            <h4 id="spec-title" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">
+              MacBook Pro</h4>
+            <p id="spec-subtitle" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">
+              15.6-inch, Oct 2026</p>
           </div>
           <div class="specification">
             <div>
               <p>Name</p>
-              <p id="spec-name" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">Macbook Pro</p>
+              <p id="spec-name" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">
+                Macbook Pro</p>
             </div>
             <div class="line"></div>
             <div>
               <p>Chip</p>
-              <p id="spec-chip" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">Apple M5 Max</p>
+              <p id="spec-chip" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">Apple
+                M5 Max</p>
             </div>
             <div class="line"></div>
             <div>
               <p>Memory</p>
-              <p id="spec-memory" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">128 GB</p>
+              <p id="spec-memory" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">128
+                GB</p>
             </div>
             <div class="line"></div>
             <div>
               <p>Storage</p>
-              <p id="spec-storage" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">5 TB</p>
+              <p id="spec-storage" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">5
+                TB</p>
             </div>
             <div class="line"></div>
             <div>
               <p>Serial number</p>
-              <p id="spec-serial" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">SN-5462252163</p>
+              <p id="spec-serial" class="save-text" contenteditable="true" spellcheck="false" style="outline: none;">
+                SN-5462252163</p>
             </div>
             <div class="line"></div>
             <div>
               <p>Specification Change</p>
-              <p><button class="show-detail-btn" onclick="alert('Just click on any text above to edit it directly!')">Editable(clickOnText)</button></p>
+              <p><button class="show-detail-btn" id="specsEditableTipBtn">Editable</button></p>
             </div>
             <div class="line"></div>
             <div>
@@ -272,8 +281,31 @@
             </div>
           </div>
           <!-- other dock setting -->
-          <div>
-
+          <div class="desktop-card">
+            <div class="desktop-option-row">
+              <span class="option-label">Show Search Bar</span>
+              <label class="switch">
+                <input type="checkbox" id="search-bar-toggle" checked>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+            <div class="desktop-option-row-line"></div>
+            <div class="desktop-option-row">
+              <span class="option-label">Show Number Clock</span>
+              <label class="switch">
+                <input type="checkbox" id="clock-toggle" checked>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+            <div class="desktop-option-row-line"></div>
+            <div class="desktop-option-row">
+              <span class="option-label">Top Menu Font Size</span>
+              <select id="topbar-font-select" class="macos-select">
+                <option value="small">Small</option>
+                <option value="medium" selected>Medium</option>
+                <option value="large">Large</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -348,6 +380,12 @@
                 <h4>Upload Image</h4>
                 <input type="file" id="custom-wall-upload" accept="image/*" style="display: none;">
               </div>
+              <div class="custom-upload-card" id="custom-video-upload-card">
+                <img src="https://img.icons8.com/?size=100&id=98Ew0UGFsfPX&format=png&color=000000" alt="Upload Video"
+                  style="object-fit: none; background-color: #000;">
+                <h4>Upload Video</h4>
+                <input type="file" id="custom-video-upload" accept="video/*" style="display: none;">
+              </div>
             </div>
           </div>
 
@@ -355,42 +393,7 @@
 
         </div>
 
-        <!-- Short-cut -->
-        <div class="shortcut-menu" style="display: none;">
-          <div class="name">
-            <h4>Control Center</h4>
-          </div>
-          <div class="shortcut-header">
-            <h2>Manage Shortcuts</h2>
-            <p>Curate the links shown in your dock and app launcher.</p>
-          </div>
-
-          <div class="add-shortcut-card">
-            <h4>Add shortcut</h4>
-            <div class="add-shortcut-labels">
-              <span>Name + URL (auto-fetched icon)</span>
-            </div>
-            <div class="form-row">
-              <input type="text" id="sc-name" placeholder="Name">
-              <input type="text" id="sc-url" placeholder="https://example.com">
-              <select id="sc-location">
-                <option value="Dock">Dock only</option>
-                <option value="Apps">App's</option>
-                <option value="Both">Dock + App</option>
-                <option value="AI tool">AI tool</option>
-                <option value="Dock + AI tool">Dock + Ai tool</option>
-              </select>
-              <input type="text" id="sc-icon" placeholder="Icon URL (optional)">
-            </div>
-            <button id="sc-add-btn">Add</button>
-          </div>
-
-          <div class="shortcuts-list" id="shortcuts-list">
-            <!-- Shortcut items will be injected here -->
-          </div>
-        </div>
       </div>
-    </div>
     </div>
   </section>
 
@@ -494,51 +497,27 @@
       <div class="notepad-title">Notepad</div>
     </div>
     <div class="notepad-body">
-      <textarea placeholder="Type your notes here..." spellcheck="false"></textarea>
+      <textarea id="notepad-textarea" placeholder="Type your notes here..." spellcheck="false"></textarea>
     </div>
   </div>
 
-  <script>
-    const settingsBtn = document.getElementById("settingsBtn");
-    const desktopDockBtn = document.getElementById("desktopDockBtn");
-    const wallpaperBtn = document.getElementById("wallpaperBtn");
-    const shortcutBtn = document.getElementById("shortcutBtn");
 
-    const generalMenu = document.querySelector("#General-right-meun");
-    const mainDockMenu = document.querySelector(".main-dock");
-    const wallpaperMenu = document.querySelector(".wallpaper");
-    const shortcutMenu = document.querySelector(".shortcut-menu");
-    const topBarTitle = document.getElementById("top-bar-title");
+  <div class="search-wrapper">
+    <div class="search-bar">
+      <input type="text" class="search-input" placeholder="Search or Ask" autofocus autocomplete="off"
+        spellcheck="false" id="mainSearch">
+      <button class="mic-button" id="micBtn" title="Voice Dictation">
+        <img src="https://img.icons8.com/?size=100&id=jkqQE2I90I8R&format=png&color=ffffff" alt="Mic">
+      </button>
+    </div>
+    <div class="search-suggestions" id="searchSuggestions"></div>
+  </div>
 
-    function switchTab(activeBtn, activeMenu) {
-      generalMenu.style.display = "none";
-      if (mainDockMenu) mainDockMenu.style.display = "none";
-      if (wallpaperMenu) wallpaperMenu.style.display = "none";
-      if (shortcutMenu) shortcutMenu.style.display = "none";
-
-      settingsBtn.classList.remove("active-tab");
-      desktopDockBtn.classList.remove("active-tab");
-      if (wallpaperBtn) wallpaperBtn.classList.remove("active-tab");
-      if (shortcutBtn) shortcutBtn.classList.remove("active-tab");
-
-      activeMenu.style.display = "block";
-      activeBtn.classList.add("active-tab");
-
-      if (topBarTitle) {
-        const titleText = activeBtn.querySelector('p');
-        if (titleText) topBarTitle.textContent = titleText.textContent;
-      }
-    }
-
-    settingsBtn.addEventListener("click", () => switchTab(settingsBtn, generalMenu));
-    desktopDockBtn.addEventListener("click", () => switchTab(desktopDockBtn, mainDockMenu));
-    if (wallpaperBtn && wallpaperMenu) {
-      wallpaperBtn.addEventListener("click", () => switchTab(wallpaperBtn, wallpaperMenu));
-    }
-    if (shortcutBtn && shortcutMenu) {
-      shortcutBtn.addEventListener("click", () => switchTab(shortcutBtn, shortcutMenu));
-    }
-  </script>
+  <!-- Glass Clock -->
+  <div class="glass-clock" id="glassClock">
+    <div class="glass-clock-date" id="glassClockDate"></div>
+    <div class="glass-clock-time" id="glassClockTime"></div>
+  </div>
 
   <script src="script.js"></script>
   <!-- <script src="my.js"></script> -->

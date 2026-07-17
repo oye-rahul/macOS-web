@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "macOS New Tab",
+  "version": "1.0",
+  "description": "A custom new tab page inspired by macOS.",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://suggestqueries.google.com/*"
+  ]
+}

@@ -14,14 +14,25 @@
 
 body {
   font-family: 'SF Pro Display Medium', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-image: url('assets/wp2.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-color: #000;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
   overscroll-behavior: none;
+}
+
+#video-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -2;
+  pointer-events: none;
 }
 
 /* top menu */
@@ -30,6 +41,7 @@ body {
   align-items: start;
   justify-content: space-between;
   padding: 3px 14px;
+  font-size: var(--topbar-font-size, 16px);
 }
 
 .top-menu .left {
@@ -37,12 +49,37 @@ body {
   align-items: center;
   justify-content: center;
   gap: 15px;
-  font-size: 16px;
+  font-size: inherit;
   color: #ffffff;
+  transition: font-size 0.2s ease;
+}
+
+.top-menu .left img.apple-logo {
+  height: calc(var(--topbar-font-size, 16px) * 1.25);
+  transition: height 0.2s ease;
+}
+
+.top-menu-time {
+  font-size: calc(var(--topbar-font-size, 16px) - 2px);
+  transition: font-size 0.2s ease;
+}
+
+#battery-level {
+  font-size: calc(var(--topbar-font-size, 16px) - 2px) !important;
+  margin-top: calc(var(--topbar-font-size, 16px) * 0.125);
+  color: white;
+  transition: font-size 0.2s ease, margin-top 0.2s ease;
 }
 
 .top-menu .right img {
-  height: 20px;
+  height: calc(var(--topbar-font-size, 16px) * 1.25);
+  transition: height 0.2s ease;
+}
+
+.top-menu .right img.sound-icon {
+  height: calc(var(--topbar-font-size, 16px) * 1.125);
+  margin-top: calc(var(--topbar-font-size, 16px) * 0.125);
+  transition: height 0.2s ease, margin-top 0.2s ease;
 }
 
 .top-menu .right {
@@ -55,25 +92,30 @@ body {
 
 .top-menu .right .contol-penal {
   display: grid;
-  grid-template-row: 1fr 1fr;
-  margin-top: 2px;
-  gap: 0.5px;
+  grid-template-rows: 1fr 1fr;
+  margin-top: calc(var(--topbar-font-size, 16px) * 0.125);
+  gap: calc(var(--topbar-font-size, 16px) * 0.03125);
+  transition: margin-top 0.2s ease, gap 0.2s ease;
 }
 
 .top-menu .right .contol-penal img {
-  height: 18px;
+  height: calc(var(--topbar-font-size, 16px) * 1.125);
+  margin: calc(var(--topbar-font-size, 16px) * -0.3125);
+  transition: height 0.2s ease, margin 0.2s ease;
 }
 
 .top-menu .right .Battery {
   display: grid;
   grid-template-columns: 1fr 1fr;
   /* 2 equal columns */
-  gap: 5px;
+  gap: calc(var(--topbar-font-size, 16px) * 0.3125);
+  transition: gap 0.2s ease;
 }
 
 .status-icon {
-  margin-top: -4px;
-  height: 30px;
+  margin-top: calc(var(--topbar-font-size, 16px) * -0.25);
+  height: calc(var(--topbar-font-size, 16px) * 1.875);
+  transition: height 0.2s ease, margin-top 0.2s ease;
 }
 
 .Settings-main {
@@ -182,7 +224,7 @@ body {
 .left-menu .profile .pp img {
   height: 50px;
   width: 50px;
-  background: #bbf4ff;
+  background: #266bff;
   border-radius: 50%;
   border: 1px solid #bcd4ff29;
   display: block;
@@ -323,9 +365,7 @@ body {
   scrollbar-width: thin;
   height: 95%;
   padding-top: 60px;
-  /* space for the top bar */
   padding-right: 20px;
-  /* padding restored here inside the scroll area */
   display: block;
   margin-top: 30px;
 }
@@ -356,7 +396,7 @@ body {
 }
 
 .specification {
-      line-height: normal !important;
+  line-height: normal !important;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -478,12 +518,11 @@ body {
   margin-bottom: 0;
   padding: calc(var(--dock-size, 50px) * 0.15) calc(var(--dock-size, 50px) * 0.15);
   height: auto;
-  /* backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px); */
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
   background: transparent;
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s, opacity 0.3s !important;
   will-change: transform;
-  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important; */
   --dock-gap: 0px;
 
 }
@@ -944,7 +983,7 @@ button {
   z-index: 0;
   border-radius: inherit;
   border: 1px solid rgba(255, 255, 255, 0.57);
-  box-shadow: inset 0 0 10px -2px #ffffff;
+  box-shadow: inset 0 0 6px -2px #ffffff;
   background-color: rgba(255, 255, 255, 0);
   pointer-events: none;
 }
@@ -1322,15 +1361,7 @@ button {
   height: 88vh;
   border-radius: 30px;
   border: 2px solid rgba(164, 164, 164, 0.521);
-}
-
-.notepad-window.active.minimized {
-  top: calc(100vh - 80px);
-  left: calc(100vw - 150px);
-  width: 250px;
-  height: 45px;
-  border-radius: 15px;
-  overflow: hidden;
+  ;
 }
 
 .notepad-header {
@@ -1370,4 +1401,376 @@ button {
   font-family: inherit;
   color: #222;
   line-height: 1.5;
+}
+
+
+/* Search Bar Frame Container */
+.search-wrapper {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%) translateY(0) scale(1);
+  width: 520px;
+  z-index: 5000;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(30px) saturate(140%);
+  border-radius: 26px;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.search-wrapper.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(-20px) scale(0.95);
+}
+
+.search-wrapper:focus-within {
+  background: transparent;
+  box-shadow:
+    0 0 0.5px 0.5px rgba(255, 255, 255, 0.1),
+    0 0 0.5px 0.5px rgba(255, 255, 255, 0.1);
+}
+
+.search-bar {
+  width: 100%;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px 0 20px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Core Input Area */
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: -0.1px;
+  caret-color: white;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.849);
+}
+
+.search-input:focus {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+/* Microphone Interface Element */
+.mic-button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  margin-left: 10px;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  opacity: 0.75;
+}
+
+.mic-button:hover {
+  opacity: 1;
+}
+
+.mic-button:active {
+  transform: scale(0.95);
+}
+
+.mic-button img {
+  width: 20px;
+  height: 20px;
+  transition: color 0.2s ease;
+}
+
+/* Suggestions Panel */
+.search-suggestions {
+  width: 100%;
+  background: transparent;
+  flex-direction: column;
+  padding: 0 6px;
+  border-top: 0px solid rgba(255, 255, 255, 0);
+  box-sizing: border-box;
+
+  /* Smooth open/close */
+  display: flex;
+  opacity: 0;
+  transform: translateY(-6px);
+  max-height: 0px;
+  overflow: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 200ms ease,
+    transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    max-height 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    padding 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-top 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.search-suggestions.open {
+  opacity: 1;
+  transform: translateY(0px);
+  max-height: 400px;
+  /* enough for the list; prevents jitter */
+  padding: 8px 6px;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.12);
+  pointer-events: auto;
+}
+
+@keyframes suggestionsReveal {
+  from {
+    opacity: 0;
+    transform: translateY(0px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.suggestion-item:hover,
+.suggestion-item.selected {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.suggestion-item svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0.55;
+  color: #ffffff;
+}
+
+.suggestion-item:hover svg,
+.suggestion-item.selected svg {
+  opacity: 0.85;
+}
+
+.suggestion-item .suggestion-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@keyframes searchReveal {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+}
+
+/* yaaa se chnge hua h  */
+
+
+
+/* Desktop settings card & option rows */
+.desktop-card {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  background: #fcfcfc;
+  border-radius: 20px;
+  border: 1px solid rgb(234, 234, 234);
+  padding: 5px 18px;
+  box-shadow: 1px 2px 10px 1px #0000000d;
+  margin: 15px 25px 30px auto;
+  line-height: normal;
+}
+
+.desktop-option-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+}
+
+.desktop-option-row .option-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #404040;
+}
+
+.desktop-option-row-line {
+  height: 0.5px;
+  background: rgb(234, 234, 234);
+  width: 100%;
+}
+
+/* macOS style Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 55px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #e9e9ea;
+  transition: .3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 20.5px;
+  width: 30px;
+  left: 2px;
+  bottom: 1px;
+  background-color: white;
+  transition: .3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-radius: 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.switch input:checked+.switch-slider {
+  background-color: #007aff;
+}
+
+.switch input:checked+.switch-slider:before {
+  transform: translateX(20px);
+}
+
+/* macOS style select dropdown */
+.macos-select {
+  appearance: none;
+  background-color: #f1f1f2;
+  border: 1px solid #d1d1d6;
+  border-radius: 6px;
+  padding: 4px 24px 4px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #3a3a3c;
+  cursor: pointer;
+  outline: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M7 15l5 5 5-5M7 9l5-5 5 5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+  text-align: left;
+  transition: background-color 0.2s ease;
+}
+
+.macos-select:hover {
+  background-color: #e5e5ea;
+}
+
+/* Glass Clock Widget */
+.glass-clock {
+  position: absolute;
+  top: calc(25% - 150px);
+  left: 50%;
+  transform: translateX(-50%) translateY(0) scale(1);
+  width: 520px;
+  padding: 16px 24px;
+  z-index: 5000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-sizing: border-box;
+  text-align: center;
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  opacity: 0.9;
+}
+
+.glass-clock-date {
+  font-family: 'SF Pro Display Medium', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
+  margin-bottom: -12px;
+}
+
+.glass-clock-time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'SF Pro Display Medium', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 100px;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 1.1;
+  letter-spacing: -4px;
+}
+
+.glass-clock-time .colon {
+  display: inline-block;
+  transform: translateY(-0.06em); /* Lift colon to align with visual center of numbers */
+  margin: 0 4px 10px 4px;
+}
+
+/* Hide clock when toggled off */
+#glassClock.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(-20px) scale(0.95);
 }

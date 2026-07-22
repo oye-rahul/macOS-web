@@ -1,11 +1,8 @@
-// ============================================================
-// 1. DOCK ANIMATION MODULE
-// ============================================================
 const dockShell = document.querySelector(".dock-shell");
 let dockItems = [];
 
-// Load saved dock size
-let BASE_WIDTH = parseFloat(localStorage.getItem('tahoe-dock-size')) || 50;
+let storedSize = parseFloat(localStorage.getItem('tahoe-dock-size'));
+let BASE_WIDTH = !isNaN(storedSize) ? storedSize : 50;
 
 const itemStates = new Map();
 const DISTANCE_LIMIT = BASE_WIDTH * 6;
@@ -13,19 +10,16 @@ const DISTANCE_INPUT = [
     -DISTANCE_LIMIT, -DISTANCE_LIMIT / 1.25, -DISTANCE_LIMIT / 2, 0,
     DISTANCE_LIMIT / 2, DISTANCE_LIMIT / 1.25, DISTANCE_LIMIT
 ];
-
-// Scale configuration
 let SCALE_OUTPUT = [1, 1.1, 1.414, 2, 1.414, 1.1, 1];
-const savedHover = localStorage.getItem('tahoe-dock-hover');
-if (savedHover && !isNaN(parseFloat(savedHover))) {
-    const scale = parseFloat(savedHover);
+let savedHoverInit = localStorage.getItem('tahoe-dock-hover');
+if (savedHoverInit && !isNaN(parseFloat(savedHoverInit))) {
+    let scale = parseFloat(savedHoverInit);
     const p1 = 1 + (scale - 1) * 0.1;
     const p2 = 1 + (scale - 1) * 0.414;
     SCALE_OUTPUT = [1, p1, p2, scale, p2, p1, 1];
 }
 
-// Utility: Linear interpolation
-const interpolate = (x, input, output) => {
+function interpolate(x, input, output) {
     if (x <= input[0]) return output[0];
     if (x >= input[input.length - 1]) return output[output.length - 1];
     for (let i = 0; i < input.length - 1; i++) {
@@ -34,26 +28,24 @@ const interpolate = (x, input, output) => {
         }
     }
     return output[0];
-};
+}
 
 let animationFrameId = null;
 let pointerX = 0;
 let isActive = false;
 
-const refreshDockItems = () => {
+function refreshDockItems() {
     dockItems = dockShell ? Array.from(dockShell.querySelectorAll(".dock-item")) : [];
     dockItems.forEach(item => {
-        if (!itemStates.has(item)) {
-            itemStates.set(item, { currentWidth: BASE_WIDTH, targetWidth: BASE_WIDTH });
-        }
+        if (!itemStates.has(item)) itemStates.set(item, { currentWidth: BASE_WIDTH, targetWidth: BASE_WIDTH });
     });
-};
+}
 
-const resetDock = () => {
+function resetDock() {
     if (dockShell) {
         dockShell.style.setProperty('--dock-size', `${BASE_WIDTH}px`);
     }
-    dockItems.forEach(item => {
+    dockItems.forEach((item) => {
         const icon = item.querySelector(".dock-icon, .dock-icon2");
         if (!icon) return;
         item.style.zIndex = "1";
@@ -67,17 +59,14 @@ const resetDock = () => {
             label.style.opacity = "0";
         }
     });
-};
+}
 
-const animateDock = (currentX) => {
+function animateDock(currentX) {
     if (!dockShell) return false;
-    let isMoving = false;
-    let nearestItem = null;
-    let nearestDistance = Infinity;
+    let isMoving = false, nearestItem = null, nearestDistance = Infinity;
 
-    // Find nearest item
     if (isActive) {
-        dockItems.forEach(item => {
+        dockItems.forEach((item) => {
             const icon = item.querySelector(".dock-icon, .dock-icon2");
             if (!icon) return;
             const state = itemStates.get(item);
@@ -93,15 +82,12 @@ const animateDock = (currentX) => {
 
     const lerpFactor = isActive ? 0.35 : 0.2;
 
-    dockItems.forEach(item => {
+    dockItems.forEach((item) => {
         const icon = item.querySelector(".dock-icon, .dock-icon2");
         if (!icon) return;
         const state = itemStates.get(item);
 
-        state.targetWidth = isActive
-            ? BASE_WIDTH * interpolate(currentX - state.iconCenter, DISTANCE_INPUT, SCALE_OUTPUT)
-            : BASE_WIDTH;
-
+        state.targetWidth = isActive ? BASE_WIDTH * interpolate(currentX - state.iconCenter, DISTANCE_INPUT, SCALE_OUTPUT) : BASE_WIDTH;
         const diff = state.targetWidth - state.currentWidth;
         state.currentWidth += diff * lerpFactor;
 
@@ -121,9 +107,9 @@ const animateDock = (currentX) => {
     });
 
     return isMoving;
-};
+}
 
-const queueAnimation = () => {
+function queueAnimation() {
     if (animationFrameId !== null) return;
     const run = () => {
         if (animateDock(pointerX) || isActive) {
@@ -134,34 +120,18 @@ const queueAnimation = () => {
         }
     };
     animationFrameId = requestAnimationFrame(run);
-};
-
-// Dock event listeners
-if (dockShell) {
-    dockShell.addEventListener("pointermove", (e) => {
-        isActive = true;
-        pointerX = e.clientX;
-        queueAnimation();
-    });
-    dockShell.addEventListener("pointerleave", () => {
-        isActive = false;
-        queueAnimation();
-    });
-    dockShell.addEventListener("touchmove", (e) => {
-        if (!e.touches.length) return;
-        isActive = true;
-        pointerX = e.touches[0].clientX;
-        queueAnimation();
-    }, { passive: true });
-    dockShell.addEventListener("touchend", () => {
-        isActive = false;
-        queueAnimation();
-    });
 }
 
-// ============================================================
-// 2. SHORTCUTS MANAGEMENT MODULE
-// ============================================================
+if (dockShell) {
+    dockShell.addEventListener("pointermove", (e) => { isActive = true; pointerX = e.clientX; queueAnimation(); });
+    dockShell.addEventListener("pointerleave", () => { isActive = false; queueAnimation(); });
+    dockShell.addEventListener("touchmove", (e) => {
+        if (!e.touches.length) return;
+        isActive = true; pointerX = e.touches[0].clientX; queueAnimation();
+    }, { passive: true });
+    dockShell.addEventListener("touchend", () => { isActive = false; queueAnimation(); });
+}
+
 const SHORTCUTS_KEY = "tahoe-shortcuts";
 const ORIGINAL_DEFAULT_SHORTCUTS = [
     { name: "YouTube", url: "https://www.youtube.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/46/67/98/4667988f-73ca-0c8d-e0ef-f405629bf27b/Placeholder.mill/400x400bb-75.webp" },
@@ -197,7 +167,7 @@ try {
     DEFAULT_SHORTCUTS = stored ? JSON.parse(stored) : null;
     if (!Array.isArray(DEFAULT_SHORTCUTS)) throw new Error("Not array");
 
-    // Auto-add AI tools migration
+    // Auto-add AI tools if they were missing (migration for existing users)
     ORIGINAL_DEFAULT_SHORTCUTS.filter(s => s.location === 'AI tool').forEach(aiTool => {
         if (!DEFAULT_SHORTCUTS.find(s => s.name === aiTool.name)) {
             DEFAULT_SHORTCUTS.push(aiTool);
@@ -207,9 +177,11 @@ try {
     DEFAULT_SHORTCUTS = JSON.parse(JSON.stringify(ORIGINAL_DEFAULT_SHORTCUTS));
 }
 
-const saveShortcuts = () => localStorage.setItem(SHORTCUTS_KEY, JSON.stringify(DEFAULT_SHORTCUTS));
+function saveShortcuts() {
+    localStorage.setItem(SHORTCUTS_KEY, JSON.stringify(DEFAULT_SHORTCUTS));
+}
 
-// DOM refs
+// --- SHORTCUT MANAGEMENT LOGIC ---
 const scNameInput = document.getElementById('sc-name');
 const scUrlInput = document.getElementById('sc-url');
 const scLocationSelect = document.getElementById('sc-location');
@@ -220,24 +192,21 @@ const customShortcutsContainer = document.getElementById('custom-shortcuts-conta
 const launchpadGrid = document.getElementById('launchpad-grid');
 const aiLaunchpadGrid = document.getElementById('ai-launchpad-grid');
 
-// Initialize IDs and locations
+// Give IDs and Default Location to DEFAULT_SHORTCUTS if they don't have them
 DEFAULT_SHORTCUTS.forEach((sc, i) => {
     if (!sc.id) sc.id = Date.now() + i;
     if (!sc.location) sc.location = "Dock";
 });
 
-const loadShortcuts = () => {
-    const containers = [
-        customShortcutsContainer,
-        shortcutsList,
-        launchpadGrid,
-        aiLaunchpadGrid
-    ];
-    containers.forEach(el => { if (el) el.innerHTML = ''; });
+function loadShortcuts() {
+    if (customShortcutsContainer) customShortcutsContainer.innerHTML = '';
+    if (shortcutsList) shortcutsList.innerHTML = '';
+    if (launchpadGrid) launchpadGrid.innerHTML = '';
+    if (aiLaunchpadGrid) aiLaunchpadGrid.innerHTML = '';
 
     DEFAULT_SHORTCUTS.forEach(sc => {
-        // Dock
-        if (customShortcutsContainer && ['Dock', 'Both', 'Dock + AI tool'].includes(sc.location)) {
+        // Add to Dock
+        if (customShortcutsContainer && (sc.location === 'Dock' || sc.location === 'Both' || sc.location === 'Dock + AI tool')) {
             const a = document.createElement("a");
             a.href = sc.url;
             a.target = "_self";
@@ -246,8 +215,8 @@ const loadShortcuts = () => {
             customShortcutsContainer.appendChild(a);
         }
 
-        // Launchpad Apps
-        if (launchpadGrid && ['Apps', 'Both'].includes(sc.location)) {
+        // Add to Launchpad (Apps)
+        if (launchpadGrid && (sc.location === 'Apps' || sc.location === 'Both')) {
             const a = document.createElement("a");
             a.href = sc.url;
             a.target = "_self";
@@ -257,8 +226,8 @@ const loadShortcuts = () => {
             launchpadGrid.appendChild(a);
         }
 
-        // AI Launchpad
-        if (aiLaunchpadGrid && ['AI tool', 'Dock + AI tool'].includes(sc.location)) {
+        // Add to AI Launchpad (AI Tools)
+        if (aiLaunchpadGrid && (sc.location === 'AI tool' || sc.location === 'Dock + AI tool')) {
             const a = document.createElement("a");
             a.href = sc.url;
             a.target = "_self";
@@ -268,37 +237,39 @@ const loadShortcuts = () => {
             aiLaunchpadGrid.appendChild(a);
         }
 
-        // UI List
+        // Add to UI List
         if (shortcutsList) {
             const listItem = document.createElement('div');
             listItem.className = 'shortcut-item';
             listItem.innerHTML = `
                 <div class="shortcut-item-info">
-                    <h4>${sc.name}</h4>
-                    <p>${sc.url}</p>
+                    <h4>\${sc.name}</h4>
+                    <p>\${sc.url}</p>
                 </div>
                 <div class="shortcut-item-actions">
                     <select class="sc-loc-dropdown">
-                        <option value="Dock" ${sc.location === 'Dock' ? 'selected' : ''}>LOCATION: Dock only</option>
-                        <option value="Apps" ${sc.location === 'Apps' ? 'selected' : ''}>LOCATION: App's</option>
-                        <option value="Both" ${sc.location === 'Both' ? 'selected' : ''}>LOCATION: Dock + App</option>
-                        <option value="AI tool" ${sc.location === 'AI tool' ? 'selected' : ''}>LOCATION: AI tool</option>
-                        <option value="Dock + AI tool" ${sc.location === 'Dock + AI tool' ? 'selected' : ''}>LOCATION: Dock + Ai tool</option>
+                        <option value="Dock" \${sc.location === 'Dock' ? 'selected' : ''}>LOCATION: Dock only</option>
+                        <option value="Apps" \${sc.location === 'Apps' ? 'selected' : ''}>LOCATION: App's</option>
+                        <option value="Both" \${sc.location === 'Both' ? 'selected' : ''}>LOCATION: Dock + App</option>
+                        <option value="AI tool" \${sc.location === 'AI tool' ? 'selected' : ''}>LOCATION: AI tool</option>
+                        <option value="Dock + AI tool" \${sc.location === 'Dock + AI tool' ? 'selected' : ''}>LOCATION: Dock + Ai tool</option>
                     </select>
                     <button class="sc-delete-btn">
                         <img src="https://img.icons8.com/?size=100&id=ccbXpS1mBiXf&format=png&color=000000" style="width: 20px; height: 20px;" alt="Delete">
                     </button>
                 </div>
             `;
-
             const locDropdown = listItem.querySelector('.sc-loc-dropdown');
             if (locDropdown) {
-                locDropdown.addEventListener('change', (e) => updateShortcutLoc(sc.id, e.target.value));
+                locDropdown.addEventListener('change', (e) => {
+                    updateShortcutLoc(sc.id, e.target.value);
+                });
             }
-
             const deleteBtn = listItem.querySelector('.sc-delete-btn');
             if (deleteBtn) {
-                deleteBtn.addEventListener('click', () => deleteShortcut(sc.id));
+                deleteBtn.addEventListener('click', () => {
+                    deleteShortcut(sc.id);
+                });
             }
             shortcutsList.appendChild(listItem);
         }
@@ -306,9 +277,9 @@ const loadShortcuts = () => {
 
     if (typeof refreshDockItems === 'function') refreshDockItems();
     if (typeof resetDock === 'function') resetDock();
-};
+}
 
-const updateShortcutLoc = (id, newLoc) => {
+window.updateShortcutLoc = function (id, newLoc) {
     const sc = DEFAULT_SHORTCUTS.find(s => s.id === id);
     if (sc) {
         sc.location = newLoc;
@@ -317,7 +288,7 @@ const updateShortcutLoc = (id, newLoc) => {
     }
 };
 
-const deleteShortcut = (id) => {
+window.deleteShortcut = function (id) {
     const idx = DEFAULT_SHORTCUTS.findIndex(s => s.id === id);
     if (idx !== -1) {
         DEFAULT_SHORTCUTS.splice(idx, 1);
@@ -326,7 +297,6 @@ const deleteShortcut = (id) => {
     }
 };
 
-// Add shortcut
 if (scAddBtn) {
     scAddBtn.addEventListener('click', () => {
         const name = scNameInput.value.trim();
@@ -364,57 +334,98 @@ if (scAddBtn) {
     });
 }
 
-// ============================================================
-// 3. LAUNCHPAD MODULE
-// ============================================================
-const setupLaunchpad = (openBtnId, overlayId, searchInputId, gridId) => {
-    const openBtn = document.getElementById(openBtnId);
-    const overlay = document.getElementById(overlayId);
-    const searchInput = document.getElementById(searchInputId);
-    const grid = document.getElementById(gridId);
+// Initial render
+document.addEventListener('DOMContentLoaded', () => {
+    loadShortcuts();
+});
+// in case DOM is already loaded
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    loadShortcuts();
+}
 
-    if (openBtn && overlay) {
-        openBtn.addEventListener('click', () => {
-            overlay.classList.toggle('active');
-            if (overlay.classList.contains('active') && searchInput) {
-                searchInput.focus();
+// --- LAUNCHPAD LOGIC ---
+const openLaunchpadBtn = document.getElementById('open-launchpad');
+const launchpadOverlay = document.getElementById('launchpad-overlay');
+const launchpadSearchInput = document.getElementById('launchpad-search-input');
+
+if (openLaunchpadBtn && launchpadOverlay) {
+    openLaunchpadBtn.addEventListener('click', () => {
+        launchpadOverlay.classList.toggle('active');
+        if (launchpadOverlay.classList.contains('active') && launchpadSearchInput) {
+            launchpadSearchInput.focus();
+        }
+    });
+
+    launchpadOverlay.addEventListener('click', (e) => {
+        if (e.target === launchpadOverlay) {
+            launchpadOverlay.classList.remove('active');
+        }
+    });
+}
+
+if (launchpadSearchInput && launchpadGrid) {
+    launchpadSearchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const apps = launchpadGrid.querySelectorAll('.launchpad-app');
+        apps.forEach(app => {
+            const name = app.dataset.name || '';
+            if (name.includes(query)) {
+                app.style.display = 'flex';
+            } else {
+                app.style.display = 'none';
             }
         });
+    });
+}
 
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) overlay.classList.remove('active');
+// --- AI LAUNCHPAD LOGIC ---
+const openAiToolsBtn = document.getElementById('open-ai-tools');
+const aiLaunchpadOverlay = document.getElementById('ai-launchpad-overlay');
+const aiLaunchpadSearchInput = document.getElementById('ai-launchpad-search-input');
+
+if (openAiToolsBtn && aiLaunchpadOverlay) {
+    openAiToolsBtn.addEventListener('click', () => {
+        aiLaunchpadOverlay.classList.toggle('active');
+        if (aiLaunchpadOverlay.classList.contains('active') && aiLaunchpadSearchInput) {
+            aiLaunchpadSearchInput.focus();
+        }
+    });
+
+    aiLaunchpadOverlay.addEventListener('click', (e) => {
+        if (e.target === aiLaunchpadOverlay) {
+            aiLaunchpadOverlay.classList.remove('active');
+        }
+    });
+}
+
+if (aiLaunchpadSearchInput && aiLaunchpadGrid) {
+    aiLaunchpadSearchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const apps = aiLaunchpadGrid.querySelectorAll('.launchpad-app');
+        apps.forEach(app => {
+            const name = app.dataset.name || '';
+            if (name.includes(query)) {
+                app.style.display = 'flex';
+            } else {
+                app.style.display = 'none';
+            }
         });
-    }
+    });
+}
 
-    if (searchInput && grid) {
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            const apps = grid.querySelectorAll('.launchpad-app');
-            apps.forEach(app => {
-                const name = app.dataset.name || '';
-                app.style.display = name.includes(query) ? 'flex' : 'none';
-            });
-        });
-    }
-};
-
-setupLaunchpad('open-launchpad', 'launchpad-overlay', 'launchpad-search-input', 'launchpad-grid');
-setupLaunchpad('open-ai-tools', 'ai-launchpad-overlay', 'ai-launchpad-search-input', 'ai-launchpad-grid');
-
-// ============================================================
-// 4. SETTINGS UI MODULE
-// ============================================================
-const settingsMain = document.querySelector(".Settings-main");
+// --- Settings Menu Toggle Logic ---
 const openSettingsIcon = document.getElementById("open-settings");
 const closeSettingsDot = document.getElementById("close-settings-dot");
 const maximizeSettingsDot = document.querySelector(".control-dot.maximize");
 const minimizeSettingsDot = document.querySelector(".control-dot.minimize");
+const settingsMain = document.querySelector(".Settings-main");
 
 if (openSettingsIcon && settingsMain) {
     openSettingsIcon.addEventListener("click", () => {
         settingsMain.classList.toggle("active");
+
+        // Reset to General tab on open
         if (settingsMain.classList.contains("active")) {
-            // Reset to General tab
             const gMenu = document.querySelector("#General-right-meun");
             const dMenu = document.querySelector(".main-dock");
             const wMenu = document.querySelector(".wallpaper");
@@ -425,6 +436,7 @@ if (openSettingsIcon && settingsMain) {
             if (gMenu) gMenu.style.display = "block";
             if (dMenu) dMenu.style.display = "none";
             if (wMenu) wMenu.style.display = "none";
+
             if (gBtn) gBtn.classList.add("active-tab");
             if (dBtn) dBtn.classList.remove("active-tab");
             if (wBtn) wBtn.classList.remove("active-tab");
@@ -434,22 +446,26 @@ if (openSettingsIcon && settingsMain) {
 
 if (closeSettingsDot && settingsMain) {
     closeSettingsDot.addEventListener("click", () => {
-        settingsMain.classList.remove("active", "maximized");
+        settingsMain.classList.remove("active");
+        settingsMain.classList.remove("maximized");
     });
 }
 
 if (maximizeSettingsDot && settingsMain) {
-    maximizeSettingsDot.addEventListener("click", () => settingsMain.classList.add("maximized"));
+    maximizeSettingsDot.addEventListener("click", () => {
+        settingsMain.classList.add("maximized");
+    });
 }
 
 if (minimizeSettingsDot && settingsMain) {
-    minimizeSettingsDot.addEventListener("click", () => settingsMain.classList.remove("maximized"));
+    minimizeSettingsDot.addEventListener("click", () => {
+        settingsMain.classList.remove("maximized");
+    });
 }
 
-// ============================================================
-// 5. CUSTOM SLIDER UTILITY
-// ============================================================
-const setupCustomSlider = (sliderId, progressId, thumbId, initialPercent, onChange) => {
+
+
+function setupCustomSlider(sliderId, progressId, thumbId, initialPercent, onChange) {
     const slider = document.getElementById(sliderId);
     const progress = document.getElementById(progressId);
     const thumb = document.getElementById(thumbId);
@@ -504,6 +520,11 @@ const setupCustomSlider = (sliderId, progressId, thumbId, initialPercent, onChan
         thumb.classList.remove('active');
     };
 
+    const init = (initialValue) => {
+        sliderRect = slider.getBoundingClientRect();
+        updateThumbAndProgress(initialValue);
+    };
+
     thumb.addEventListener('mousedown', onMouseDown);
     thumb.addEventListener('touchstart', onTouchStart, { passive: true });
 
@@ -522,12 +543,15 @@ const setupCustomSlider = (sliderId, progressId, thumbId, initialPercent, onChan
         onMove(e.touches[0].clientX);
     }, { passive: true });
 
-    setTimeout(() => updateThumbAndProgress(initialPercent), 50);
-};
+    // Small delay to ensure styles are computed
+    setTimeout(() => init(initialPercent), 50);
+}
 
-// Size Slider (30px-80px)
-const savedSize = parseFloat(localStorage.getItem('tahoe-dock-size')) || 50;
-BASE_WIDTH = savedSize;
+// 1. Size Slider (Map 0-100% to 30px-80px)
+let savedSize = localStorage.getItem('tahoe-dock-size');
+if (savedSize && !isNaN(parseFloat(savedSize))) {
+    BASE_WIDTH = parseFloat(savedSize);
+}
 const initialSizePercent = Math.max(0, Math.min(100, ((BASE_WIDTH - 30) / (80 - 30)) * 100));
 setupCustomSlider('size-slider', 'size-progress', 'size-thumb', initialSizePercent, (percent) => {
     BASE_WIDTH = 30 + (percent / 100) * 50;
@@ -535,8 +559,15 @@ setupCustomSlider('size-slider', 'size-progress', 'size-thumb', initialSizePerce
     resetDock();
 });
 
-// Hover Slider (1.2-3.0)
-let currentMaxScale = parseFloat(localStorage.getItem('tahoe-dock-hover')) || 2.0;
+// 2. Hover Slider (Map 0-100% to max scale 1.2 to 3.0)
+let currentMaxScale = 2.0;
+let savedHover = localStorage.getItem('tahoe-dock-hover');
+if (savedHover && !isNaN(parseFloat(savedHover))) {
+    currentMaxScale = parseFloat(savedHover);
+    const p1 = 1 + (currentMaxScale - 1) * 0.1;
+    const p2 = 1 + (currentMaxScale - 1) * 0.414;
+    SCALE_OUTPUT = [1, p1, p2, currentMaxScale, p2, p1, 1];
+}
 const initialHoverPercent = Math.max(0, Math.min(100, ((currentMaxScale - 1.2) / (3.0 - 1.2)) * 100));
 setupCustomSlider('hover-slider', 'hover-progress', 'hover-thumb', initialHoverPercent, (percent) => {
     currentMaxScale = 1.2 + (percent / 100) * 1.8;
@@ -546,30 +577,22 @@ setupCustomSlider('hover-slider', 'hover-progress', 'hover-thumb', initialHoverP
     localStorage.setItem('tahoe-dock-hover', currentMaxScale);
 });
 
-// ============================================================
-// 6. WALLPAPER MODULE (IndexedDB)
-// ============================================================
-const DB_NAME = 'TahoeWallpaperDB';
-const STORE_NAME = 'wallpapers';
-const KEY = 'active-wallpaper';
-let dbInstance = null;
+/* developed © Maxuiux */
 
+// --- DYNAMIC WALLPAPER STORAGE & LOGIC (IndexedDB & LocalStorage) ---
+const DB_NAME = 'TahoeWallpaperDB', STORE_NAME = 'wallpapers', KEY = 'active-wallpaper';
+let dbInstance = null;
 const requestDB = (mode, callback) => {
-    if (dbInstance) {
-        return callback(dbInstance.transaction([STORE_NAME], mode).objectStore(STORE_NAME));
-    }
+    if (dbInstance) return callback(dbInstance.transaction([STORE_NAME], mode).objectStore(STORE_NAME));
     const req = indexedDB.open(DB_NAME, 1);
     req.onupgradeneeded = (e) => e.target.result.createObjectStore(STORE_NAME);
-    req.onsuccess = (e) => {
-        dbInstance = e.target.result;
-        callback(dbInstance.transaction([STORE_NAME], mode).objectStore(STORE_NAME));
-    };
+    req.onsuccess = (e) => callback((dbInstance = e.target.result).transaction([STORE_NAME], mode).objectStore(STORE_NAME));
 };
 
 const videoBg = document.getElementById('video-bg');
 let activeObjectURL = null;
 
-const setWallpaper = (src, type = 'image', saveToDB = false, file = null) => {
+function setWallpaper(src, type = 'image', saveToDB = false, file = null) {
     if (activeObjectURL && activeObjectURL !== src) {
         URL.revokeObjectURL(activeObjectURL);
         activeObjectURL = null;
@@ -601,14 +624,9 @@ const setWallpaper = (src, type = 'image', saveToDB = false, file = null) => {
             requestDB('readwrite', store => store.delete(KEY));
         }
     }
-};
+}
 
-const loadStockWallpaper = () => {
-    const saved = localStorage.getItem('tahoe-wallpaper') || 'assets/wp1.png';
-    setWallpaper(saved, 'image');
-};
-
-// Load saved wallpaper
+// Load saved wallpaper on start
 const savedWallpaperType = localStorage.getItem('tahoe-wallpaper-type');
 if (savedWallpaperType && savedWallpaperType !== 'stock') {
     requestDB('readonly', store => {
@@ -625,7 +643,12 @@ if (savedWallpaperType && savedWallpaperType !== 'stock') {
     loadStockWallpaper();
 }
 
-// Stock wallpaper selection
+function loadStockWallpaper() {
+    const saved = localStorage.getItem('tahoe-wallpaper') || 'assets/wp1.png';
+    setWallpaper(saved, 'image');
+}
+
+// Stock wallpaper selection click handler
 document.querySelectorAll('.wallpaper .w-1 > div:not(.custom-upload-card):not(#custom-video-upload-card)').forEach(item => {
     item.addEventListener('click', () => {
         const img = item.querySelector('img');
@@ -633,8 +656,8 @@ document.querySelectorAll('.wallpaper .w-1 > div:not(.custom-upload-card):not(#c
     });
 });
 
-// Custom uploads
-const setupUpload = (inputId, divId, type) => {
+// --- CUSTOM IMAGE & VIDEO WALLPAPER UPLOAD LOGIC ---
+function setupUpload(inputId, divId, type) {
     const input = document.getElementById(inputId);
     const div = document.getElementById(divId) || document.querySelector('.' + divId);
     if (input) {
@@ -645,28 +668,29 @@ const setupUpload = (inputId, divId, type) => {
         if (div) div.addEventListener('click', () => input.click());
         input.addEventListener('click', (e) => e.stopPropagation());
     }
-};
+}
 setupUpload('custom-wall-upload', 'custom-upload-card', 'image');
 setupUpload('custom-video-upload', 'custom-video-upload-card', 'video');
 
-// Reset settings
+// --- RESET SETTINGS LOGIC ---
 const resetAllBtn = document.getElementById('resetAllBtn');
 if (resetAllBtn) {
     resetAllBtn.addEventListener('click', () => {
         ['tahoe-shortcuts', 'tahoe-dock-size', 'tahoe-dock-hover', 'tahoe-wallpaper', 'tahoe-wallpaper-type', 'tahoe-search-visible', 'tahoe-topbar-font-size'].forEach(k => localStorage.removeItem(k));
-        requestDB('readwrite', store => {
-            store.delete(KEY).onsuccess = () => location.reload();
-        });
-        setTimeout(() => location.reload(), 300);
+        try {
+            requestDB('readwrite', store => {
+                store.delete(KEY).onsuccess = () => location.reload();
+            });
+            setTimeout(() => location.reload(), 300);
+        } catch (e) {
+            location.reload();
+        }
     });
 }
 
-// ============================================================
-// 7. TOP BAR CLOCK & BATTERY
-// ============================================================
+// --- TOP BAR CLOCK AND BATTERY LOGIC ---
 let isComingSoonActive = false;
-
-const updateClock = () => {
+function updateClock() {
     const now = new Date();
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -674,16 +698,22 @@ const updateClock = () => {
     const dayName = days[now.getDay()];
     const monthName = months[now.getMonth()];
     const date = now.getDate();
+
     let hours = now.getHours();
     const minutes = now.getMinutes().toString().padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
+
+    hours = hours % 12;
+    hours = hours ? hours : 12;
 
     const timeString = `${dayName} ${monthName} ${date} ${hours}:${minutes} ${ampm}`;
 
     const timeEl = document.getElementById('top-menu-time');
-    if (timeEl) timeEl.textContent = timeString;
+    if (timeEl) {
+        timeEl.textContent = timeString;
+    }
 
+    // Update the large lockscreen-style glass clock
     const glassClockDateEl = document.getElementById('glassClockDate');
     const glassClockTimeEl = document.getElementById('glassClockTime');
     if (glassClockDateEl && !isComingSoonActive) {
@@ -692,31 +722,32 @@ const updateClock = () => {
     if (glassClockTimeEl) {
         glassClockTimeEl.innerHTML = `${hours}<span class="colon">:</span>${minutes}`;
     }
-};
+}
 setInterval(updateClock, 1000);
 updateClock();
 
-const updateBatteryUI = (battery) => {
+function updateBatteryUI(battery) {
     const levelEl = document.getElementById('battery-level');
     const fillEl = document.getElementById('battery-fill');
     const thunderEl = document.getElementById('top-thunder');
 
     if (levelEl) levelEl.textContent = Math.round(battery.level * 100) + '%';
     if (fillEl) fillEl.setAttribute('width', Math.round(battery.level * 16));
-    if (thunderEl) thunderEl.style.display = battery.charging ? 'block' : 'none';
-};
+
+    if (thunderEl) {
+        thunderEl.style.display = battery.charging ? 'block' : 'none';
+    }
+}
 
 if ('getBattery' in navigator) {
-    navigator.getBattery().then(battery => {
+    navigator.getBattery().then(function (battery) {
         updateBatteryUI(battery);
         battery.addEventListener('levelchange', () => updateBatteryUI(battery));
         battery.addEventListener('chargingchange', () => updateBatteryUI(battery));
     });
 }
 
-// ============================================================
-// 8. NOTEPAD MODULE
-// ============================================================
+// --- NOTEPAD LOGIC ---
 const openFolderBtn = document.getElementById('open-folder');
 const notepadWindow = document.getElementById('notepad-window');
 const closeNotepadBtn = document.getElementById('close-notepad');
@@ -724,47 +755,70 @@ const minimizeNotepadBtn = document.getElementById('minimize-notepad');
 const maximizeNotepadBtn = document.getElementById('maximize-notepad');
 
 if (openFolderBtn && notepadWindow) {
-    openFolderBtn.addEventListener('click', () => notepadWindow.classList.toggle('active'));
+    openFolderBtn.addEventListener('click', () => {
+        notepadWindow.classList.toggle('active');
+    });
 }
+
 if (closeNotepadBtn && notepadWindow) {
     closeNotepadBtn.addEventListener('click', () => {
-        notepadWindow.classList.remove('active', 'maximized');
+        notepadWindow.classList.remove('active');
+        notepadWindow.classList.remove('maximized');
     });
 }
+
 if (minimizeNotepadBtn && notepadWindow) {
-    minimizeNotepadBtn.addEventListener('click', () => notepadWindow.classList.remove('maximized'));
-}
-if (maximizeNotepadBtn && notepadWindow) {
-    maximizeNotepadBtn.addEventListener('click', () => notepadWindow.classList.toggle('maximized'));
+    minimizeNotepadBtn.addEventListener('click', () => {
+        notepadWindow.classList.remove('maximized');
+    });
 }
 
-// ============================================================
-// 9. PROFILE, SEARCH, SETTINGS TABS (DOMContentLoaded)
-// ============================================================
+if (maximizeNotepadBtn && notepadWindow) {
+    maximizeNotepadBtn.addEventListener('click', () => {
+        notepadWindow.classList.toggle('maximized');
+    });
+}
+
+// --- PROFILE & SPECS SAVING LOGIC ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Profile image
+    // Load profile image
     const savedProfileImg = localStorage.getItem('tahoe-profile-img');
     const profileImgEl = document.getElementById('profile-img');
-    if (savedProfileImg && profileImgEl) profileImgEl.src = savedProfileImg;
+    if (savedProfileImg && profileImgEl) {
+        profileImgEl.src = savedProfileImg;
+    }
 
-    // Save text fields
-    document.querySelectorAll('.save-text').forEach(el => {
+    // Load and save text fields
+    const saveTexts = document.querySelectorAll('.save-text');
+    saveTexts.forEach(el => {
         const id = el.id;
         if (!id) return;
+
+        // Load saved text
         const savedText = localStorage.getItem('tahoe-text-' + id);
-        if (savedText) el.textContent = savedText;
-        el.addEventListener('input', () => localStorage.setItem('tahoe-text-' + id, el.textContent));
+        if (savedText) {
+            el.textContent = savedText;
+        }
+
+        // Save text on input
+        el.addEventListener('input', () => {
+            localStorage.setItem('tahoe-text-' + id, el.textContent);
+        });
     });
 
-    // Notepad text
+    // Load and save notepad text
     const notepadTextarea = document.getElementById('notepad-textarea');
     if (notepadTextarea) {
         const savedNotepadText = localStorage.getItem('tahoe-notepad-text');
-        if (savedNotepadText) notepadTextarea.value = savedNotepadText;
-        notepadTextarea.addEventListener('input', () => localStorage.setItem('tahoe-notepad-text', notepadTextarea.value));
+        if (savedNotepadText) {
+            notepadTextarea.value = savedNotepadText;
+        }
+        notepadTextarea.addEventListener('input', () => {
+            localStorage.setItem('tahoe-notepad-text', notepadTextarea.value);
+        });
     }
 
-    // ===== DESKTOP SEARCH =====
+    // --- DESKTOP SEARCH & SUGGESTIONS LOGIC ---
     const mainSearch = document.getElementById('mainSearch');
     const searchSuggestions = document.getElementById('searchSuggestions');
     const micBtn = document.getElementById('micBtn');
@@ -774,11 +828,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let selectedIndex = -1;
         let originalQuery = '';
         let debounceTimer;
+
         const HIDE_ANIM_MS = 200;
 
         const hideSuggestions = () => {
             searchSuggestions.classList.remove('open');
-            setTimeout(() => {
+            // Clear after transition so the hide animation stays smooth
+            window.setTimeout(() => {
                 if (!searchSuggestions.classList.contains('open')) {
                     searchSuggestions.innerHTML = '';
                     currentSuggestions = [];
@@ -788,7 +844,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const executeSearch = (query) => {
-            if (query?.trim()) {
+            if (query && query.trim()) {
                 window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query.trim())}`;
             }
         };
@@ -810,7 +866,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentSuggestions = suggestions;
             selectedIndex = -1;
 
-            if (!suggestions.length) {
+            if (suggestions.length === 0) {
                 hideSuggestions();
                 return;
             }
@@ -825,11 +881,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `).join('');
 
+            // Show suggestions smoothly (no display toggling)
             searchSuggestions.classList.add('open');
 
-            searchSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
+            // Click listener for suggestion items
+            const items = searchSuggestions.querySelectorAll('.suggestion-item');
+            items.forEach(item => {
                 item.addEventListener('click', () => {
-                    executeSearch(currentSuggestions[parseInt(item.dataset.index)]);
+                    const idx = parseInt(item.dataset.index);
+                    executeSearch(currentSuggestions[idx]);
                 });
             });
         };
@@ -843,17 +903,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const res = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`);
                 if (res.ok) {
                     const data = await res.json();
-                    showSuggestions(data[1] || []);
+                    const suggestions = data[1] || [];
+                    showSuggestions(suggestions);
                 } else {
-                    throw new Error("Google suggest API failed");
+                    throw new Error("Google suggest API returned non-OK status");
                 }
             } catch (err) {
-                // Fallback to Wikipedia
+                // Fallback to Wikipedia suggest API which supports CORS on all origins
                 try {
                     const res = await fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&format=json&origin=*&search=${encodeURIComponent(query)}`);
                     if (res.ok) {
                         const data = await res.json();
-                        showSuggestions(data[1] || []);
+                        const suggestions = data[1] || [];
+                        showSuggestions(suggestions);
                     }
                 } catch (fallbackErr) {
                     console.error("Suggestions fallback failed:", fallbackErr);
@@ -861,114 +923,96 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
+        // Inputs & Event Listeners
         mainSearch.addEventListener('input', (e) => {
+            const query = e.target.value;
             clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => fetchSuggestions(e.target.value), 150);
+            debounceTimer = setTimeout(() => {
+                fetchSuggestions(query);
+            }, 150);
         });
 
         mainSearch.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                executeSearch(mainSearch.value);
+                const query = mainSearch.value;
+                executeSearch(query);
             } else if (e.key === 'Escape') {
                 hideSuggestions();
                 mainSearch.blur();
-            } else if (e.key === 'ArrowDown' && currentSuggestions.length) {
-                e.preventDefault();
-                if (selectedIndex === -1) originalQuery = mainSearch.value;
-                selectedIndex = (selectedIndex + 1) % currentSuggestions.length;
-                updateSelection();
-            } else if (e.key === 'ArrowUp' && currentSuggestions.length) {
-                e.preventDefault();
-                if (selectedIndex === -1) originalQuery = mainSearch.value;
-                selectedIndex--;
-                if (selectedIndex < -1) selectedIndex = currentSuggestions.length - 1;
-                if (selectedIndex === -1) {
-                    mainSearch.value = originalQuery;
-                    searchSuggestions.querySelectorAll('.suggestion-item').forEach(item => item.classList.remove('selected'));
-                } else {
+            } else if (e.key === 'ArrowDown') {
+                if (currentSuggestions.length > 0) {
+                    e.preventDefault();
+                    if (selectedIndex === -1) {
+                        originalQuery = mainSearch.value;
+                    }
+                    selectedIndex = (selectedIndex + 1) % currentSuggestions.length;
                     updateSelection();
+                }
+            } else if (e.key === 'ArrowUp') {
+                if (currentSuggestions.length > 0) {
+                    e.preventDefault();
+                    if (selectedIndex === -1) {
+                        originalQuery = mainSearch.value;
+                    }
+                    selectedIndex = selectedIndex - 1;
+                    if (selectedIndex < -1) {
+                        selectedIndex = currentSuggestions.length - 1;
+                    }
+                    if (selectedIndex === -1) {
+                        mainSearch.value = originalQuery;
+                        const items = searchSuggestions.querySelectorAll('.suggestion-item');
+                        items.forEach(item => item.classList.remove('selected'));
+                    } else {
+                        updateSelection();
+                    }
                 }
             }
         });
 
+        // Close suggestions when clicking outside
         document.addEventListener('click', (e) => {
             if (!mainSearch.contains(e.target) && !searchSuggestions.contains(e.target)) {
                 hideSuggestions();
             }
         });
 
+        // Re-open suggestions on focus
         mainSearch.addEventListener('focus', () => {
-            if (mainSearch.value.trim()) fetchSuggestions(mainSearch.value);
-        });
-
-        // Voice dictation
-        if (micBtn) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (SpeechRecognition) {
-                const recognition = new SpeechRecognition();
-                recognition.continuous = false;
-                recognition.lang = 'en-US';
-                recognition.interimResults = false;
-
-                let isListening = false;
-
-                micBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    isListening ? recognition.stop() : recognition.start();
-                });
-
-                recognition.onstart = () => {
-                    isListening = true;
-                    micBtn.style.animation = 'pulse 1.2s infinite';
-                    mainSearch.placeholder = 'Listening...';
-                };
-
-                recognition.onend = () => {
-                    isListening = false;
-                    micBtn.style.animation = 'none';
-                    mainSearch.placeholder = 'Search or Ask';
-                };
-
-                recognition.onerror = () => {
-                    isListening = false;
-                    micBtn.style.animation = 'none';
-                    mainSearch.placeholder = 'Search or Ask';
-                };
-
-                recognition.onresult = (event) => {
-                    const transcript = event.results[0][0].transcript;
-                    mainSearch.value = transcript;
-                    mainSearch.dispatchEvent(new Event('input'));
-                    mainSearch.focus();
-                };
-            } else {
-                micBtn.style.display = 'none';
+            if (mainSearch.value.trim()) {
+                fetchSuggestions(mainSearch.value);
             }
-        }
+        });
     }
 
-    // ===== DESKTOP SETTINGS =====
+    // --- DESKTOP SETTINGS LOGIC ---
     const searchBarToggle = document.getElementById('search-bar-toggle');
-    const topBarFontSelect = document.getElementById('topbar-font-size');
+    const topBarFontSelect = document.getElementById('topbar-font-select');
     const searchWrapper = document.querySelector('.search-wrapper');
     const topMenu = document.querySelector('.top-menu');
 
-    // Search bar visibility
+    // 1. Search Bar visibility
     const isSearchVisible = localStorage.getItem('tahoe-search-visible') !== 'false';
     if (searchBarToggle) {
         searchBarToggle.checked = isSearchVisible;
         searchBarToggle.addEventListener('change', (e) => {
             const visible = e.target.checked;
             localStorage.setItem('tahoe-search-visible', visible);
-            if (searchWrapper) searchWrapper.classList.toggle('hidden', !visible);
+            if (searchWrapper) {
+                if (visible) {
+                    searchWrapper.classList.remove('hidden');
+                } else {
+                    searchWrapper.classList.add('hidden');
+                }
+            }
         });
     }
-    if (searchWrapper && !isSearchVisible) searchWrapper.classList.add('hidden');
+    if (searchWrapper && !isSearchVisible) {
+        searchWrapper.classList.add('hidden');
+    }
 
-    // Clock visibility
-    const clockToggle = document.getElementById('clock-toggle');
-    const glassClock = document.getElementById('glassClock');
+    // 1.5. Clock visibility
+    const clockToggle = document.getElementById('clock-toggle'), glassClock = document.getElementById('glassClock');
     const setClockVisible = (visible) => {
         glassClock?.classList.toggle('hidden', !visible);
         if (clockToggle) clockToggle.checked = visible;
@@ -977,7 +1021,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setClockVisible(localStorage.getItem('tahoe-clock-visible') !== 'false');
     clockToggle?.addEventListener('change', (e) => setClockVisible(e.target.checked));
 
-    // Clock "Coming Soon" click
+    // Show "Coming Soon" when clock widget is clicked
     if (glassClock) {
         glassClock.addEventListener('click', () => {
             const dateEl = document.getElementById('glassClockDate');
@@ -992,27 +1036,85 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Top bar font size
+
+    // 2. Top bar font size
     const savedFontSize = localStorage.getItem('tahoe-topbar-font-size') || 'medium';
     const applyTopBarFontSize = (size) => {
-        const sizeMap = { small: '12px', medium: '16px', large: '20px' };
-        if (topMenu) topMenu.style.setProperty('--topbar-font-size', sizeMap[size] || '16px');
+        let sizePx = '16px';
+        if (size === 'small') sizePx = '12px';
+        if (size === 'large') sizePx = '20px';
+        if (topMenu) {
+            topMenu.style.setProperty('--topbar-font-size', sizePx);
+        }
     };
     if (topBarFontSelect) {
         topBarFontSelect.value = savedFontSize;
         topBarFontSelect.addEventListener('change', (e) => {
-            localStorage.setItem('tahoe-topbar-font-size', e.target.value);
-            applyTopBarFontSize(e.target.value);
+            const size = e.target.value;
+            localStorage.setItem('tahoe-topbar-font-size', size);
+            applyTopBarFontSize(size);
         });
     }
     applyTopBarFontSize(savedFontSize);
 
-    // ===== SETTINGS TAB SWITCHING =====
+    // Voice dictation using Web Speech API
+    if (micBtn && mainSearch) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            let isListening = false;
+
+            micBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (isListening) {
+                    recognition.stop();
+                } else {
+                    recognition.start();
+                }
+            });
+
+            recognition.onstart = () => {
+                isListening = true;
+                micBtn.style.animation = 'pulse 1.2s infinite';
+                mainSearch.placeholder = 'Listening...';
+            };
+
+            recognition.onend = () => {
+                isListening = false;
+                micBtn.style.animation = 'none';
+                mainSearch.placeholder = 'Search or Ask';
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error:", event.error);
+                isListening = false;
+                micBtn.style.animation = 'none';
+                mainSearch.placeholder = 'Search or Ask';
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                mainSearch.value = transcript;
+                if (mainSearch.dispatchEvent) {
+                    mainSearch.dispatchEvent(new Event('input'));
+                }
+                mainSearch.focus();
+            };
+        } else {
+            micBtn.style.display = 'none';
+        }
+    }
+
+    // --- SETTINGS TAB SWITCHING LOGIC ---
     const settingsBtn = document.getElementById("settingsBtn");
     const desktopDockBtn = document.getElementById("desktopDockBtn");
     const wallpaperBtn = document.getElementById("wallpaperBtn");
     const shortcutBtn = document.getElementById("shortcutBtn");
-    const widgetsBtn = document.getElementById("widgetsBtn");
 
     const generalMenu = document.querySelector("#General-right-meun");
     const mainDockMenu = document.querySelector(".main-dock");
@@ -1020,56 +1122,74 @@ document.addEventListener('DOMContentLoaded', () => {
     const shortcutMenu = document.querySelector(".shortcut-menu");
     const topBarTitle = document.getElementById("top-bar-title");
 
-    const switchTab = (activeBtn, activeMenu) => {
-        [generalMenu, mainDockMenu, wallpaperMenu, shortcutMenu].forEach(el => {
-            if (el) el.style.display = "none";
-        });
-        [settingsBtn, desktopDockBtn, wallpaperBtn, shortcutBtn].forEach(el => {
-            if (el) el.classList.remove("active-tab");
-        });
+    function switchTab(activeBtn, activeMenu) {
+        if (generalMenu) generalMenu.style.display = "none";
+        if (mainDockMenu) mainDockMenu.style.display = "none";
+        if (wallpaperMenu) wallpaperMenu.style.display = "none";
+        if (shortcutMenu) shortcutMenu.style.display = "none";
+
+        if (settingsBtn) settingsBtn.classList.remove("active-tab");
+        if (desktopDockBtn) desktopDockBtn.classList.remove("active-tab");
+        if (wallpaperBtn) wallpaperBtn.classList.remove("active-tab");
+        if (shortcutBtn) shortcutBtn.classList.remove("active-tab");
+
         if (activeMenu) activeMenu.style.display = "block";
-        if (activeBtn) {
-            activeBtn.classList.add("active-tab");
-            if (topBarTitle) {
-                const titleText = activeBtn.querySelector('p');
-                if (titleText) topBarTitle.textContent = titleText.textContent;
-            }
+        if (activeBtn) activeBtn.classList.add("active-tab");
+
+        if (topBarTitle && activeBtn) {
+            const titleText = activeBtn.querySelector('p');
+            if (titleText) topBarTitle.textContent = titleText.textContent;
         }
-    };
+    }
 
-    if (settingsBtn && generalMenu) settingsBtn.addEventListener("click", () => switchTab(settingsBtn, generalMenu));
-    if (desktopDockBtn && mainDockMenu) desktopDockBtn.addEventListener("click", () => switchTab(desktopDockBtn, mainDockMenu));
-    if (wallpaperBtn && wallpaperMenu) wallpaperBtn.addEventListener("click", () => switchTab(wallpaperBtn, wallpaperMenu));
-    if (shortcutBtn && shortcutMenu) shortcutBtn.addEventListener("click", () => switchTab(shortcutBtn, shortcutMenu));
-    if (widgetsBtn) widgetsBtn.addEventListener("click", () => alert("Coming Soon"));
+    if (settingsBtn && generalMenu) {
+        settingsBtn.addEventListener("click", () => switchTab(settingsBtn, generalMenu));
+    }
+    if (desktopDockBtn && mainDockMenu) {
+        desktopDockBtn.addEventListener("click", () => switchTab(desktopDockBtn, mainDockMenu));
+    }
+    if (wallpaperBtn && wallpaperMenu) {
+        wallpaperBtn.addEventListener("click", () => switchTab(wallpaperBtn, wallpaperMenu));
+    }
+    if (shortcutBtn && shortcutMenu) {
+        shortcutBtn.addEventListener("click", () => switchTab(shortcutBtn, shortcutMenu));
+    }
+    const widgetsBtn = document.getElementById("widgetsBtn");
+    if (widgetsBtn) {
+        widgetsBtn.addEventListener("click", () => alert("Coming Soon"));
+    }
 
-    // ===== PROFILE IMAGE UPLOAD =====
+    // --- PROFILE IMAGE & EVENT HANDLERS ---
     const profilePicContainer = document.querySelector('.profile .pp');
     const profileUploadInput = document.getElementById('profile-upload');
+    const targetProfileImg = document.getElementById('profile-img');
     if (profilePicContainer && profileUploadInput) {
-        profilePicContainer.addEventListener('click', () => profileUploadInput.click());
-        profileUploadInput.addEventListener('click', (e) => e.stopPropagation());
+        profilePicContainer.addEventListener('click', () => {
+            profileUploadInput.click();
+        });
+        profileUploadInput.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
         profileUploadInput.addEventListener('change', () => {
-            const file = profileUploadInput.files[0];
-            if (file) {
+            if (profileUploadInput.files[0]) {
                 const r = new FileReader();
                 r.onload = (e) => {
-                    if (profileImgEl) profileImgEl.src = e.target.result;
+                    if (targetProfileImg) {
+                        targetProfileImg.src = e.target.result;
+                    }
                     localStorage.setItem('tahoe-profile-img', e.target.result);
                 };
-                r.readAsDataURL(file);
+                r.readAsDataURL(profileUploadInput.files[0]);
             }
         });
     }
 
-    // Specs tip
-    document.getElementById('specsEditableTipBtn')?.addEventListener('click', () => {
-        alert('Just click on any text above to edit it directly!');
-    });
+    // --- SPECIFICATION CHANGE TIPS ---
+    const specsEditableTipBtn = document.getElementById('specsEditableTipBtn');
+    if (specsEditableTipBtn) {
+        specsEditableTipBtn.addEventListener('click', () => {
+            alert('Just click on any text above to edit it directly!');
+        });
+    }
 });
 
-// Initial load
-document.addEventListener('DOMContentLoaded', loadShortcuts);
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    loadShortcuts();
-}

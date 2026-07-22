@@ -129,13 +129,15 @@ body {
   align-items: start;
   opacity: 0;
   pointer-events: none;
-  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-  background: #ffffff;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 30%, rgb(247, 253, 255) 100%);
+  will-change: opacity, transform;
+  transform: translate(-50%, -50%) scale(0.97) translateZ(0);
+  transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(247, 253, 255, 0.95) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.97);
   text-align: center;
   line-height: 100px;
   border: 1px solid #f0f0f067;
@@ -145,7 +147,7 @@ body {
 .Settings-main.active {
   opacity: 1;
   pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%) scale(1) translateZ(0);
 }
 
 .window-controls button img {
@@ -1195,7 +1197,11 @@ button {
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity;
+  transform: translateZ(0);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
   background: rgba(0, 0, 0, 0.1);
 }
 
@@ -1216,12 +1222,13 @@ button {
   flex-direction: column;
   padding: 0 25px 25px 25px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), inset 0 0px 0 rgba(255, 255, 255, 0.8);
-  transform: scale(0.95);
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform: scale(0.95) translateZ(0);
+  will-change: transform;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .launchpad-overlay.active .launchpad-container {
-  transform: scale(1);
+  transform: scale(1) translateZ(0);
 }
 
 .launchpad-header {
@@ -1332,12 +1339,13 @@ button {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.97);
+  transform: translate(-50%, -50%) scale(0.97) translateZ(0);
+  will-change: opacity, transform;
   width: min(890px, 92vw);
   height: min(80vh);
-  background: rgb(255, 255, 255);
-  backdrop-filter: blur(25px) saturate(150%);
-  -webkit-backdrop-filter: blur(25px) saturate(150%);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
   border-radius: 30px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
   border: 2px solid rgba(164, 164, 164, 0.521);
@@ -1345,14 +1353,14 @@ button {
   flex-direction: column;
   opacity: 0;
   pointer-events: none;
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
   z-index: 7000;
 }
 
 .notepad-window.active {
   opacity: 1;
   pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%) scale(1) translateZ(0);
 }
 
 .notepad-window.active.maximized {
@@ -1361,7 +1369,6 @@ button {
   height: 88vh;
   border-radius: 30px;
   border: 2px solid rgba(164, 164, 164, 0.521);
-  ;
 }
 
 .notepad-header {
@@ -1404,30 +1411,31 @@ button {
 }
 
 
-/* Search Bar Frame Container */
+/* Search Bar Frame Container (AI / Spotlight Search) */
 .search-wrapper {
   position: absolute;
   top: 25%;
   left: 50%;
-  transform: translateX(-50%) translateY(0) scale(1);
+  transform: translateX(-50%) translateY(0) scale(1) translateZ(0);
+  will-change: opacity, transform;
   width: 520px;
   z-index: 5000;
   display: flex;
   flex-direction: column;
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(30px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
   border-radius: 26px;
   box-shadow:
     0 20px 50px rgba(0, 0, 0, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.12);
   overflow: hidden;
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .search-wrapper.hidden {
   opacity: 0;
   pointer-events: none;
-  transform: translateX(-50%) translateY(-20px) scale(0.95);
+  transform: translateX(-50%) translateY(-20px) scale(0.95) translateZ(0);
 }
 
 .search-wrapper:focus-within {
@@ -1764,7 +1772,8 @@ button {
 
 .glass-clock-time .colon {
   display: inline-block;
-  transform: translateY(-0.06em); /* Lift colon to align with visual center of numbers */
+  transform: translateY(-0.06em);
+  /* Lift colon to align with visual center of numbers */
   margin: 0 4px 10px 4px;
 }
 

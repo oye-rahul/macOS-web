@@ -226,7 +226,6 @@ body {
 .left-menu .profile .pp img {
   height: 50px;
   width: 50px;
-  background: #266bff;
   border-radius: 50%;
   border: 1px solid #bcd4ff29;
   display: block;
@@ -333,7 +332,6 @@ body {
   padding-left: 20px;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  background: rgba(255, 255, 255, 0.6);
   z-index: 10;
   border-top-right-radius: 25px;
   /* match container border radius */
@@ -1211,10 +1209,7 @@ button {
 }
 
 .launchpad-container {
-  background: rgba(255, 255, 255, 0.473);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 2px solid rgba(255, 255, 255, 0.244);
+  background: rgba(255, 255, 255, 1);
   border-radius: 25px;
   width: min(605px);
   height: min(550px, 80vh);

@@ -1212,7 +1212,7 @@ button {
   background: rgba(255, 255, 255, 1);
   border-radius: 25px;
   width: min(605px);
-  height: min(550px, 80vh);
+  height: min(560px, 80vh);
   display: flex;
   flex-direction: column;
   padding: 0 25px 25px 25px;
@@ -1433,20 +1433,14 @@ button {
   transform: translateX(-50%) translateY(-20px) scale(0.95) translateZ(0);
 }
 
-.search-wrapper:focus-within {
-  background: transparent;
-  box-shadow:
-    0 0 0.5px 0.5px rgba(255, 255, 255, 0.1),
-    0 0 0.5px 0.5px rgba(255, 255, 255, 0.1);
-}
 
 .search-bar {
   width: 100%;
-  height: 52px;
+  height: 45px;
   display: flex;
   align-items: center;
   padding: 0 16px 0 20px;
-  background: transparent;
+  background: #ffffff75;
   border: none;
   box-shadow: none;
 }
@@ -1457,15 +1451,15 @@ button {
   background: transparent;
   border: none;
   outline: none;
-  color: white;
-  font-size: 18px;
+  color: rgb(30, 30, 30);
+  font-size: 20px;
   font-weight: 400;
   letter-spacing: -0.1px;
   caret-color: white;
 }
 
 .search-input::placeholder {
-  color: rgba(255, 255, 255, 0.849);
+  color: rgba(84, 84, 84, 0.849);
 }
 
 .search-input:focus {
@@ -1500,16 +1494,21 @@ button {
   transition: color 0.2s ease;
 }
 
+.search-icon {
+  width: 25px;
+  height: 25px;
+  margin: 0 10px 0 -5px;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
 /* Suggestions Panel */
 .search-suggestions {
   width: 100%;
-  background: transparent;
+  background: #ffffff75;
   flex-direction: column;
   padding: 0 6px;
-  border-top: 0px solid rgba(255, 255, 255, 0);
   box-sizing: border-box;
-
-  /* Smooth open/close */
   display: flex;
   opacity: 0;
   transform: translateY(-6px);
@@ -1531,7 +1530,7 @@ button {
   max-height: 400px;
   /* enough for the list; prevents jitter */
   padding: 8px 6px;
-  border-top: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-top: 1.5px solid rgba(110, 110, 110, 0.384);
   pointer-events: auto;
 }
 
@@ -1553,7 +1552,7 @@ button {
   gap: 12px;
   padding: 10px 14px;
   border-radius: 10px;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(48, 48, 48, 0.85);
   font-size: 15px;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
@@ -1561,15 +1560,15 @@ button {
 
 .suggestion-item:hover,
 .suggestion-item.selected {
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  background: rgba(81, 80, 80, 0.12);
+  color: #000000;
 }
 
 .suggestion-item svg {
   width: 14px;
   height: 14px;
-  opacity: 0.55;
-  color: #ffffff;
+  opacity: 0.75;
+  color: #111111;
 }
 
 .suggestion-item:hover svg,

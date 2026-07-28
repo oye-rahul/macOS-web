@@ -123,7 +123,6 @@ body {
 .Settings-main {
   width: min(890px, 92vw);
   height: min(80vh);
-
   inset: 0;
   z-index: 6000;
   display: flex;
@@ -820,8 +819,6 @@ body.theme-light .dock-dot {
   text-align: center;
 }
 
-
-
 /* Custom Wallpaper Section Styles */
 .custome-wallpaper {
   width: 100%;
@@ -860,26 +857,6 @@ body.theme-light .dock-dot {
   color: #555;
   font-weight: 500;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* dock-lider-lider */
 
@@ -1738,9 +1715,6 @@ button {
   gap: 2px;
   box-sizing: border-box;
   text-align: center;
-  pointer-events: auto;
-  cursor: pointer;
-  user-select: none;
   transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   opacity: 0.9;
 }

@@ -1,6 +1,4 @@
-// ============================================================
 // 1. DOCK ANIMATION MODULE
-// ============================================================
 const dockShell = document.querySelector(".dock-shell");
 let dockItems = [];
 
@@ -159,9 +157,7 @@ if (dockShell) {
     });
 }
 
-// ============================================================
 // 2. SHORTCUTS MANAGEMENT MODULE
-// ============================================================
 const SHORTCUTS_KEY = "tahoe-shortcuts";
 const ORIGINAL_DEFAULT_SHORTCUTS = [
     { name: "YouTube", url: "https://www.youtube.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/46/67/98/4667988f-73ca-0c8d-e0ef-f405629bf27b/Placeholder.mill/400x400bb-75.webp" },
@@ -976,21 +972,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     setClockVisible(localStorage.getItem('tahoe-clock-visible') !== 'false');
     clockToggle?.addEventListener('change', (e) => setClockVisible(e.target.checked));
-
-    // Clock "Coming Soon" click
-    if (glassClock) {
-        glassClock.addEventListener('click', () => {
-            const dateEl = document.getElementById('glassClockDate');
-            if (dateEl && !isComingSoonActive) {
-                isComingSoonActive = true;
-                dateEl.textContent = 'Coming Soon';
-                setTimeout(() => {
-                    isComingSoonActive = false;
-                    updateClock();
-                }, 1500);
-            }
-        });
-    }
 
     // Top bar font size
     const savedFontSize = localStorage.getItem('tahoe-topbar-font-size') || 'medium';

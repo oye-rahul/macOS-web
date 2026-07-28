@@ -59,5 +59,14 @@ Designed to be ultra-efficient for daily use:
 4. Click **Load unpacked** and select the directory of this project.
 5. Open a new tab and enjoy your new macOS desktop!
 
+##  🔏 Privacy Policy
+
+**This extension does not collect, store, or transmit any personal data. **
+*All information remains only in your browser’s local storage.
+*No external servers, online databases, or third-party services are involved.
+*You can freely use this extension without any privacy concerns.
+*For transparency, you may review the source code to verify that no data handling or tracking is implemented.
+
+
 ---
 *Made with ❤️ for creativity and web design enthusiasts.*

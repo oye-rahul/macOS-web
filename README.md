@@ -61,11 +61,11 @@ Designed to be ultra-efficient for daily use:
 
 ##  🔏 Privacy Policy
 
-**This extension does not collect, store, or transmit any personal data. **
-*All information remains only in your browser’s local storage.
-*No external servers, online databases, or third-party services are involved.
-*You can freely use this extension without any privacy concerns.
-*For transparency, you may review the source code to verify that no data handling or tracking is implemented.
+* **This extension does not collect, store, or transmit any personal data.**
+* All information remains only in your browser’s local storage.
+* No external servers, online databases, or third-party services are involved.
+* You can freely use this extension without any privacy concerns.
+* For transparency, you may review the source code to verify that no data handling or tracking is implemented.
 
 
 ---

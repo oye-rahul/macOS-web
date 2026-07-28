@@ -22,6 +22,8 @@ body {
   width: 100vw;
   overflow: hidden;
   overscroll-behavior: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 #video-bg {
@@ -452,6 +454,7 @@ body {
 
 .os-info .tital {
   letter-spacing: 0.5px;
+  line-height: 2;
   font-weight: 600;
   font-size: 20px;
   margin-bottom: 10px;

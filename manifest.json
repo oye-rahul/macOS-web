@@ -1,8 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "macOS New Tab",
-  "version": "1.0",
-  "description": "A custom new tab page inspired by macOS.",
+  "name": "DeskTab - Modern Desktop New Tab",
+  "version": "1.0.1",
+  "description": "A clean, customizable desktop-style start page for your browser featuring a responsive dock, quick search, interactive widgets, and wallpapers.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
@@ -13,3 +18,4 @@
     "https://suggestqueries.google.com/*"
   ]
 }
+

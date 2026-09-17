@@ -270,8 +270,8 @@ const loadShortcuts = () => {
             listItem.className = 'shortcut-item';
             listItem.innerHTML = `
                 <div class="shortcut-item-info">
-                    <h4>${sc.name}</h4>
-                    <p>${sc.url}</p>
+                    <h4 title="${sc.name || ''}">${sc.name}</h4>
+                    <p title="${sc.url || ''}">${sc.url}</p>
                 </div>
                 <div class="shortcut-item-actions">
                     <select class="sc-loc-dropdown">
@@ -600,7 +600,7 @@ const setWallpaper = (src, type = 'image', saveToDB = false, file = null) => {
 };
 
 const loadStockWallpaper = () => {
-    const saved = localStorage.getItem('tahoe-wallpaper') || 'assets/wp1.png';
+    const saved = localStorage.getItem('tahoe-wallpaper') || 'assets/8z3jfEOqjrpCUxVsODP05JhlKOk.webp';
     setWallpaper(saved, 'image');
 };
 

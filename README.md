@@ -1,14 +1,14 @@
-# 🍎 macOS Web - New Tab Experience
+# 🖥️ DeskTab - Modern Desktop New Tab Experience
 
 <img width="1536" height="863" alt="Screenshot 2026-07-17 230824" src="https://github.com/user-attachments/assets/2ca6ff47-316f-494b-b488-2f68861d2c40" />
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg?style=for-the-badge)](https://macos-web-ext.vercel.app/)
 
-Transform your browser's default new tab into a stunning, fully functional macOS-inspired desktop environment!
+Transform your browser's default new tab into a stunning, fully functional desktop-inspired environment!
 
 ## 🌟 About the Extension
 
-**macOS Web** is a beautifully crafted New Tab extension that replaces your default start page with a vibrant, interactive, and highly customizable macOS-like interface. It brings the familiar elegance of Apple's operating system straight to your web browser. 
+**DeskTab** is a beautifully crafted New Tab extension that replaces your default start page with a vibrant, interactive, and highly customizable desktop-style interface. 
 
 Whether you want quick access to your favorite apps, a centralized hub for AI tools, or simply a visually pleasing start to your browsing session, this extension delivers it all with smooth animations and pixel-perfect design.
 

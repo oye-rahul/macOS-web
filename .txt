@@ -1,0 +1,35 @@
+Here are the top improvements that will make your macOS simulator feel significantly more realistic, fluid, and complete:
+
+1. 🪟 Draggable & Multi-Window Management (Highest Impact)
+Draggable Windows: Currently, windows like Settings and Notepad are fixed to the center of the screen. Adding header-bar dragging so you can move them anywhere on the desktop makes it feel like a real OS.
+Window Focus & Stacking: Clicking on an inactive window should bring it to the top (z-index) and highlight its header.
+Double-Click Titlebar to Maximize: Double-clicking the top bar of a window to smoothly toggle maximize/restore (standard macOS behavior).
+2. 🚀 Dock Interactivity & Realism
+Active Indicator Dots: In 
+
+style.css
+, .dock-item.is-running .dock-dot is already styled, but never turned on! We can automatically show the glowing indicator dot underneath Settings or Notepad whenever they are open.
+Launch Bounce Animation: When you click an icon to launch an app, make it do the classic macOS jumping/bounce animation before the window appears.
+3. 🍎 Functional Top Menu Bar Dropdowns
+Apple / System Menu: Clicking System currently does nothing. We can add a glassmorphism dropdown menu:
+About This Mac (opens the Specs window)
+System Settings...
+Lock Screen / Sleep / Restart
+Control Center Widget: Clicking the switches icon in the top right can open a real macOS Control Center with:
+Wi-Fi & Bluetooth toggles
+Sound & Display brightness sliders
+Dark / Light mode toggle
+4. 🧩 Replace Incomplete Features
+Widgets Tab in Settings: The "Widgets" tab in 
+
+script.js:L1025
+ currently shows alert("Coming Soon"). We can build desktop widgets (Clock, Calendar, Weather, or Quick Notes).
+True Dark / Light Mode Switch: Add a system-wide toggle so the top bar, windows, search bar, and dock can switch smoothly between dark and light themes.
+Recommended Next Steps
+Which of these would you like to build first?
+
+Window Dragging & Focus Stacking (Move windows freely & click to bring to front)
+Dock Bounce & Active Dots (Glowing dot when open + bounce on launch)
+Top Menu Bar Dropdown & Control Center
+Widgets & Dark Mode
+4:20 PM

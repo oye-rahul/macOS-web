@@ -1,6 +1,5 @@
 # DeskTab — Modern Desktop New Tab
 
-(https://microsoftedge.microsoft.com/addons/detail/desktab-modern-desktop-/chpeebogachibgcjgmfglfigmkkefcgo)
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge)](https://macos-web-ext.vercel.app/)
 ![Version 1.5.0](https://img.shields.io/badge/version-1.5.0-informational)
 [![Get DeskTab for Microsoft Edge](https://img.shields.io/badge/Microsoft%20Edge-Get%20the%20extension-0078D7?logo=microsoftedge&logoColor=white)]

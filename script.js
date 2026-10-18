@@ -6,7 +6,7 @@ let dockItems = [];
 let BASE_WIDTH = parseFloat(localStorage.getItem('tahoe-dock-size')) || 50;
 
 const itemStates = new Map();
-const DISTANCE_LIMIT = BASE_WIDTH * 6;
+const DISTANCE_LIMIT = BASE_WIDTH * 7;
 const DISTANCE_INPUT = [
     -DISTANCE_LIMIT, -DISTANCE_LIMIT / 1.25, -DISTANCE_LIMIT / 2, 0,
     DISTANCE_LIMIT / 2, DISTANCE_LIMIT / 1.25, DISTANCE_LIMIT
@@ -89,7 +89,7 @@ const animateDock = (currentX) => {
         });
     }
 
-    const lerpFactor = isActive ? 0.35 : 0.2;
+    const lerpFactor = isActive ? 0.15 : 0.1;
 
     dockItems.forEach(item => {
         const icon = item.querySelector(".dock-icon, .dock-icon2");
@@ -113,7 +113,7 @@ const animateDock = (currentX) => {
 
         const label = item.querySelector(".dock-label");
         if (label) {
-            label.style.transform = `translateX(-50%) translateY(-${(state.currentWidth - BASE_WIDTH) + 15}px)`;
+            label.style.transform = `translateX(-50%) translateY(-${state.currentWidth - BASE_WIDTH}px)`;
             label.style.opacity = (isActive && item === nearestItem && nearestDistance < BASE_WIDTH * 0.8) ? "1" : "0";
         }
     });
@@ -163,29 +163,59 @@ const ORIGINAL_DEFAULT_SHORTCUTS = [
     { name: "YouTube", url: "https://www.youtube.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/46/67/98/4667988f-73ca-0c8d-e0ef-f405629bf27b/Placeholder.mill/400x400bb-75.webp" },
     { name: "Gmail", url: "https://mail.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/a5/f4/92/a5f492ef-0a00-36ae-9f64-b7ea39edaf4b/Placeholder.mill/400x400bb-75.webp" },
     { name: "WhatsApp", url: "https://web.whatsapp.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/76/79/be/7679bedc-15f9-666b-2e46-7e13c492ff58/Placeholder.mill/400x400bb-75.webp" },
-    { name: "Map", url: "https://maps.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/c2/5e/45/c25e45e8-e439-346c-8c26-b23ecfedb478/Placeholder.mill/400x400bb-75.webp" },
-    { name: "Apple TV", url: "https://tv.apple.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/bf/ab/2e/bfab2eb5-9e44-7e8c-1a52-faaf2a0b3ca3/Placeholder.mill/400x400bb-75.webp" },
-    { name: "Music", url: "https://music.apple.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/4f/e5/16/4fe516ac-9e72-6cbe-f302-3ccc6360fc86/Placeholder.mill/400x400bb-75.webp" },
-    { name: "Meet", url: "https://meet.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/b0/ef/3a/b0ef3a56-6ee8-155d-15a2-e9f190e7e0ef/Placeholder.mill/96x96bb-75.webp" },
-    { name: "Insta", url: "https://www.instagram.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/a2/e1/2c/a2e12c05-aaaf-557d-f2ff-7b4e79c419ee/Placeholder.mill/96x96bb-75.webp" },
+    { name: "Map", url: "https://maps.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a2/f7/55/a2f75542-46f6-57a4-0d53-d8c117745c51/Placeholder.mill/400x400bb-75.webp" },
+    { name: "Netflix", url: "https://www.netflix.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/33/ed/5d/33ed5d82-b5d7-95e3-bd09-3fa6a7cd4c96/Placeholder.mill/400x400bb-75.webp" },
+    { name: "Meet", url: "https://meet.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/39/a8/1b/39a81bb8-7fad-e4be-cf29-13ab0f86ed60/Placeholder.mill/400x400bb-75.webp" },
+    { name: "Insta", url: "https://www.instagram.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/95/4d/56/954d560b-42de-e5eb-9838-e687e764acce/Placeholder.mill/400x400bb-75.webp" },
     { name: "Amazon", url: "https://www.amazon.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a4/70/13/a4701325-8c13-19c6-b6c9-17a3d517bb0c/Placeholder.mill/400x400bb-75.webp" },
-    { name: "Linkdin", url: "https://www.linkedin.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/68/e2/70/68e2701d-036e-3bea-dcc7-deb82129b8c0/Placeholder.mill/128x128bb-75.webp" },
+    { name: "Linkdin", url: "https://www.linkedin.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/ee/36/f5/ee36f5f8-3af5-c8a5-dc67-704625cd2515/Placeholder.mill/400x400bb-75.webp" },
     { name: "Figma", url: "https://www.figma.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/ae/30/64/ae306406-a733-b2f1-31e6-149920e56518/Placeholder.mill/400x400bb-75.webp" },
     { name: "TradingView", url: "https://www.tradingview.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/c5/02/28/c50228b8-d344-54a8-ce2d-e1850dab9647/Placeholder.mill/400x400bb-75.webp" },
     { name: "GitHub", url: "https://github.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a4/c2/c2/a4c2c270-71fa-e985-d3ad-18bd675d2b58/Placeholder.mill/400x400bb-75.webp" },
-    { name: "ChatGPT", url: "https://chatgpt.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/d7/11/5d/d7115dd0-e180-5f2c-fedd-bdd3a38f822b/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
-    { name: "Gemini", url: "https://gemini.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/95/32/19/9532191c-ff01-f0d6-290a-14947dd08717/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
-    { name: "Grok AI", url: "https://grok.x.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/f5/17/fd/f517fdd9-c125-6f02-a6fd-4916790199c7/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
-    { name: "DeepSeek", url: "https://chat.deepseek.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/26/52/cd/2652cd94-f211-c8d5-3156-f9948fdee4bf/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
-    { name: "Claude", url: "https://claude.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/55/89/d0/5589d067-07aa-bcdb-0d38-51f71e9a4ce6/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
-    { name: "Perplexity", url: "https://perplexity.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/ce/bf/1e/cebf1e82-b109-235b-5a30-31fb48cdaddd/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
-    { name: "Copilot", url: "https://copilot.microsoft.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/f0/55/0e/f0550e41-aa1c-9ee7-dba3-c3c8fbaabe3d/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
-    { name: "Meta AI", url: "https://meta.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/4b/91/22/4b91227f-ce78-b42f-33d3-deb56894aabd/Placeholder.mill/200x200bb-75.webp", location: "AI tool" },
-    { name: "Replit", url: "https://replit.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/c8/8d/0d/c88d0d3e-d181-e038-c505-358f76b7f364/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
-    { name: "Lovable", url: "https://lovable.dev/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/29/07/7d/29077ded-76b9-27f9-f5d0-bbd62f9a1356/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
-    { name: "Grammarly ", url: "https://www.grammarly.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/ef/c8/7f/efc87ffd-fe72-1661-816f-e1c086dcf5d8/Placeholder.mill/96x96bb-75.webp", location: "AI tool" },
-    { name: "Notion", url: "https://www.notion.so/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/2d/86/9d/2d869d74-f4ae-62c5-39d3-bfa4bf6bc904/Placeholder.mill/400x400bb-75.webp", location: "AI tool" }
+    
+    { name: "Google", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/ca/10/53/ca105375-b161-cf23-acb9-aa3cbf4b0a29/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Gmail", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/30/c0/1b/30c01b99-1a95-f7f4-4287-f906b23f9250/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Photos", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/3c/f8/ac/3cf8ac3e-94d6-4ba6-1c5f-bafcfcecc35c/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "YT", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/75/3f/b9/753fb91a-6e37-5d2a-a4c5-7f54bb38f7f6/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Docs", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/9b/23/af/9b23afd6-726a-64ef-7030-5b0d2b5d96e8/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Drive", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/53/65/d9/5365d980-9641-6597-6764-b5fd1f841595/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Celander", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/5c/03/c5/5c03c5c9-6263-0c0d-daea-12740a82f4f6/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "meet" , url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/d5/b6/84/d5b684d9-2196-1dad-9b32-51238e5066dc/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "NoteBook" , url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/5d/be/cf/5dbecf03-e056-ccd8-c502-1b935be704eb/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Maps" , url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/da/56/c7/da56c7da-32b5-3cdd-41d4-f49c8c391050/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+   
+    { name: "ChatGPT", url: "https://chatgpt.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/2c/38/19/2c381978-0d18-b345-432a-fde4338f786b/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Gemini", url: "https://gemini.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/54/24/4b/54244bc9-83d1-ff01-5424-a34f112e86da/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Grok AI", url: "https://grok.x.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/83/db/09/83db098c-6eab-384e-303b-6a083db14330/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "DeepSeek", url: "https://chat.deepseek.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/68/b2/d3/68b2d30b-4f7d-441b-c4d7-26e765cd2c2b/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Claude", url: "https://claude.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/af/0e/e4/af0ee435-003b-cb19-b467-63856d7f1c8e/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Perplexity", url: "https://perplexity.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/ad/8b/e3/ad8be3e1-305e-d878-7156-34e2bc520af9/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Copilot", url: "https://copilot.microsoft.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/84/aa/2f/84aa2ffd-d302-1e9c-4db4-b059e3544e17/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Meta AI", url: "https://meta.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/b2/d1/8e/b2d18e66-dda3-8232-8d5a-63da95938018/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Replit", url: "https://replit.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/92/f4/b4/92f4b4ad-929d-a2f0-bb9d-e42c9161bf4d/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Lovable", url: "https://lovable.dev/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/33/37/22/33372279-2ea5-a27f-9cdd-c53d2b97485c/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Grammarly ", url: "https://www.grammarly.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/d2/74/e9/d274e9ab-6e1c-17a3-05f7-3f3beaa2c9cd/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Notion", url: "https://www.notion.so/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/41/3c/55/413c5574-dfa8-6210-5dd4-22fc35dd760d/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Menus", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/95/95/a4/9595a45e-cfc1-fef5-c4d7-6a5cba7b9201/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Kimi", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/4b/38/7a/4b387a52-9bfe-6bf4-456b-f9f965e69c74/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    
+    { name: "Word", url: "https://www.microsoft365.com/launch/word", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/18/e4/37/18e43763-0c04-fc23-414c-62bf927c14fa/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
+    { name: "Excel", url: "https://www.microsoft365.com/launch/excel", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/c0/ad/f0/c0adf058-8729-9492-8ed1-8fb5c7c3e37b/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
+    { name: "PowerPoint", url: "https://www.microsoft365.com/launch/powerpoint", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/13/7a/57/137a57a7-e3ec-147b-20a4-976fe19f9d27/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
+    { name: "OneNote", url: "https://www.onenote.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/6c/f9/5b/6cf95b5f-4062-fd8a-5b20-03a23d473971/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
+    { name: "Copilot", url: "https://copilot.microsoft.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/84/aa/2f/84aa2ffd-d302-1e9c-4db4-b059e3544e17/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
+    { name: "Outlook", url: "https://outlook.live.com/mail/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/c6/f3/bc/c6f3bca5-de8a-dc0a-3f92-e5907bb03431/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
+    { name: "Teams", url: "https://teams.microsoft.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/81/a5/7b/81a57b69-f618-fbe7-48d3-8645b8f6815d/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
+    { name: "OneDrive", url: "https://onedrive.live.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/bc/9c/e8/bc9ce8fe-556b-f0da-4628-70ec4ea7e840/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
+    { name: " SharePoint", url: "https://www.microsoft365.com/launch/sharepoint", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/17/f9/c5/17f9c50e-ceed-b8f7-36f8-6d4a75a4a769/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
+    { name: "Xbox", url: "https://www.microsoft365.com/launch/sharepoint", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/e5/9f/9a/e59f9a06-d445-5bbf-f47d-d5516fb35c06/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
+    { name: " Edge", url: "https://www.microsoft365.com/launch/sharepoint", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/af/dc/5a/afdc5aa7-6111-3bbd-1d29-3632451edbd6/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" }
 ];
+
+const LEGACY_MICROSOFT_ICONS = new Set([
+    "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/e3/1b/5d/e31b5d58-55d5-4ab9-8b9d-6c38ad9f9842/Placeholder.mill/400x400bb-75.webp",
+    "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/17/49/8e/17498e22-559b-1dbc-089d-6203026abc38/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/128x128ia-75.webp"
+]);
 
 let DEFAULT_SHORTCUTS;
 try {
@@ -193,10 +223,14 @@ try {
     DEFAULT_SHORTCUTS = stored ? JSON.parse(stored) : null;
     if (!Array.isArray(DEFAULT_SHORTCUTS)) throw new Error("Not array");
 
-    // Auto-add AI tools migration
-    ORIGINAL_DEFAULT_SHORTCUTS.filter(s => s.location === 'AI tool').forEach(aiTool => {
-        if (!DEFAULT_SHORTCUTS.find(s => s.name === aiTool.name)) {
-            DEFAULT_SHORTCUTS.push(aiTool);
+    // Migrate built-in launchpad shortcuts into saved lists.
+    ORIGINAL_DEFAULT_SHORTCUTS.filter(s => ['AI tool', 'Microsoft'].includes(s.location)).forEach(defaultShortcut => {
+        if (!DEFAULT_SHORTCUTS.find(s => s.name === defaultShortcut.name)) {
+            DEFAULT_SHORTCUTS.push(defaultShortcut);
+        } else {
+            const savedShortcut = DEFAULT_SHORTCUTS.find(s => s.name === defaultShortcut.name);
+            if (!savedShortcut.url) savedShortcut.url = defaultShortcut.url;
+            if (LEGACY_MICROSOFT_ICONS.has(savedShortcut.icon)) savedShortcut.icon = defaultShortcut.icon;
         }
     });
 } catch (e) {
@@ -215,6 +249,7 @@ const shortcutsList = document.getElementById('shortcuts-list');
 const customShortcutsContainer = document.getElementById('custom-shortcuts-container');
 const launchpadGrid = document.getElementById('launchpad-grid');
 const aiLaunchpadGrid = document.getElementById('ai-launchpad-grid');
+const microsoftLaunchpadGrid = document.getElementById('microsoft-launchpad-grid');
 
 // Initialize IDs and locations
 DEFAULT_SHORTCUTS.forEach((sc, i) => {
@@ -227,7 +262,8 @@ const loadShortcuts = () => {
         customShortcutsContainer,
         shortcutsList,
         launchpadGrid,
-        aiLaunchpadGrid
+        aiLaunchpadGrid,
+        microsoftLaunchpadGrid
     ];
     containers.forEach(el => { if (el) el.innerHTML = ''; });
 
@@ -264,6 +300,17 @@ const loadShortcuts = () => {
             aiLaunchpadGrid.appendChild(a);
         }
 
+        // Microsoft Launchpad
+        if (microsoftLaunchpadGrid && sc.location === 'Microsoft') {
+            const a = document.createElement("a");
+            a.href = sc.url;
+            a.target = "_self";
+            a.className = "launchpad-app";
+            a.dataset.name = sc.name.toLowerCase();
+            a.innerHTML = `<img src="${sc.icon}" alt="${sc.name}" /><span>${sc.name}</span>`;
+            microsoftLaunchpadGrid.appendChild(a);
+        }
+
         // UI List
         if (shortcutsList) {
             const listItem = document.createElement('div');
@@ -280,9 +327,10 @@ const loadShortcuts = () => {
                         <option value="Both" ${sc.location === 'Both' ? 'selected' : ''}>LOCATION: Dock + App</option>
                         <option value="AI tool" ${sc.location === 'AI tool' ? 'selected' : ''}>LOCATION: AI tool</option>
                         <option value="Dock + AI tool" ${sc.location === 'Dock + AI tool' ? 'selected' : ''}>LOCATION: Dock + Ai tool</option>
+                        <option value="Microsoft" ${sc.location === 'Microsoft' ? 'selected' : ''}>LOCATION: Microsoft</option>
                     </select>
                     <button class="sc-delete-btn">
-                        <img src="https://img.icons8.com/?size=100&id=ccbXpS1mBiXf&format=png&color=000000" style="width: 20px; height: 20px;" alt="Delete">
+                        <img src="https://img.icons8.com/?size=100&id=2i5n7zNvArOt&format=png&color=FF0000" style="width: 20px; height: 20px;" alt="Delete">
                     </button>
                 </div>
             `;
@@ -396,6 +444,7 @@ const setupLaunchpad = (openBtnId, overlayId, searchInputId, gridId) => {
 
 setupLaunchpad('open-launchpad', 'launchpad-overlay', 'launchpad-search-input', 'launchpad-grid');
 setupLaunchpad('open-ai-tools', 'ai-launchpad-overlay', 'ai-launchpad-search-input', 'ai-launchpad-grid');
+setupLaunchpad('open-microsoft-tools', 'microsoft-launchpad-overlay', 'microsoft-launchpad-search-input', 'microsoft-launchpad-grid');
 
 // ============================================================
 // 4. SETTINGS UI MODULE
@@ -408,6 +457,11 @@ const minimizeSettingsDot = document.querySelector(".control-dot.minimize");
 
 if (openSettingsIcon && settingsMain) {
     openSettingsIcon.addEventListener("click", () => {
+        if (settingsMain.classList.contains("minimized")) {
+            settingsMain.classList.remove("minimized");
+            return;
+        }
+
         settingsMain.classList.toggle("active");
         if (settingsMain.classList.contains("active")) {
             // Reset to General tab
@@ -430,16 +484,16 @@ if (openSettingsIcon && settingsMain) {
 
 if (closeSettingsDot && settingsMain) {
     closeSettingsDot.addEventListener("click", () => {
-        settingsMain.classList.remove("active", "maximized");
+        settingsMain.classList.remove("active", "maximized", "minimized");
     });
 }
 
 if (maximizeSettingsDot && settingsMain) {
-    maximizeSettingsDot.addEventListener("click", () => settingsMain.classList.add("maximized"));
+    maximizeSettingsDot.addEventListener("click", () => settingsMain.classList.toggle("maximized"));
 }
 
 if (minimizeSettingsDot && settingsMain) {
-    minimizeSettingsDot.addEventListener("click", () => settingsMain.classList.remove("maximized"));
+    minimizeSettingsDot.addEventListener("click", () => settingsMain.classList.add("minimized"));
 }
 
 // ============================================================
@@ -649,7 +703,7 @@ setupUpload('custom-video-upload', 'custom-video-upload-card', 'video');
 const resetAllBtn = document.getElementById('resetAllBtn');
 if (resetAllBtn) {
     resetAllBtn.addEventListener('click', () => {
-        ['tahoe-shortcuts', 'tahoe-dock-size', 'tahoe-dock-hover', 'tahoe-wallpaper', 'tahoe-wallpaper-type', 'tahoe-search-visible', 'tahoe-topbar-font-size'].forEach(k => localStorage.removeItem(k));
+        ['tahoe-shortcuts', 'tahoe-dock-size', 'tahoe-dock-hover', 'tahoe-wallpaper', 'tahoe-wallpaper-type', 'tahoe-search-visible', 'tahoe-topbar-font-size', 'tahoe-todo-tasks', 'tahoe-todo-size'].forEach(k => localStorage.removeItem(k));
         requestDB('readwrite', store => {
             store.delete(KEY).onsuccess = () => location.reload();
         });
@@ -660,8 +714,6 @@ if (resetAllBtn) {
 // ============================================================
 // 7. TOP BAR CLOCK & BATTERY
 // ============================================================
-let isComingSoonActive = false;
-
 const updateClock = () => {
     const now = new Date();
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -682,9 +734,7 @@ const updateClock = () => {
 
     const glassClockDateEl = document.getElementById('glassClockDate');
     const glassClockTimeEl = document.getElementById('glassClockTime');
-    if (glassClockDateEl && !isComingSoonActive) {
-        glassClockDateEl.textContent = `${dayName} ${monthName} ${date}`;
-    }
+    if (glassClockDateEl) glassClockDateEl.textContent = `${dayName} ${monthName} ${date}`;
     if (glassClockTimeEl) {
         glassClockTimeEl.innerHTML = `${hours}<span class="colon">:</span>${minutes}`;
     }
@@ -695,11 +745,16 @@ updateClock();
 const updateBatteryUI = (battery) => {
     const levelEl = document.getElementById('battery-level');
     const fillEl = document.getElementById('battery-fill');
-    const thunderEl = document.getElementById('top-thunder');
+    const thunderElements = [
+        document.getElementById('top-thunder-outline'),
+        document.getElementById('top-thunder')
+    ];
 
     if (levelEl) levelEl.textContent = Math.round(battery.level * 100) + '%';
     if (fillEl) fillEl.setAttribute('width', Math.round(battery.level * 16));
-    if (thunderEl) thunderEl.style.display = battery.charging ? 'block' : 'none';
+    thunderElements.forEach(element => {
+        if (element) element.style.display = battery.charging ? 'block' : 'none';
+    });
 };
 
 if ('getBattery' in navigator) {
@@ -720,19 +775,75 @@ const minimizeNotepadBtn = document.getElementById('minimize-notepad');
 const maximizeNotepadBtn = document.getElementById('maximize-notepad');
 
 if (openFolderBtn && notepadWindow) {
-    openFolderBtn.addEventListener('click', () => notepadWindow.classList.toggle('active'));
+    openFolderBtn.addEventListener('click', () => {
+        if (notepadWindow.classList.contains('minimized')) {
+            notepadWindow.classList.remove('minimized');
+            return;
+        }
+        notepadWindow.classList.toggle('active');
+    });
 }
 if (closeNotepadBtn && notepadWindow) {
     closeNotepadBtn.addEventListener('click', () => {
-        notepadWindow.classList.remove('active', 'maximized');
+        notepadWindow.classList.remove('active', 'maximized', 'minimized');
     });
 }
 if (minimizeNotepadBtn && notepadWindow) {
-    minimizeNotepadBtn.addEventListener('click', () => notepadWindow.classList.remove('maximized'));
+    minimizeNotepadBtn.addEventListener('click', () => notepadWindow.classList.add('minimized'));
 }
 if (maximizeNotepadBtn && notepadWindow) {
     maximizeNotepadBtn.addEventListener('click', () => notepadWindow.classList.toggle('maximized'));
 }
+
+const todoForm = document.getElementById('todo-form');
+const todoInput = document.getElementById('todo-input');
+const todoList = document.getElementById('todo-list');
+const todoView = document.getElementById('todo-view');
+const noteTextarea = document.getElementById('notepad-textarea');
+const todoKey = 'tahoe-todo-tasks';
+let todoTasks = [];
+try { todoTasks = JSON.parse(localStorage.getItem(todoKey) || '[]'); } catch {}
+if (!Array.isArray(todoTasks)) todoTasks = [];
+
+const saveTodoTasks = () => localStorage.setItem(todoKey, JSON.stringify(todoTasks));
+const renderTodoTasks = () => {
+    todoList.replaceChildren();
+    todoTasks.forEach((task, index) => {
+        const row = document.createElement('li');
+        const checkbox = document.createElement('input');
+        const text = document.createElement('span');
+        const remove = document.createElement('button');
+        checkbox.type = 'checkbox';
+        checkbox.checked = task.done;
+        checkbox.onchange = () => { task.done = checkbox.checked; row.classList.toggle('done', task.done); saveTodoTasks(); };
+        text.textContent = task.text;
+        remove.type = 'button';
+        remove.innerHTML = '<img src="https://img.icons8.com/?size=100&id=EYnXuvqJDgzX&format=png&color=ff0000" alt="Delete task" />';
+        remove.setAttribute('aria-label', `Delete ${task.text}`);
+        remove.onclick = () => { todoTasks.splice(index, 1); saveTodoTasks(); renderTodoTasks(); };
+        row.classList.toggle('done', task.done);
+        row.append(checkbox, text, remove);
+        todoList.append(row);
+    });
+};
+
+todoForm?.addEventListener('submit', event => {
+    event.preventDefault();
+    const text = todoInput.value.trim();
+    if (!text) return;
+    todoTasks.push({ text, done: false });
+    todoInput.value = '';
+    saveTodoTasks();
+    renderTodoTasks();
+});
+document.querySelectorAll('input[name="notepad-view"]').forEach(input => {
+    input.addEventListener('change', () => {
+        const showTodo = input.value === 'todo';
+        noteTextarea.hidden = showTodo;
+        todoView.hidden = !showTodo;
+    });
+});
+renderTodoTasks();
 
 // ============================================================
 // 9. PROFILE, SEARCH, SETTINGS TABS (DOMContentLoaded)
@@ -813,10 +924,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             searchSuggestions.innerHTML = suggestions.map((sug, idx) => `
                 <div class="suggestion-item" data-index="${idx}">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
+                    <img src="https://img.icons8.com/?size=100&id=nwcgrgC6UCmI&format=png&color=ffffff" class="suggestion-icon" alt="Suggestion">    
                     <span class="suggestion-text">${sug}</span>
                 </div>
             `).join('');
@@ -1050,7 +1158,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Initial load
-document.addEventListener('DOMContentLoaded', loadShortcuts);
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadShortcuts, { once: true });
+} else {
     loadShortcuts();
 }

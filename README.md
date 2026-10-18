@@ -1,72 +1,44 @@
-# 🖥️ DeskTab - Modern Desktop New Tab Experience
+# DeskTab — Modern Desktop New Tab
 
-<img width="1536" height="863" alt="Screenshot 2026-07-17 230824" src="https://github.com/user-attachments/assets/2ca6ff47-316f-494b-b488-2f68861d2c40" />
+[![Get DeskTab for Microsoft Edge](https://img.shields.io/badge/Microsoft%20Edge-Get%20the%20extension-0078D7?logo=microsoftedge&logoColor=white)](https://microsoftedge.microsoft.com/addons/detail/desktab-modern-desktop-/chpeebogachibgcjgmfglfigmkkefcgo)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge)](https://macos-web-ext.vercel.app/)
+![Version 1.5.0](https://img.shields.io/badge/version-1.5.0-informational)
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg?style=for-the-badge)](https://macos-web-ext.vercel.app/)
+DeskTab turns your new tab into a customizable, desktop-inspired workspace. Keep your favorite shortcuts close, check the time, search the web, and personalize your background—all from one clean start page.
 
-Transform your browser's default new tab into a stunning, fully functional desktop-inspired environment!
+![DeskTab showing its desktop-style new tab, clock, search suggestions, and dock](assets/desktab-screenshot.png)
 
-## 🌟 About the Extension
+## Get DeskTab
 
-**DeskTab** is a beautifully crafted New Tab extension that replaces your default start page with a vibrant, interactive, and highly customizable desktop-style interface. 
+**Install from the Microsoft Edge Add-ons store:** [DeskTab — Modern Desktop New Tab](https://microsoftedge.microsoft.com/addons/detail/desktab-modern-desktop-/chpeebogachibgcjgmfglfigmkkefcgo)
 
-Whether you want quick access to your favorite apps, a centralized hub for AI tools, or simply a visually pleasing start to your browsing session, this extension delivers it all with smooth animations and pixel-perfect design.
+**Try the live demo:** [macos-web-ext.vercel.app](https://macos-web-ext.vercel.app/)
 
----
+## Features
 
-## ✨ Features & Customization
+- **Desktop-inspired new tab:** A clean workspace with a menu bar, clock, and responsive dock.
+- **Quick search:** Search from the new tab with suggestions and optional voice input.
+- **Customizable shortcuts:** Add and manage links in the dock and application launchers.
+- **Apps and AI launchers:** Open frequently used web apps and AI tools from dedicated panels.
+- **Personalized appearance:** Choose built-in wallpapers, upload an image, or use a video background.
+- **Flexible widgets and settings:** Show or hide the clock and search bar, adjust menu-bar text size, and personalize workspace details.
 
-### 🕒 Large Glassy Clock Widget
-* **iOS-Inspired Lockscreen Clock**: Clean and elegant layout showing the dynamic local date and a large 12-hour format digital clock.
-* **Perfect Alignment**: The clock colon (`:`) is custom-centered vertically to align with the cap-height of the digits.
-* **Click Action**: Clicking the clock widget displays a smooth, temporary "Coming Soon" notification.
-* **Independent Toggle**: Can be enabled or disabled via settings separately from the search bar.
+## Install from source
 
-### 🔍 Spotlight-Style Search Bar
-* **Interactive Suggestions**: Instantly fetches search suggestions as you type.
-* **Voice Dictation**: Features a built-in microphone button for quick voice inputs.
-* **Visibility Control**: Can be toggled on/off in the dock settings panel.
+1. Clone or download this repository.
+2. Open `edge://extensions` in Microsoft Edge.
+3. Turn on **Developer mode**.
+4. Select **Load unpacked** and choose the project folder.
+5. Open a new tab to start using DeskTab.
 
-### ⚙️ macOS Customization & Settings Panel
-* **General Specifications**: Editable system specs (edit Chip name, RAM, Storage, and Serial Number directly by clicking the text).
-* **Widgets Control**: Toggle visibility of the Search Bar and the Large Clock independently.
-* **Top Menu Bar**: Custom font-size adjustment (Small, Medium, Large).
-* **Wallpapers**: Change between Tahoe/Golden Gate wallpapers, upload custom image wallpapers, or set a live video background.
-* **Shortcuts Manager**: Manage links shown in the dock and App launchers.
+## Privacy
 
-### 🛸 Interactive Dock & Launchpad
-* **Authentic macOS Dock**: A beautiful, responsive dock at the bottom of the screen with hover magnification effects.
-* **Applications Launcher**: An overlay launching native-like web applications.
-* **AI Launchpad**: Dedicated panel for quick access to your favorite AI tools.
+DeskTab does not operate its own backend or analytics service. Your preferences and shortcuts are saved in your browser's local storage. To provide search suggestions, DeskTab sends the text entered in the search box to Google Suggest; if that service is unavailable, it tries the Wikipedia search API. These requests are handled by those third-party services.
 
----
+## Technology
 
-## ⚡ Performance Specs
+DeskTab is built with HTML, CSS, and JavaScript, without a front-end framework.
 
-Designed to be ultra-efficient for daily use:
-* **Extension Size**: **~440 KB** on disk (including code and the custom `SF Pro Display` font file).
-* **Memory (RAM) Footprint**: **~10MB to 30MB** (compared to 150MB+ for typical web portals).
-* **CPU Usage**: **0% at idle** (clock interval runs only once per second with zero rendering overhead).
-* **Zero Framework Overhead**: Written entirely in **vanilla HTML5, CSS3, and modern JavaScript (ES6+)** with no heavy React/Vue/Tailwind packages.
+## Disclaimer
 
----
-
-## 📥 Installation
-
-1. Download or clone this repository.
-2. Open your browser and navigate to the Extensions page (e.g., `chrome://extensions/`).
-3. Enable **Developer mode**.
-4. Click **Load unpacked** and select the directory of this project.
-5. Open a new tab and enjoy your new macOS desktop!
-
-##  🔏 Privacy Policy
-
-* **This extension does not collect, store, or transmit any personal data.**
-* All information remains only in your browser’s local storage.
-* No external servers, online databases, or third-party services are involved.
-* You can freely use this extension without any privacy concerns.
-* For transparency, you may review the source code to verify that no data handling or tracking is implemented.
-
-
----
-*Made with ❤️ for creativity and web design enthusiasts.*
+DeskTab is an independent browser extension and is not affiliated with, sponsored by, or endorsed by Apple Inc. or Microsoft Corporation.

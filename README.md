@@ -1,8 +1,9 @@
 # DeskTab — Modern Desktop New Tab
 
-[![Get DeskTab for Microsoft Edge](https://img.shields.io/badge/Microsoft%20Edge-Get%20the%20extension-0078D7?logo=microsoftedge&logoColor=white)](https://microsoftedge.microsoft.com/addons/detail/desktab-modern-desktop-/chpeebogachibgcjgmfglfigmkkefcgo)
+(https://microsoftedge.microsoft.com/addons/detail/desktab-modern-desktop-/chpeebogachibgcjgmfglfigmkkefcgo)
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge)](https://macos-web-ext.vercel.app/)
 ![Version 1.5.0](https://img.shields.io/badge/version-1.5.0-informational)
+[![Get DeskTab for Microsoft Edge](https://img.shields.io/badge/Microsoft%20Edge-Get%20the%20extension-0078D7?logo=microsoftedge&logoColor=white)]
 
 DeskTab turns your new tab into a customizable, desktop-inspired workspace. Keep your favorite shortcuts close, check the time, search the web, and personalize your background—all from one clean start page.
 

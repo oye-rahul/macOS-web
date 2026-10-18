@@ -89,7 +89,7 @@ const animateDock = (currentX) => {
         });
     }
 
-    const lerpFactor = isActive ? 0.15 : 0.1;
+    const lerpFactor = isActive ? 0.12 : 0.1;
 
     dockItems.forEach(item => {
         const icon = item.querySelector(".dock-icon, .dock-icon2");
@@ -113,7 +113,7 @@ const animateDock = (currentX) => {
 
         const label = item.querySelector(".dock-label");
         if (label) {
-            label.style.transform = `translateX(-50%) translateY(-${state.currentWidth - BASE_WIDTH}px)`;
+            label.style.transform = `translateX(-50%) translateY(-${(state.currentWidth - BASE_WIDTH) + 1}px)`;
             label.style.opacity = (isActive && item === nearestItem && nearestDistance < BASE_WIDTH * 0.8) ? "1" : "0";
         }
     });

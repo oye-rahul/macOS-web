@@ -125,6 +125,7 @@ body {
 .Settings-main {
   width: min(890px, 92vw);
   height: min(80vh);
+  margin-top: 0px;
   inset: 0;
   z-index: 6000;
   display: flex;
@@ -132,9 +133,14 @@ body {
   align-items: start;
   opacity: 0;
   pointer-events: none;
-  will-change: opacity, transform;
+  will-change: opacity, transform, width, height, margin-top;
   transform: translate(-50%, -50%) scale(0.97) translateZ(0);
-  transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.3s ease, height 0.3s ease, margin-top 0.3s ease;
+  transition:
+    opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    margin-top 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   background: linear-gradient(120deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(247, 253, 255, 0.95) 100%);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -749,9 +755,9 @@ body.theme-light .dock-dot {
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 90%;
+  width: 126%;
   justify-content: space-between;
-  margin: 0;
+  margin: 6px 0 0 0;
 }
 
 .top-dock p {
@@ -1343,9 +1349,10 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.97) translateZ(0);
-  will-change: opacity, transform;
+  will-change: opacity, transform, width, height, margin-top;
   width: min(890px, 92vw);
   height: min(80vh);
+  margin-top: 0px;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(10px) saturate(140%);
   -webkit-backdrop-filter: blur(10px) saturate(140%);
@@ -1356,7 +1363,12 @@ button {
   flex-direction: column;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.3s ease, height 0.3s ease, margin-top 0.3s ease;
+  transition:
+    opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    margin-top 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   z-index: 7000;
 }
 

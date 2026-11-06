@@ -24,7 +24,7 @@ DeskTab turns your new tab into a customizable, desktop-inspired workspace. Keep
 - **Flexible widgets and settings:** Show or hide the clock and search bar, adjust menu-bar text size, and personalize workspace details.
 
 ## Install from source
-
+C
 1. Clone or download this repository.
 2. Open `edge://extensions` in Microsoft Edge.
 3. Turn on **Developer mode**.

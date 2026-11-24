@@ -39,7 +39,7 @@ let pointerX = 0;
 let isActive = false;
 
 const refreshDockItems = () => {
-    dockItems = dockShell ? Array.from(dockShell.querySelectorAll(".dock-item")) : [];
+    dockItems = dockShell ? Array.from(dockShell.querySelectorAll(".dock-item:not(.hidden)")) : [];
     dockItems.forEach(item => {
         if (!itemStates.has(item)) {
             itemStates.set(item, { currentWidth: BASE_WIDTH, targetWidth: BASE_WIDTH });
@@ -172,18 +172,18 @@ const ORIGINAL_DEFAULT_SHORTCUTS = [
     { name: "Figma", url: "https://www.figma.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/ae/30/64/ae306406-a733-b2f1-31e6-149920e56518/Placeholder.mill/400x400bb-75.webp" },
     { name: "TradingView", url: "https://www.tradingview.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/c5/02/28/c50228b8-d344-54a8-ce2d-e1850dab9647/Placeholder.mill/400x400bb-75.webp" },
     { name: "GitHub", url: "https://github.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a4/c2/c2/a4c2c270-71fa-e985-d3ad-18bd675d2b58/Placeholder.mill/400x400bb-75.webp" },
-    
-    { name: "Google", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/ca/10/53/ca105375-b161-cf23-acb9-aa3cbf4b0a29/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
-    { name: "Gmail", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/30/c0/1b/30c01b99-1a95-f7f4-4287-f906b23f9250/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
-    { name: "Photos", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/3c/f8/ac/3cf8ac3e-94d6-4ba6-1c5f-bafcfcecc35c/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
-    { name: "YT", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/75/3f/b9/753fb91a-6e37-5d2a-a4c5-7f54bb38f7f6/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
-    { name: "Docs", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/9b/23/af/9b23afd6-726a-64ef-7030-5b0d2b5d96e8/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
-    { name: "Drive", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/53/65/d9/5365d980-9641-6597-6764-b5fd1f841595/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
-    { name: "Celander", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/5c/03/c5/5c03c5c9-6263-0c0d-daea-12740a82f4f6/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
-    { name: "meet" , url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/d5/b6/84/d5b684d9-2196-1dad-9b32-51238e5066dc/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
-    { name: "NoteBook" , url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/5d/be/cf/5dbecf03-e056-ccd8-c502-1b935be704eb/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
-    { name: "Maps" , url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/da/56/c7/da56c7da-32b5-3cdd-41d4-f49c8c391050/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
-   
+
+    { name: "Google", url: "https://www.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/ca/10/53/ca105375-b161-cf23-acb9-aa3cbf4b0a29/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Gmail", url: "https://mail.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/30/c0/1b/30c01b99-1a95-f7f4-4287-f906b23f9250/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Photos", url: "https://photos.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/3c/f8/ac/3cf8ac3e-94d6-4ba6-1c5f-bafcfcecc35c/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "YT", url: "https://www.youtube.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/75/3f/b9/753fb91a-6e37-5d2a-a4c5-7f54bb38f7f6/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Docs", url: "https://docs.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/9b/23/af/9b23afd6-726a-64ef-7030-5b0d2b5d96e8/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Drive", url: "https://drive.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/53/65/d9/5365d980-9641-6597-6764-b5fd1f841595/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Calendar", url: "https://calendar.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/5c/03/c5/5c03c5c9-6263-0c0d-daea-12740a82f4f6/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Meet", url: "https://meet.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/d5/b6/84/d5b684d9-2196-1dad-9b32-51238e5066dc/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Notebook", url: "https://notebooklm.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/5d/be/cf/5dbecf03-e056-ccd8-c502-1b935be704eb/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+    { name: "Maps", url: "https://maps.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/da/56/c7/da56c7da-32b5-3cdd-41d4-f49c8c391050/Placeholder.mill/400x400bb-75.webp", location: "Apps" },
+
     { name: "ChatGPT", url: "https://chatgpt.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/2c/38/19/2c381978-0d18-b345-432a-fde4338f786b/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
     { name: "Gemini", url: "https://gemini.google.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/54/24/4b/54244bc9-83d1-ff01-5424-a34f112e86da/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
     { name: "Grok AI", url: "https://grok.x.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/83/db/09/83db098c-6eab-384e-303b-6a083db14330/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
@@ -194,11 +194,10 @@ const ORIGINAL_DEFAULT_SHORTCUTS = [
     { name: "Meta AI", url: "https://meta.ai", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/b2/d1/8e/b2d18e66-dda3-8232-8d5a-63da95938018/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
     { name: "Replit", url: "https://replit.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/92/f4/b4/92f4b4ad-929d-a2f0-bb9d-e42c9161bf4d/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
     { name: "Lovable", url: "https://lovable.dev/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/33/37/22/33372279-2ea5-a27f-9cdd-c53d2b97485c/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
-    { name: "Grammarly ", url: "https://www.grammarly.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/d2/74/e9/d274e9ab-6e1c-17a3-05f7-3f3beaa2c9cd/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+    { name: "Grammarly", url: "https://www.grammarly.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/d2/74/e9/d274e9ab-6e1c-17a3-05f7-3f3beaa2c9cd/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
     { name: "Notion", url: "https://www.notion.so/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/41/3c/55/413c5574-dfa8-6210-5dd4-22fc35dd760d/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
-    { name: "Menus", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/95/95/a4/9595a45e-cfc1-fef5-c4d7-6a5cba7b9201/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
-    { name: "Kimi", url: "", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/4b/38/7a/4b387a52-9bfe-6bf4-456b-f9f965e69c74/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
-    
+    { name: "Kimi", url: "https://kimi.moonshot.cn", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/4b/38/7a/4b387a52-9bfe-6bf4-456b-f9f965e69c74/Placeholder.mill/400x400bb-75.webp", location: "AI tool" },
+
     { name: "Word", url: "https://www.microsoft365.com/launch/word", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/18/e4/37/18e43763-0c04-fc23-414c-62bf927c14fa/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
     { name: "Excel", url: "https://www.microsoft365.com/launch/excel", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/c0/ad/f0/c0adf058-8729-9492-8ed1-8fb5c7c3e37b/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
     { name: "PowerPoint", url: "https://www.microsoft365.com/launch/powerpoint", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/13/7a/57/137a57a7-e3ec-147b-20a4-976fe19f9d27/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
@@ -207,9 +206,9 @@ const ORIGINAL_DEFAULT_SHORTCUTS = [
     { name: "Outlook", url: "https://outlook.live.com/mail/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/c6/f3/bc/c6f3bca5-de8a-dc0a-3f92-e5907bb03431/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
     { name: "Teams", url: "https://teams.microsoft.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/81/a5/7b/81a57b69-f618-fbe7-48d3-8645b8f6815d/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
     { name: "OneDrive", url: "https://onedrive.live.com/", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/bc/9c/e8/bc9ce8fe-556b-f0da-4628-70ec4ea7e840/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
-    { name: " SharePoint", url: "https://www.microsoft365.com/launch/sharepoint", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/17/f9/c5/17f9c50e-ceed-b8f7-36f8-6d4a75a4a769/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
-    { name: "Xbox", url: "https://www.microsoft365.com/launch/sharepoint", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/e5/9f/9a/e59f9a06-d445-5bbf-f47d-d5516fb35c06/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
-    { name: " Edge", url: "https://www.microsoft365.com/launch/sharepoint", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/af/dc/5a/afdc5aa7-6111-3bbd-1d29-3632451edbd6/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" }
+    { name: "SharePoint", url: "https://www.microsoft365.com/launch/sharepoint", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/17/f9/c5/17f9c50e-ceed-b8f7-36f8-6d4a75a4a769/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
+    { name: "Xbox", url: "https://www.xbox.com", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/e5/9f/9a/e59f9a06-d445-5bbf-f47d-d5516fb35c06/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" },
+    { name: "Edge", url: "https://www.microsoft.com/edge", icon: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/af/dc/5a/afdc5aa7-6111-3bbd-1d29-3632451edbd6/Placeholder.mill/400x400bb-75.webp", location: "Microsoft" }
 ];
 
 const LEGACY_MICROSOFT_ICONS = new Set([
@@ -348,6 +347,12 @@ const loadShortcuts = () => {
         }
     });
 
+    const shortcutsSep = document.querySelector('.dock-track > .dock-separator:first-of-type');
+    if (shortcutsSep) {
+        const hasShortcuts = customShortcutsContainer && customShortcutsContainer.children.length > 0;
+        shortcutsSep.style.display = hasShortcuts ? '' : 'none';
+    }
+
     if (typeof refreshDockItems === 'function') refreshDockItems();
     if (typeof resetDock === 'function') resetDock();
 };
@@ -468,16 +473,20 @@ if (openSettingsIcon && settingsMain) {
             const gMenu = document.querySelector("#General-right-meun");
             const dMenu = document.querySelector(".main-dock");
             const wMenu = document.querySelector(".wallpaper");
+            const sMenu = document.querySelector(".shortcut-menu");
+            const wtMenu = document.querySelector(".widgets-menu");
             const gBtn = document.getElementById("settingsBtn");
             const dBtn = document.getElementById("desktopDockBtn");
             const wBtn = document.getElementById("wallpaperBtn");
+            const sBtn = document.getElementById("shortcutBtn");
+            const wtBtn = document.getElementById("widgetsBtn");
+            const topBarTitle = document.getElementById("top-bar-title");
 
+            [dMenu, wMenu, sMenu, wtMenu].forEach(m => m && (m.style.display = "none"));
             if (gMenu) gMenu.style.display = "block";
-            if (dMenu) dMenu.style.display = "none";
-            if (wMenu) wMenu.style.display = "none";
+            [dBtn, wBtn, sBtn, wtBtn].forEach(b => b && b.classList.remove("active-tab"));
             if (gBtn) gBtn.classList.add("active-tab");
-            if (dBtn) dBtn.classList.remove("active-tab");
-            if (wBtn) wBtn.classList.remove("active-tab");
+            if (topBarTitle) topBarTitle.textContent = "About";
         }
     });
 }
@@ -527,20 +536,6 @@ const setupCustomSlider = (sliderId, progressId, thumbId, initialPercent, onChan
         updateThumbAndProgress(percent);
     };
 
-    const onMouseDown = (e) => {
-        isDragging = true;
-        sliderRect = slider.getBoundingClientRect();
-        onMove(e.clientX);
-        thumb.classList.add('active');
-    };
-
-    const onTouchStart = (e) => {
-        isDragging = true;
-        sliderRect = slider.getBoundingClientRect();
-        onMove(e.touches[0].clientX);
-        thumb.classList.add('active');
-    };
-
     const onMouseMove = (e) => {
         if (isDragging) onMove(e.clientX);
     };
@@ -550,29 +545,49 @@ const setupCustomSlider = (sliderId, progressId, thumbId, initialPercent, onChan
     };
 
     const stopDrag = () => {
+        if (!isDragging) return;
         isDragging = false;
         thumb.classList.remove('active');
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', stopDrag);
+        document.removeEventListener('touchmove', onTouchMove);
+        document.removeEventListener('touchend', stopDrag);
     };
 
-    thumb.addEventListener('mousedown', onMouseDown);
-    thumb.addEventListener('touchstart', onTouchStart, { passive: true });
+    const startDrag = (clientX) => {
+        isDragging = true;
+        sliderRect = slider.getBoundingClientRect();
+        onMove(clientX);
+        thumb.classList.add('active');
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchmove', onTouchMove, { passive: false });
+        document.addEventListener('touchend', stopDrag);
+    };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', stopDrag);
-    document.addEventListener('touchmove', onTouchMove, { passive: false });
-    document.addEventListener('touchend', stopDrag);
+    thumb.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        startDrag(e.clientX);
+    });
+    thumb.addEventListener('touchstart', (e) => {
+        if (!e.touches.length) return;
+        startDrag(e.touches[0].clientX);
+    }, { passive: true });
 
     slider.addEventListener('mousedown', (e) => {
-        sliderRect = slider.getBoundingClientRect();
-        onMove(e.clientX);
+        if (e.target === thumb) return;
+        startDrag(e.clientX);
     });
 
     slider.addEventListener('touchstart', (e) => {
-        sliderRect = slider.getBoundingClientRect();
-        onMove(e.touches[0].clientX);
+        if (e.target === thumb || !e.touches.length) return;
+        startDrag(e.touches[0].clientX);
     }, { passive: true });
 
-    setTimeout(() => updateThumbAndProgress(initialPercent), 50);
+    setTimeout(() => {
+        sliderRect = slider.getBoundingClientRect();
+        updateThumbAndProgress(initialPercent);
+    }, 50);
 };
 
 // Size Slider (30px-80px)
@@ -703,7 +718,7 @@ setupUpload('custom-video-upload', 'custom-video-upload-card', 'video');
 const resetAllBtn = document.getElementById('resetAllBtn');
 if (resetAllBtn) {
     resetAllBtn.addEventListener('click', () => {
-        ['tahoe-shortcuts', 'tahoe-dock-size', 'tahoe-dock-hover', 'tahoe-wallpaper', 'tahoe-wallpaper-type', 'tahoe-search-visible', 'tahoe-topbar-font-size', 'tahoe-todo-tasks', 'tahoe-todo-size'].forEach(k => localStorage.removeItem(k));
+        Object.keys(localStorage).filter(k => k.startsWith('tahoe-')).forEach(k => localStorage.removeItem(k));
         requestDB('readwrite', store => {
             store.delete(KEY).onsuccess = () => location.reload();
         });
@@ -802,11 +817,12 @@ const todoView = document.getElementById('todo-view');
 const noteTextarea = document.getElementById('notepad-textarea');
 const todoKey = 'tahoe-todo-tasks';
 let todoTasks = [];
-try { todoTasks = JSON.parse(localStorage.getItem(todoKey) || '[]'); } catch {}
+try { todoTasks = JSON.parse(localStorage.getItem(todoKey) || '[]'); } catch { }
 if (!Array.isArray(todoTasks)) todoTasks = [];
 
 const saveTodoTasks = () => localStorage.setItem(todoKey, JSON.stringify(todoTasks));
 const renderTodoTasks = () => {
+    if (!todoList) return;
     todoList.replaceChildren();
     todoTasks.forEach((task, index) => {
         const row = document.createElement('li');
@@ -1053,10 +1069,55 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===== DESKTOP SETTINGS =====
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const setDarkMode = (isDark) => {
+        document.documentElement.classList.toggle('dark-mode', isDark);
+        document.body.classList.toggle('dark-mode', isDark);
+        if (darkModeToggle) darkModeToggle.checked = isDark;
+        localStorage.setItem('tahoe-dark-mode', isDark);
+    };
+    const isDarkMode = localStorage.getItem('tahoe-dark-mode') === 'true';
+    setDarkMode(isDarkMode);
+    darkModeToggle?.addEventListener('change', (e) => setDarkMode(e.target.checked));
+
     const searchBarToggle = document.getElementById('search-bar-toggle');
-    const topBarFontSelect = document.getElementById('topbar-font-size');
+    const topBarFontSelect = document.getElementById('topbar-font-select');
     const searchWrapper = document.querySelector('.search-wrapper');
     const topMenu = document.querySelector('.top-menu');
+
+    // Dock sections visibility
+    const dockItemToggles = [
+        { id: 'dock-apps-toggle', elId: 'open-launchpad', key: 'tahoe-dock-apps' },
+        { id: 'dock-ai-toggle', elId: 'open-ai-tools', key: 'tahoe-dock-ai' },
+        { id: 'dock-microsoft-toggle', elId: 'open-microsoft-tools', key: 'tahoe-dock-microsoft' },
+        { id: 'dock-folder-toggle', elId: 'open-folder', key: 'tahoe-dock-folder' },
+        { id: 'dock-bin-toggle', elId: 'open-bin', key: 'tahoe-dock-bin' }
+    ];
+
+    const updateDockSeparators = () => {
+        const appsSep = document.getElementById('dock-apps-separator');
+        if (appsSep) {
+            const folderVis = !document.getElementById('open-folder')?.classList.contains('hidden');
+            const binVis = !document.getElementById('open-bin')?.classList.contains('hidden');
+            appsSep.style.display = (folderVis || binVis) ? '' : 'none';
+        }
+    };
+
+    dockItemToggles.forEach(({ id, elId, key }) => {
+        const toggle = document.getElementById(id);
+        const item = document.getElementById(elId);
+        const setVisible = (visible) => {
+            if (item) item.classList.toggle('hidden', !visible);
+            if (toggle) toggle.checked = visible;
+            localStorage.setItem(key, visible);
+            updateDockSeparators();
+            refreshDockItems();
+            resetDock();
+        };
+        const isVisible = localStorage.getItem(key) !== 'false';
+        setVisible(isVisible);
+        toggle?.addEventListener('change', (e) => setVisible(e.target.checked));
+    });
 
     // Search bar visibility
     const isSearchVisible = localStorage.getItem('tahoe-search-visible') !== 'false';
@@ -1107,13 +1168,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainDockMenu = document.querySelector(".main-dock");
     const wallpaperMenu = document.querySelector(".wallpaper");
     const shortcutMenu = document.querySelector(".shortcut-menu");
+    const widgetsMenu = document.querySelector(".widgets-menu");
     const topBarTitle = document.getElementById("top-bar-title");
 
     const switchTab = (activeBtn, activeMenu) => {
-        [generalMenu, mainDockMenu, wallpaperMenu, shortcutMenu].forEach(el => {
+        [generalMenu, mainDockMenu, wallpaperMenu, shortcutMenu, widgetsMenu].forEach(el => {
             if (el) el.style.display = "none";
         });
-        [settingsBtn, desktopDockBtn, wallpaperBtn, shortcutBtn].forEach(el => {
+        [settingsBtn, desktopDockBtn, wallpaperBtn, shortcutBtn, widgetsBtn].forEach(el => {
             if (el) el.classList.remove("active-tab");
         });
         if (activeMenu) activeMenu.style.display = "block";
@@ -1130,7 +1192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (desktopDockBtn && mainDockMenu) desktopDockBtn.addEventListener("click", () => switchTab(desktopDockBtn, mainDockMenu));
     if (wallpaperBtn && wallpaperMenu) wallpaperBtn.addEventListener("click", () => switchTab(wallpaperBtn, wallpaperMenu));
     if (shortcutBtn && shortcutMenu) shortcutBtn.addEventListener("click", () => switchTab(shortcutBtn, shortcutMenu));
-    if (widgetsBtn) widgetsBtn.addEventListener("click", () => alert("Coming Soon"));
+    if (widgetsBtn && widgetsMenu) widgetsBtn.addEventListener("click", () => switchTab(widgetsBtn, widgetsMenu));
 
     // ===== PROFILE IMAGE UPLOAD =====
     const profilePicContainer = document.querySelector('.profile .pp');
@@ -1155,6 +1217,277 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('specsEditableTipBtn')?.addEventListener('click', () => {
         alert('Just click on any text above to edit it directly!');
     });
+
+    // ===== DESKTOP IMAGE WIDGETS (MULTI-WIDGET SUPPORT) =====
+    const WIDGETS_KEY = "tahoe-image-widgets";
+    const container = document.getElementById("desktop-widgets-container");
+    const managerList = document.getElementById("widgets-management-list");
+    const addWidgetBtn = document.getElementById("add-widget-btn");
+    const addWidgetUploadBtn = document.getElementById("add-widget-upload-btn");
+    const addWidgetFileInput = document.getElementById("add-widget-file-input");
+    const allWidgetsToggle = document.getElementById("widget-all-toggle");
+
+    const processImageFile = (file) => {
+        return new Promise((resolve) => {
+            if (!file) return resolve(null);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const maxDim = 800;
+                    let { width, height } = img;
+                    if (width > maxDim || height > maxDim) {
+                        if (width > height) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        } else {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+                    const canvas = document.createElement("canvas");
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL("image/jpeg", 0.85));
+                };
+                img.onerror = () => resolve(e.target.result);
+                img.src = e.target.result;
+            };
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(file);
+        });
+    };
+
+    const loadWidgets = () => {
+        try {
+            const raw = localStorage.getItem(WIDGETS_KEY);
+            if (raw) return JSON.parse(raw);
+        } catch (_) { }
+        const oldSrc = localStorage.getItem("tahoe-widget-img-src") || "assets/radial-blue.jpg";
+        const oldSize = localStorage.getItem("tahoe-widget-img-size") || "1:1";
+        let left = "50px", top = "70px";
+        try {
+            const p = JSON.parse(localStorage.getItem("tahoe-widget-img-pos"));
+            if (p) { left = p.left || left; top = p.top || top; }
+        } catch (_) { }
+        return [{ id: "w_default", size: oldSize, src: oldSrc, left, top }];
+    };
+
+    const makeDraggable = (el, widgetData, list) => {
+        let isDragging = false, startX, startY, initLeft, initTop;
+        el.addEventListener("pointerdown", (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            const rect = el.getBoundingClientRect();
+            initLeft = rect.left;
+            initTop = rect.top;
+            el.setPointerCapture(e.pointerId);
+        });
+
+        el.addEventListener("pointermove", (e) => {
+            if (!isDragging) return;
+            const left = Math.max(10, Math.min(window.innerWidth - el.offsetWidth - 10, initLeft + e.clientX - startX));
+            const top = Math.max(40, Math.min(window.innerHeight - el.offsetHeight - 80, initTop + e.clientY - startY));
+            el.style.left = `${left}px`;
+            el.style.top = `${top}px`;
+        });
+
+        const cancelDrag = (e) => {
+            if (isDragging) {
+                isDragging = false;
+                try { if (e && e.pointerId) el.releasePointerCapture(e.pointerId); } catch (_) { }
+            }
+        };
+
+        el.addEventListener("pointerup", (e) => {
+            if (isDragging) {
+                isDragging = false;
+                try { el.releasePointerCapture(e.pointerId); } catch (_) { }
+                widgetData.left = el.style.left;
+                widgetData.top = el.style.top;
+                localStorage.setItem(WIDGETS_KEY, JSON.stringify(list));
+            }
+        });
+
+        el.addEventListener("pointercancel", cancelDrag);
+    };
+
+    const renderWidgets = () => {
+        const list = loadWidgets();
+        if (container) {
+            container.innerHTML = "";
+            list.forEach((w, index) => {
+                const el = document.createElement("div");
+                el.className = `desktop-widget size-${(w.size || "1:1").replace(":", "-")}`;
+                el.id = `widget-${w.id}`;
+                el.style.left = w.left || `${50 + (index * 30)}px`;
+                el.style.top = w.top || `${70 + (index * 30)}px`;
+                el.title = "Double-click to change image (Drag to move)";
+                el.innerHTML = `<img src="${w.src || "assets/radial-blue.jpg"}" alt="Widget Image" />`;
+
+                el.addEventListener("dblclick", () => {
+                    const input = document.createElement("input");
+                    input.type = "file";
+                    input.accept = "image/*";
+                    input.onchange = async () => {
+                        const file = input.files[0];
+                        if (file) {
+                            const dataUrl = await processImageFile(file);
+                            if (dataUrl) {
+                                w.src = dataUrl;
+                                saveWidgets(list);
+                            }
+                        }
+                    };
+                    input.click();
+                });
+
+                makeDraggable(el, w, list);
+                container.appendChild(el);
+            });
+        }
+
+        if (managerList) {
+            managerList.innerHTML = "";
+            if (list.length === 0) {
+                managerList.innerHTML = `<p style="text-align: center; color: #8e8e93; font-size: 14px; padding: 20px;">No image widgets added. Click "+ Upload Image" above to add one.</p>`;
+            } else {
+                list.forEach((w, index) => {
+                    const card = document.createElement("div");
+                    card.className = "desktop-card widget-item-card";
+                    card.innerHTML = `
+                        <div class="desktop-option-row">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <img src="${w.src || "assets/radial-blue.jpg"}" class="widget-card-thumb" title="Click to change image" />
+                                <span class="option-label">Widget ${index + 1}</span>
+                            </div>
+                            <div style="display: flex; gap: 6px; align-items: center;">
+                                <div class="segmented-control">
+                                    <button type="button" class="segment-btn ${w.size === '1:1' ? 'active' : ''}" data-size="1:1">1:1</button>
+                                    <button type="button" class="segment-btn ${w.size === '1:4' ? 'active' : ''}" data-size="1:4">1:4</button>
+                                    <button type="button" class="segment-btn ${w.size === '4:4' ? 'active' : ''}" data-size="4:4">4:4</button>
+                                </div>
+                                <button class="show-detail-btn widget-upload-trigger" style="cursor: pointer">Image</button>
+                                <input type="file" accept="image/*" class="widget-file-input" style="display: none" />
+                                <button class="show-detail-btn widget-remove-btn" style="cursor: pointer; color: #ff3b30;">Remove</button>
+                            </div>
+                        </div>
+                    `;
+
+                    card.querySelectorAll(".segment-btn").forEach(btn => {
+                        btn.addEventListener("click", () => {
+                            w.size = btn.dataset.size;
+                            saveWidgets(list);
+                        });
+                    });
+
+                    const fileInput = card.querySelector(".widget-file-input");
+                    const uploadTrigger = card.querySelector(".widget-upload-trigger");
+                    const thumb = card.querySelector(".widget-card-thumb");
+                    const triggerUpload = () => {
+                        if (fileInput) {
+                            fileInput.value = "";
+                            fileInput.click();
+                        }
+                    };
+
+                    uploadTrigger?.addEventListener("click", triggerUpload);
+                    thumb?.addEventListener("click", triggerUpload);
+
+                    fileInput?.addEventListener("change", async () => {
+                        const file = fileInput.files[0];
+                        if (file) {
+                            const dataUrl = await processImageFile(file);
+                            if (dataUrl) {
+                                w.src = dataUrl;
+                                saveWidgets(list);
+                            }
+                        }
+                    });
+
+                    card.querySelector(".widget-remove-btn")?.addEventListener("click", () => {
+                        saveWidgets(list.filter(item => item.id !== w.id));
+                    });
+
+                    managerList.appendChild(card);
+                });
+            }
+        }
+    };
+
+    const saveWidgets = (list) => {
+        try {
+            localStorage.setItem(WIDGETS_KEY, JSON.stringify(list));
+        } catch (err) {
+            console.warn("Storage warning:", err);
+        }
+        renderWidgets();
+    };
+
+    // Global toggle
+    const isAllVisible = localStorage.getItem("tahoe-widget-all-visible") !== "false";
+    if (container) container.style.display = isAllVisible ? "block" : "none";
+    if (allWidgetsToggle) {
+        allWidgetsToggle.checked = isAllVisible;
+        allWidgetsToggle.addEventListener("change", (e) => {
+            if (container) container.style.display = e.target.checked ? "block" : "none";
+            localStorage.setItem("tahoe-widget-all-visible", e.target.checked);
+        });
+    }
+
+    // New widget size selector & add buttons
+    let selectedNewSize = "1:1";
+    document.querySelectorAll("#new-widget-size .segment-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll("#new-widget-size .segment-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            selectedNewSize = btn.dataset.size;
+        });
+    });
+
+    addWidgetBtn?.addEventListener("click", () => {
+        const list = loadWidgets();
+        const offset = (list.length % 6) * 35;
+        list.push({
+            id: "w_" + Date.now(),
+            size: selectedNewSize,
+            src: "assets/radial-blue.jpg",
+            left: `${Math.min(window.innerWidth - 220, 50 + offset)}px`,
+            top: `${Math.min(window.innerHeight - 220, 70 + offset)}px`
+        });
+        saveWidgets(list);
+    });
+
+    addWidgetUploadBtn?.addEventListener("click", () => {
+        if (addWidgetFileInput) {
+            addWidgetFileInput.value = "";
+            addWidgetFileInput.click();
+        }
+    });
+
+    addWidgetFileInput?.addEventListener("change", async () => {
+        const file = addWidgetFileInput.files[0];
+        if (file) {
+            const dataUrl = await processImageFile(file);
+            if (dataUrl) {
+                const list = loadWidgets();
+                const offset = (list.length % 6) * 35;
+                list.push({
+                    id: "w_" + Date.now(),
+                    size: selectedNewSize,
+                    src: dataUrl,
+                    left: `${Math.min(window.innerWidth - 220, 50 + offset)}px`,
+                    top: `${Math.min(window.innerHeight - 220, 70 + offset)}px`
+                });
+                saveWidgets(list);
+            }
+        }
+    });
+
+    renderWidgets();
 });
 
 // Initial load

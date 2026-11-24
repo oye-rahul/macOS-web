@@ -54,36 +54,26 @@ body {
   gap: 15px;
   font-size: inherit;
   color: #ffffff;
-  transition: font-size 0.2s ease;
-}
-
-.top-menu .left img.system-logo {
-  height: calc(var(--topbar-font-size, 16px) * 1.25);
-  transition: height 0.2s ease;
+  transition: font-size 0.2s ease, color 0.2s ease;
 }
 
 .top-menu-time {
   margin-top: 2px;
   font-size: calc(var(--topbar-font-size, 16px) - 2px);
-  transition: font-size 0.2s ease;
+  color: #ffffff;
+  transition: font-size 0.2s ease, color 0.2s ease;
 }
 
 #battery-level {
   font-size: calc(var(--topbar-font-size, 16px) - 2px) !important;
   margin-top: calc(var(--topbar-font-size, 16px) * 0.125);
   color: white;
-  transition: font-size 0.2s ease, margin-top 0.2s ease;
+  transition: font-size 0.2s ease, margin-top 0.2s ease, color 0.2s ease;
 }
 
 .top-menu .right img {
   height: calc(var(--topbar-font-size, 16px) * 1.25);
-  transition: height 0.2s ease;
-}
-
-.top-menu .right img.sound-icon {
-  height: calc(var(--topbar-font-size, 16px) * 1.125);
-  margin-top: calc(var(--topbar-font-size, 16px) * 0.125);
-  transition: height 0.2s ease, margin-top 0.2s ease;
+  transition: height 0.2s ease, filter 0.2s ease;
 }
 
 .top-menu .right {
@@ -119,7 +109,8 @@ body {
 .status-icon {
   margin-top: calc(var(--topbar-font-size, 16px) * -0.25);
   height: calc(var(--topbar-font-size, 16px) * 1.875);
-  transition: height 0.2s ease, margin-top 0.2s ease;
+  color: #ffffff;
+  transition: height 0.2s ease, margin-top 0.2s ease, color 0.2s ease;
 }
 
 .Settings-main {
@@ -295,11 +286,6 @@ body {
 
 .Settings-main .left-menu .main-menu .app-setting:hover:not(.active-tab) {
   background-color: rgba(0, 0, 0, 0.05);
-}
-
-.Settings-main .left-menu .main-menu .black img {
-  background: #2a2a2a;
-  border: 1px solid #000;
 }
 
 .Settings-main .left-menu .main-menu .gray img {
@@ -627,6 +613,10 @@ body {
   transition: none !important;
 }
 
+.dock-item.hidden {
+  display: none !important;
+}
+
 .dock-dot {
   position: absolute;
   bottom: -8px;
@@ -643,17 +633,6 @@ body {
   transition: opacity 0.25s ease, background-color 0.25s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   /* Subtle premium shadow */
-}
-
-body.theme-light .dock-dot {
-  background-color: rgba(0, 0, 0, 0.7);
-  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
-}
-
-.dock-item.is-running .dock-dot,
-.dock-item.is-active .dock-dot {
-  opacity: 1;
-  /* Show when running or hovered */
 }
 
 .dock-icon3 {
@@ -704,20 +683,19 @@ body.theme-light .dock-dot {
   z-index: -1;
 }
 
-.main-dock {
+.main-dock,
+.widgets-menu {
   opacity: 1;
   overflow-y: auto;
   scrollbar-width: thin;
   height: 95%;
   padding-top: 10px;
-  /* space for the top bar */
-  /* padding-right: 20px; */
-  /* padding restored here inside the scroll area */
   display: block;
   margin-top: 30px;
 }
 
-.main-dock .name {
+.main-dock .name,
+.widgets-menu .name {
   display: flex;
   align-items: start;
   font-size: 30px;
@@ -740,9 +718,8 @@ body.theme-light .dock-dot {
 }
 
 .dock-size,
-.dock-hover,
-.dock-gap {
-  width: 32%;
+.dock-hover {
+  width: 48%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -753,7 +730,8 @@ body.theme-light .dock-dot {
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 126%;
+  width: 100%;
+  max-width: 220px;
   justify-content: space-between;
   margin: 6px 0 0 0;
 }
@@ -839,39 +817,6 @@ body.theme-light .dock-dot {
   margin-top: 10px;
 }
 
-.custom-upload-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 120px;
-  background: #f8f9fa;
-  border: 2px dashed #cccccc;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 15px;
-}
-
-.custom-upload-area:hover {
-  background: #f0f4ff;
-  border-color: #1f6dff;
-}
-
-.custom-upload-area img {
-  width: 35px;
-  height: 35px;
-  margin-bottom: 10px;
-  opacity: 0.7;
-}
-
-.custom-upload-area span {
-  font-size: 14px;
-  color: #555;
-  font-weight: 500;
-}
-
 /* dock-lider-lider */
 
 input {
@@ -918,51 +863,6 @@ button {
   transition: transform 0.15s ease, height 0.15s ease;
 }
 
-.slider-thumb-glass-filter {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  backdrop-filter: blur(0.6px);
-  -webkit-backdrop-filter: blur(0.6px);
-  filter: url(#mini-liquid-lens);
-}
-
-.slider-thumb-glass-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.slider-thumb-glass-specular {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border-radius: inherit;
-  box-shadow:
-    inset 1px 1px 0 rgba(69, 168, 243, 0.2),
-    inset 1px 3px 0 rgba(28, 63, 90, 0.05),
-    inset 0 0 22px rgb(255 255 255 / 60%),
-    inset -1px -1px 0 rgba(69, 168, 243, 0.12);
-}
-
-.slider-thumb-glass-filter,
-.slider-thumb-glass-overlay,
-.slider-thumb-glass-specular {
-  opacity: 0;
-}
-
-.slider-thumb-glass.active {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.slider-thumb-glass.active .slider-thumb-glass-filter,
-.slider-thumb-glass.active .slider-thumb-glass-overlay,
-.slider-thumb-glass.active .slider-thumb-glass-specular {
-  opacity: 1;
-}
-
 .slider-thumb-glass:active {
   transform: translate(-50%, -50%) scaleY(0.98) scaleX(1.1);
 }
@@ -977,12 +877,11 @@ button {
   inset: 0;
   z-index: 0;
   border-radius: inherit;
-  border-top: 1px solid rgb(80 80 80 / 40%);
-  border-bottom: 1px solid rgb(80 80 80 / 40%);
-  /* border: 1px solid rgba(255, 255, 255, 0.40); */
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: inset 0 0 5px -2px #ffffffdd;
-  background-color: rgba(255, 255, 255, 0);
   pointer-events: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .liquidGlass-tint {
@@ -1196,10 +1095,6 @@ button {
   height: 88vh;
 }
 
-/* .slider-containerm.maximized {
-  width: 32vw;
-} */
-
 /* Launchpad Styles */
 .launchpad-overlay {
   position: fixed;
@@ -1239,24 +1134,6 @@ button {
 
 .launchpad-overlay.active .launchpad-container {
   transform: scale(1) translateZ(0);
-}
-
-.launchpad-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.launchpad-header img {
-  width: 28px;
-  height: 28px;
-}
-
-.launchpad-header h2 {
-  font-size: 22px;
-  font-weight: 500;
-  color: #333;
 }
 
 .launchpad-search {
@@ -1464,12 +1341,12 @@ button {
   user-select: text;
 }
 
-.todo-view form button img{
+.todo-view form button img {
   height: 35px;
   margin-top: 3px;
 }
 
-.todo-view li button img{
+.todo-view li button img {
   padding: 0 10px;
   height: 16px;
 }
@@ -1529,28 +1406,11 @@ button {
   text-decoration: line-through;
 }
 
-.notepad-bt{
-  display: flex;
-  gap: 14px;
-  border-radius: 30px;
-  flex-direction: row;
-  background: #ffffff;
-  padding: 2px 3px;
-}
-
-.notepade-section.active {
-  background: #e5fcff00;
-  border-radius: 30px;
-  padding: 8px 15px;
-  box-shadow: inset 0 2px 5px rgb(246, 253, 255),inset 0 2px 15px rgb(255, 254, 254), 0 0 2px 2px rgba(0, 0, 0, 0.1);
-}
-
-
 /* Search Bar Frame Container (AI / Spotlight Search) */
 .search-wrapper {
   position: absolute;
-  border-top: 1px solid rgb(80 80 80 / 40%);
-  border-bottom: 1px solid rgb(80 80 80 / 40%);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   top: 26%;
   left: 50%;
   transform: translateX(-50%) translateY(0) scale(1) translateZ(0);
@@ -1564,9 +1424,6 @@ button {
   border-radius: 28px;
   box-shadow: inset 0 0px 15px rgba(255, 255, 255, 0.3),
     0 15px 40px rgba(0, 0, 0, 0.25);
-  /* box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12); */
   overflow: hidden;
   transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -1599,10 +1456,12 @@ button {
   font-weight: 400;
   letter-spacing: -0.1px;
   caret-color: white;
+  transition: color 0.2s ease;
 }
 
 .search-input::placeholder {
   color: rgba(255, 255, 255, 0.94);
+  transition: color 0.2s ease;
 }
 
 .search-input:focus {
@@ -1635,7 +1494,7 @@ button {
 .mic-button img {
   width: 28px;
   height: 28px;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, filter 0.2s ease;
 }
 
 .search-icon {
@@ -1643,7 +1502,7 @@ button {
   height: 28px;
   margin: 0 10px 0 -10px;
   opacity: 0.75;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, filter 0.2s ease;
 }
 
 /* Suggestions Panel */
@@ -1860,6 +1719,109 @@ button {
   background-color: #e5e5ea;
 }
 
+/* Segmented Control (Widgets Size) */
+.segmented-control {
+  display: inline-flex;
+  background-color: #e9e9ea;
+  padding: 3px;
+  border-radius: 8px;
+  gap: 2px;
+}
+
+.segmented-control .segment-btn {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 4px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #3a3a3c;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.segmented-control .segment-btn.active {
+  background: #ffffff;
+  color: #000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* Desktop Widget */
+.desktop-widget {
+  position: absolute;
+  top: 70px;
+  left: 50px;
+  z-index: 100;
+  border-radius: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  cursor: grab;
+  user-select: none;
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.25s ease;
+}
+
+.desktop-widget:active {
+  cursor: grabbing;
+}
+
+.desktop-widget img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.desktop-widget.size-1-1 {
+  width: 170px;
+  height: 170px;
+}
+
+.desktop-widget.size-1-4 {
+  width: 360px;
+  height: 160px;
+}
+
+.desktop-widget.size-4-4 {
+  width: 340px;
+  height: 340px;
+}
+
+/* Multi-Widgets Desktop & Management */
+#desktop-widgets-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+
+#desktop-widgets-container .desktop-widget {
+  pointer-events: auto;
+}
+
+.widget-card-thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.widget-card-thumb:hover {
+  transform: scale(1.08);
+}
+
+.widget-item-card {
+  margin-bottom: 10px !important;
+}
+
 /* Glass Clock Widget */
 .glass-clock {
   position: absolute;
@@ -1888,6 +1850,7 @@ button {
   letter-spacing: 0.5px;
   text-transform: capitalize;
   margin-bottom: -12px;
+  transition: color 0.2s ease;
 }
 
 .glass-clock-time {
@@ -1900,6 +1863,7 @@ button {
   color: #ffffff;
   line-height: 1.1;
   letter-spacing: -4px;
+  transition: color 0.2s ease;
 }
 
 .glass-clock-time .colon {
@@ -1916,23 +1880,15 @@ button {
   transform: translateX(-50%) translateY(-20px) scale(0.95);
 }
 
-body {
+.switcher {
   --c-glass: #bbbbbc;
   --c-light: #fff;
   --c-dark: #000;
-
   --c-content: #224;
   --c-action: #0052f5;
-
-  --c-bg: #E8E8E9;
-
   --glass-reflex-dark: 1;
   --glass-reflex-light: 1;
   --saturation: 150%;
-  transition: background 400ms cubic-bezier(1, 0.0, 0.4, 1), color 400ms cubic-bezier(1, 0.0, 0.4, 1);
-}
-
-.switcher {
   position: fixed;
   z-index: 1;
   bottom: 5px;
@@ -1979,13 +1935,6 @@ body {
   display: block;
   width: 100%;
   transition: scale 200ms cubic-bezier(0.5, 0, 0, 1);
-}
-
-.switcher__filter {
-  position: absolute;
-  width: 0;
-  height: 0;
-  z-index: -1;
 }
 
 .switcher__option {
@@ -2058,4 +2007,67 @@ body {
     box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1),
     translate 400ms cubic-bezier(1, 0.0, 0.4, 1);
   animation: scaleToggle2 440ms ease;
+}
+
+/* ============================================================
+   DARK MODE (Top Menu, Glass Clock, Search Bar, LiquidGlass Dock)
+   ============================================================ */
+:is(html.dark-mode, body.dark-mode) .top-menu .left {
+  color: #121313;
+}
+
+:is(html.dark-mode, body.dark-mode) .top-menu .right img {
+  filter: brightness(0);
+}
+
+:is(html.dark-mode, body.dark-mode) #battery-level,
+:is(html.dark-mode, body.dark-mode) .status-icon.battery-icon,
+:is(html.dark-mode, body.dark-mode) .top-menu-time {
+  color: #121313 !important;
+}
+
+:is(html.dark-mode, body.dark-mode) #top-thunder-outline {
+  stroke: #121313;
+}
+
+:is(html.dark-mode, body.dark-mode) .glass-clock-date {
+  color: rgba(18, 19, 19, 0.75);
+}
+
+:is(html.dark-mode, body.dark-mode) .glass-clock-time {
+  color: #121313;
+}
+
+:is(html.dark-mode, body.dark-mode) .search-wrapper {
+  border-top: 1px solid rgb(80 80 80 / 40%);
+  border-bottom: 1px solid rgb(80 80 80 / 40%);
+}
+
+:is(html.dark-mode, body.dark-mode) .search-input {
+  color: #121313;
+  caret-color: #121313;
+}
+
+:is(html.dark-mode, body.dark-mode) .search-input::placeholder {
+  color: rgba(18, 19, 19, 0.6);
+}
+
+:is(html.dark-mode, body.dark-mode) .search-icon,
+:is(html.dark-mode, body.dark-mode) .mic-button img {
+  filter: brightness(0);
+}
+
+:is(html.dark-mode, body.dark-mode) .liquidGlass-effect {
+  border-top: 1px solid rgb(80 80 80 / 40%);
+  border-bottom: 1px solid rgb(80 80 80 / 40%);
+  box-shadow: inset 0 0 5px -2px rgba(0, 0, 0, 0.4);
+}
+
+:is(html.dark-mode, body.dark-mode) .dock-dot {
+  background-color: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
+}
+
+:is(html.dark-mode, body.dark-mode) .desktop-widget {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }

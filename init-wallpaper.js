@@ -5,4 +5,7 @@
     ? `url('${s}')`
     : ((t === 'image' || t === 'video') ? 'none' : "url('assets/8z3jfEOqjrpCUxVsODP05JhlKOk.webp')");
   document.documentElement.style.setProperty('--initial-wallpaper', wallpaper);
+  if (localStorage.getItem('tahoe-dark-mode') === 'true') {
+    document.documentElement.classList.add('dark-mode');
+  }
 })();

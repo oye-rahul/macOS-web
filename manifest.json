@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "DeskTab - Modern Desktop New Tab",
-  "version": "1.5.0",
+  "name": "MacTab - Modern Desktop",
+  "version": "1.6.0",
   "description": "A clean, customizable desktop-style start page with a responsive dock, widgets, and search.",
   "icons": {
     "16": "assets/iconmain.png",

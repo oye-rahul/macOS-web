@@ -89,7 +89,7 @@ const animateDock = (currentX) => {
         });
     }
 
-    const lerpFactor = isActive ? 0.12 : 0.1;
+    const lerpFactor = isActive ? 0.28 : 0.2;
 
     dockItems.forEach(item => {
         const icon = item.querySelector(".dock-icon, .dock-icon2");

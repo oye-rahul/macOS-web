@@ -1107,10 +1107,7 @@ button {
   pointer-events: none;
   will-change: opacity;
   transform: translateZ(0);
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(10px);
   transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-  background: rgba(0, 0, 0, 0.1);
 }
 
 .launchpad-overlay.active {
@@ -1119,13 +1116,12 @@ button {
 }
 
 .launchpad-container {
-    -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px) !important;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 25px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 30px;
   width: min(605px);
   height: min(560px, 80vh);
   display: flex;
+  border: 1px solid rgba(0, 0, 0, 0.5);
   flex-direction: column;
   padding: 0 25px 25px 25px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), inset 0 0px 0 rgba(255, 255, 255, 0.8);
@@ -1136,7 +1132,7 @@ button {
 
 .launchpad-overlay.active .launchpad-container {
   transform: scale(1) translateZ(0);
-    backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(10px) !important;
 }
 
 .launchpad-search {
